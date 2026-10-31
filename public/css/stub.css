@@ -1,0 +1,46 @@
+/* ==========================================================================
+   darthmax78/contao-retro – Stub-Hinweis – Amber-Box mit Warndreieck
+   Element: stub (Template content_element/stub), Icon: ../icons/stub-warning-amber.svg
+   Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
+   Geladen nach der custom.css (RetroCssListener), Herkunft: custom.css, rg-06.
+   ========================================================================== */
+
+/* ===========================================
+ * Stub-Box: Artikel-Baustellen-Hinweis (Amber)
+ * ======================================== */
+div.stub {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  border: 2px solid var(--rg-amber) !important;
+  border-radius: 3px;
+  background: var(--rg-amber-grund);
+  color: var(--rg-amber);
+  padding: 1rem 1.25rem;
+  box-shadow: 0 0 14px rgba(var(--rg-amber-rgb), 0.25);
+  margin: 1.5rem 0;
+}
+
+div.stub .stub-icon {
+  flex: 0 0 auto;
+  width: 2.4rem;
+  height: 2.4rem;
+  background: url('../icons/stub-warning-amber.svg') no-repeat center / contain;
+  filter: drop-shadow(0 0 6px rgba(var(--rg-amber-rgb), 0.55));
+  margin-top: 0.15rem;
+}
+
+div.stub h3 {
+  font-family: 'C64Commodore', 'VT323', monospace;
+  letter-spacing: 0.03em;
+  font-size: 18px;
+  margin: 0 0 0.4rem;
+  color: var(--rg-amber) !important;
+  text-shadow: 0 0 8px rgba(var(--rg-amber-rgb), 0.45);
+}
+
+div.stub p {
+  margin: 0;
+  line-height: 1.6;
+  color: var(--rg-amber) !important;
+}

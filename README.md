@@ -20,13 +20,20 @@ der eigenen Bausteine – jeweils als eigenes, abgeschlossenes Modul.
 
 Gleichnamige Templates im `templates/`-Ordner der Website gewinnen gegen das Bundle.
 
+## CSS der Bausteine
+
+Je Baustein eine Datei unter `public/css/` (`retro-table`, `last-edited`, `stub`, `banner-lcd`,
+`anecdote`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
+des Layouts an (Oneo `main.css` → `custom.css` → Bundle). Farben kommen ausschließlich aus
+den `--rg-*`-Variablen, die die `custom.css` der Website im `:root` festlegt.
+
 ## Installation
 
 Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.1
+composer require darthmax78/contao-retro:^0.2
 vendor/bin/contao-console cache:clear
 ```
 

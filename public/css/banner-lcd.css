@@ -1,0 +1,31 @@
+/* ==========================================================================
+   darthmax78/contao-retro – Banner-Filter „LCD Grün“ – Hintergrundbild live in 4 LCD-Stufen
+   Klassen: bild-overlay-lcd (+ lcd-heller / lcd-dunkler)
+   Braucht den SVG-Filter #lcd-gruen im Seitenlayout
+   Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
+   Geladen nach der custom.css (RetroCssListener), Herkunft: custom.css, rg-06.
+   ========================================================================== */
+
+/* ===========================================
+ * Banner-Filter "LCD Grün" (live statt eingebrannt)
+ * Ein/aus: Klasse "bild-overlay-lcd" im Slider-Modul bzw. Element
+ * Feinjustierung: zusätzlich "lcd-heller" oder "lcd-dunkler"
+ * Benötigt SVG-Filter #lcd-gruen im Seitenlayout
+ * Färbt NUR das Hintergrundbild, Texte bleiben unverändert
+ * ======================================== */
+.bild-overlay-lcd {
+  --lcd-hell: 1;
+  --overlay-filter: brightness(var(--lcd-hell)) url(#lcd-gruen);
+}
+.bild-overlay-lcd.lcd-heller  { --lcd-hell: 1.5; }  /* dunkle Vorlagen */
+.bild-overlay-lcd.lcd-dunkler { --lcd-hell: 0.8; }  /* sehr helle Vorlagen */
+
+/* Centered Wrapper */
+.centered-wrapper.bild-overlay-lcd > .centered-wrapper-background {
+  filter: var(--overlay-filter);
+}
+
+/* RockSolid Slider: nur Hintergrundbild/-video der Slides */
+.bild-overlay-lcd .rsts-slide > :is(img, picture, video, .rsts-background, [data-rsts-background]) {
+  filter: var(--overlay-filter);
+}

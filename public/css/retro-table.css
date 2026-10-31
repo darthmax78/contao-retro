@@ -1,0 +1,230 @@
+/* ==========================================================================
+   darthmax78/contao-retro – retro-table – Tabellen im CRT-Arcade-Look, Variante „steckbrief“
+   Klassen: retro-table (Element oder Wrapper), zusätzlich steckbrief
+   Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
+   Geladen nach der custom.css (RetroCssListener), Herkunft: custom.css, rg-06.
+   ========================================================================== */
+
+/* Tabellen im CRT-Arcade-Look – Klasse "retro-table" am Element oder Wrapper */
+.retro-table {
+  --rt-paper: var(--rg-papier);
+  --rt-paper-alt: var(--rg-papier-alt);
+  --rt-band-1: var(--rg-lcd-1);
+  --rt-band-2: var(--rg-lcd-2);
+  --rt-band-3: var(--rg-lcd-3);
+  --rt-ink: var(--rg-tinte);
+  --rt-accent: var(--rg-gruen);
+}
+
+:is(table.retro-table, .retro-table table) {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  background: var(--rt-paper);
+  color: var(--rt-ink);
+  border: 2px solid var(--rt-band-3);
+  box-shadow: 0 0 12px rgba(var(--rg-gruen-rgb), 0.18);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+:is(table.retro-table, .retro-table table) caption {
+  caption-side: top;
+  padding: 0.5rem 0 0.75rem;
+  text-align: left;
+  font-family: "VT323", monospace;
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+  color: var(--rt-accent);
+  text-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.45);
+}
+
+:is(table.retro-table, .retro-table table) th,
+:is(table.retro-table, .retro-table table) td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rt-band-1);
+}
+
+:is(table.retro-table, .retro-table table) thead th {
+  background: var(--rt-band-2);
+  color: var(--rt-ink);
+  font-family: "VT323", monospace;
+  font-size: 1.4rem;
+  letter-spacing: 0.06em;
+  border-bottom: 2px solid var(--rt-accent);
+}
+
+/* Erste Spalte – funktioniert mit th oder td */
+:is(table.retro-table, .retro-table table) tbody tr > :first-child {
+  width: 22%;
+  font-family: "VT323", monospace;
+  font-size: 1.3rem;
+  font-weight: normal;
+  color: var(--rt-accent);
+  text-shadow: 0 0 6px rgba(var(--rg-gruen-rgb), 0.4);
+  border-right: 1px solid var(--rt-band-2);
+}
+
+:is(table.retro-table, .retro-table table) tbody tr:nth-child(even) {
+  background: var(--rt-paper-alt);
+}
+:is(table.retro-table, .retro-table table) tbody tr:hover {
+  background: var(--rt-band-1);
+}
+
+@media (max-width: 600px) {
+  :is(table.retro-table, .retro-table table) thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+  :is(table.retro-table, .retro-table table) tr,
+  :is(table.retro-table, .retro-table table) th,
+  :is(table.retro-table, .retro-table table) td {
+    display: block;
+    width: 100%;
+  }
+  :is(table.retro-table, .retro-table table) tbody tr > :first-child {
+    border-right: 0;
+    padding-bottom: 0.25rem;
+  }
+  :is(table.retro-table, .retro-table table) td {
+    padding-top: 0.25rem;
+  }
+}
+
+
+/* =====================================================================
+   retro-table – Variante "steckbrief"
+   ---------------------------------------------------------------------
+   Einsatz:   Contao-Tabellenelement, CSS-Klasse: retro-table steckbrief
+              Option "Linke Spalte als Überschrift" aktivieren
+              (erzeugt <th scope="row"> in der ersten Spalte)
+   Gruppen:   Zeile mit Gruppenname in Spalte 1, Spalte 2 LEER lassen
+              -> wird automatisch als Zwischenüberschrift dargestellt
+   Position:  in dieser Datei NACH dem .retro-table-Grundblock (Reihenfolge wichtig)
+   ===================================================================== */
+
+:is(table.steckbrief, .steckbrief table) {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--rg-lcd-3);
+  background: rgba(var(--rg-papier-rgb), 0.45);
+  font-variant-numeric: tabular-nums;
+}
+
+:is(table.steckbrief, .steckbrief table) :is(th, td) {
+  padding: 0.55rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.45;
+  border-bottom: 1px solid rgba(var(--rg-gruen-rgb), 0.14);
+}
+
+/* Label-Spalte: gedämpft, damit die Werte im Vordergrund stehen */
+/* Selektor bewusst mit "tr > th:first-child", damit er die Basisregel
+   ".retro-table ... tbody tr > :first-child" (VT323, Glow, Rahmen) schlägt */
+:is(table.steckbrief, .steckbrief table) tbody tr > th:first-child {
+  width: 32%;
+  color: var(--rg-tinte-leise);
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 500;
+  letter-spacing: normal;
+  text-shadow: none;
+  border-right: 0;
+}
+
+:is(table.steckbrief, .steckbrief table) td {
+  color: var(--rg-tinte);
+}
+
+/* verhindert ungleiche Zeilenabstände durch Absätze in Zellen */
+:is(table.steckbrief, .steckbrief table) :is(th, td) > p {
+  margin: 0;
+}
+
+/* dezente Zebra-Schattierung */
+:is(table.steckbrief, .steckbrief table) tbody tr:nth-child(even) {
+  background: rgba(var(--rg-tinte-rgb), 0.025);
+}
+
+/* Gruppenzeile = Zeile mit leerer Wertzelle */
+:is(table.steckbrief, .steckbrief table) tbody tr:has(> td:empty) {
+  background: transparent;
+}
+
+:is(table.steckbrief, .steckbrief table) tbody tr:has(> td:empty) > th {
+  padding-top: 1.1rem;
+  color: var(--rg-gruen);
+  font-family: 'VT323', monospace;
+  font-size: 1.35rem;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 6px rgba(var(--rg-gruen-rgb), 0.4);
+  border-bottom-color: var(--rg-lcd-3);
+}
+
+:is(table.steckbrief, .steckbrief table) tbody tr:has(> td:empty) > td {
+  border-bottom-color: var(--rg-lcd-3);
+}
+
+:is(table.steckbrief, .steckbrief table) tbody tr:first-child:has(> td:empty) > th {
+  padding-top: 0.6rem;
+}
+
+/* Mobil: Label über dem Wert statt daneben */
+@media (max-width: 600px) {
+  :is(table.steckbrief, .steckbrief table),
+  :is(table.steckbrief, .steckbrief table) :is(tbody, tr, th, td) {
+    display: block;
+    width: auto;
+  }
+
+  :is(table.steckbrief, .steckbrief table) tbody tr > th:first-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+    font-size: 0.85rem;
+  }
+
+  :is(table.steckbrief, .steckbrief table) tbody tr:has(> td:empty) > th {
+    font-size: 1.3rem;
+    border-bottom: 1px solid var(--rg-lcd-3);
+    padding-bottom: 0.3rem;
+  }
+
+  :is(table.steckbrief, .steckbrief table) tbody tr:has(> td:empty) > td {
+    display: none;
+  }
+
+  :is(table.steckbrief, .steckbrief table) td {
+    padding-top: 0.15rem;
+  }
+}
+
+/* Steckbrief + Bild: Spalten vertikal zentrieren */
+.rs-columns:has(.steckbrief) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Clearfix-Pseudoelemente würden sonst zu Flex-Items */
+.rs-columns:has(.steckbrief)::before,
+.rs-columns:has(.steckbrief)::after {
+  display: none;
+}
+
+.rs-columns:has(.steckbrief) > .rs-column {
+  float: none;
+}
+
+.rs-columns:has(.steckbrief) { align-items: flex-start; }
+.rs-columns:has(.steckbrief) > .rs-column:last-child {
+  position: sticky;
+  top: 2rem; /* ggf. Höhe einer fixierten Navigation addieren */
+}

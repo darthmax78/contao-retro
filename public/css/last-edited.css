@@ -1,0 +1,45 @@
+/* ==========================================================================
+   darthmax78/contao-retro – Zuletzt bearbeitet – Infobox ohne Symbol, Diskette in der Überschrift
+   Element: last_edited (Template content_element/last_edited)
+   Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
+   Geladen nach der custom.css (RetroCssListener), Herkunft: custom.css, rg-06.
+   ========================================================================== */
+
+/* ===========================================
+ * "Zuletzt bearbeitet"-Box: Infobox-Optik ohne Symbol
+ * ======================================== */
+div.information.last-edited:before {
+  content: none;
+  display: none;
+}
+ 
+div.information.last-edited {
+  padding-left: 1.25rem; /* Platz für das Symbol entfällt – ggf. an rechten Innenabstand angleichen */
+}
+ 
+div.information.last-edited h3 {
+  margin-top: 0;
+}
+ 
+div.information.last-edited p {
+  margin-bottom: 0;
+}
+
+
+
+/* ===========================================
+ * "Zuletzt bearbeitet"-Box: Disketten-Symbol in der Überschrift
+ * ======================================== */
+div.information.last-edited h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+}
+
+div.information.last-edited .last-edited__icon {
+  flex: none;
+  width: 1em;
+  height: 1em;
+  color: inherit; /* gleiche Farbe wie die Überschrift */
+  filter: drop-shadow(0 0 3px currentColor); /* leichter Phosphor-Glow */
+}
