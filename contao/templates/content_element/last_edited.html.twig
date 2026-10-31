@@ -1,0 +1,21 @@
+{% extends "@Contao/content_element/_base.html.twig" %}
+
+{% block content %}
+  <div class="information content-text last-edited">
+    <h3>
+      {# 3,5"-Diskette im Pixel-Linienstil, Farbe folgt der Überschrift (currentColor) #}
+      <svg class="last-edited__icon" viewBox="0 0 16 16" width="16" height="16"
+           aria-hidden="true" focusable="false" shape-rendering="crispEdges">
+        <path d="M1.75 1.75h10l2.5 2.5v10H1.75z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M4.5 1.75h6v4h-6z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="8" y="2.5" width="1.5" height="2.5" fill="currentColor"/>
+        <path d="M4 9h8v5.25H4z" fill="none" stroke="currentColor" stroke-width="1.5"/>
+        <rect x="5.5" y="11" width="5" height="1" fill="currentColor"/>
+      </svg>
+      Zuletzt bearbeitet
+    </h3>
+    <p>
+      Dieser Beitrag wurde zuletzt am {{ edited_date }} um {{ edited_time }} Uhr{% if editor %} von {{ editor }}{% endif %} bearbeitet.
+    </p>
+  </div>
+{% endblock %}

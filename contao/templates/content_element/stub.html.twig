@@ -1,0 +1,18 @@
+{% extends "@Contao/content_element/_base.html.twig" %}
+
+{# Das Basis-Template gibt die Standard-Überschrift innerhalb des Blocks
+   "inner" aus (vor "content"). Die Stub-Box rendert ihre Überschrift selbst,
+   daher wird "inner" so überschrieben, dass nur noch "content" ausgegeben wird. #}
+{% block inner %}
+  {{ block('content') }}
+{% endblock %}
+
+{% block content %}
+  <div class="stub">
+    <div class="stub-icon"></div>
+    <div>
+      <{{ stub_tag }}>{{ stub_headline }}</{{ stub_tag }}>
+      {{ stub_text|raw }}
+    </div>
+  </div>
+{% endblock %}
