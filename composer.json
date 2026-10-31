@@ -1,0 +1,24 @@
+{
+    "name": "darthmax78/contao-retro",
+    "description": "Eigene Inhaltselemente, Templates und CSS für retro-gaming.at (Contao 6, RockSolid Oneo)",
+    "type": "contao-bundle",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Magnus Witzik",
+            "homepage": "https://retro-gaming.at"
+        }
+    ],
+    "require": {
+        "php": "^8.2",
+        "contao/core-bundle": "^6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Darthmax\\RetroBundle\\": "src/"
+        }
+    },
+    "extra": {
+        "contao-manager-plugin": "Darthmax\\RetroBundle\\ContaoManager\\Plugin"
+    }
+}

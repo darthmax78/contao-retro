@@ -1,0 +1,12 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Controller (#[AsContentElement], #[AsFrontendModule]), Listener (#[AsHook],
+    # #[AsCallback]) usw. werden über die Attribute automatisch registriert.
+    Darthmax\RetroBundle\:
+        resource: ../src/
+        exclude:
+            - ../src/ContaoManager/
+            - ../src/DarthmaxRetroBundle.php
