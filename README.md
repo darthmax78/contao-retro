@@ -27,13 +27,16 @@ Je Baustein eine Datei unter `public/css/` (`retro-table`, `last-edited`, `stub`
 des Layouts an (Oneo `main.css` → `custom.css` → Bundle). Farben kommen ausschließlich aus
 den `--rg-*`-Variablen, die die `custom.css` der Website im `:root` festlegt.
 
+Den SVG-Filter `#lcd-gruen` für den Banner-Filter gibt der `LcdFilterListener` auf jeder
+Frontend-Seite vor `</body>` aus – nur, wenn die Seite noch keinen hat (keine doppelte ID).
+
 ## Installation
 
 Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.2
+composer require darthmax78/contao-retro:^0.3
 vendor/bin/contao-console cache:clear
 ```
 

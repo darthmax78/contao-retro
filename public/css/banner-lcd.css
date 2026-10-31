@@ -1,7 +1,7 @@
 /* ==========================================================================
    darthmax78/contao-retro – Banner-Filter „LCD Grün“ – Hintergrundbild live in 4 LCD-Stufen
    Klassen: bild-overlay-lcd (+ lcd-heller / lcd-dunkler)
-   Braucht den SVG-Filter #lcd-gruen im Seitenlayout
+   SVG-Filter #lcd-gruen gibt LcdFilterListener auf jeder Seite aus (seit rg-07)
    Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
    Geladen nach der custom.css (RetroCssListener), Herkunft: custom.css, rg-06.
    ========================================================================== */
@@ -10,7 +10,7 @@
  * Banner-Filter "LCD Grün" (live statt eingebrannt)
  * Ein/aus: Klasse "bild-overlay-lcd" im Slider-Modul bzw. Element
  * Feinjustierung: zusätzlich "lcd-heller" oder "lcd-dunkler"
- * Benötigt SVG-Filter #lcd-gruen im Seitenlayout
+ * SVG-Filter #lcd-gruen: LcdFilterListener des Bundles
  * Färbt NUR das Hintergrundbild, Texte bleiben unverändert
  * ======================================== */
 .bild-overlay-lcd {
