@@ -23,12 +23,25 @@ Gleichnamige Templates im `templates/`-Ordner der Website gewinnen gegen das Bun
 ## CSS der Bausteine
 
 Je Baustein eine Datei unter `public/css/` (`retro-table`, `last-edited`, `stub`, `banner-lcd`,
-`anecdote`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
+`anecdote`, `abschnitte`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
 des Layouts an (Oneo `main.css` → `custom.css` → Bundle). Farben kommen ausschließlich aus
 den `--rg-*`-Variablen, die die `custom.css` der Website im `:root` festlegt.
 
 Den SVG-Filter `#lcd-gruen` für den Banner-Filter gibt der `LcdFilterListener` auf jeder
 Frontend-Seite vor `</body>` aus – nur, wenn die Seite noch keinen hat (keine doppelte ID).
+
+## Abschnittstitel und Sprungleiste
+
+Zwei Inhaltselemente (Herkunft `darthmax78/contao-inventar` v1.4.2, Typen und Felder `sa_*` unverändert):
+
+- **Abschnittstitel** (`sa_abschnitt`): Überzeile (`sa_kicker`) als Terminal-Prompt `> TEXT ───`,
+  Überschrift aus dem Standardfeld, optionale Einleitung (`sa_lead`). Klasse `centered` zentriert.
+- **Sprungleiste** (`sa_sprungleiste`): Links auf alle Abschnittstitel der Seite (in News/Terminen nur
+  des eigenen Beitrags), Beschriftung = Überzeile, sonst Überschrift. Erscheint ab zwei Zielen, klebt beim
+  Scrollen unter dem Kopf, markiert den aktuellen Abschnitt (▶-Cursor, LCD-Button-Look).
+
+CSS `public/css/abschnitte.css`, Skript `public/js/sprungleiste.js` (erkennt den fixierten Kopf selbst).
+Normale Überschriften im Text zählen nicht als Sprungziel.
 
 ## Installation
 
@@ -36,7 +49,7 @@ Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.3
+composer require darthmax78/contao-retro:^0.4
 vendor/bin/contao-console cache:clear
 ```
 

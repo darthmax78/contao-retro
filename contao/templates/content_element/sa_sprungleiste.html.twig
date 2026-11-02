@@ -1,0 +1,22 @@
+{#
+  Sprungleiste: Links auf alle Abschnittstitel der Seite bzw. des Beitrags.
+  Erscheint ab zwei Zielen. Die Hülle hält die Höhe, wenn die Leiste beim
+  Scrollen unter dem Header fixiert wird.
+  CSS: public/css/abschnitte.css, JS: public/js/sprungleiste.js
+#}
+{% extends "@Contao/content_element/_base.html.twig" %}
+
+{% block content %}
+    {% if ziele|length > 1 %}
+        <div class="sa-sprung-huelle">
+            <nav class="sa-sprung" aria-label="Auf dieser Seite">
+                <ol class="sa-sprung-liste">
+                    {% for ziel in ziele %}
+                        <li><a href="{{ basis }}#{{ ziel.anker }}">{{ ziel.label }}</a></li>
+                    {% endfor %}
+                </ol>
+            </nav>
+        </div>
+        <script src="{{ skript }}" defer></script>
+    {% endif %}
+{% endblock %}

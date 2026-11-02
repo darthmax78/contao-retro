@@ -1,0 +1,252 @@
+/* ==========================================================================
+   darthmax78/contao-retro – Abschnittstitel + Sprungleiste – Terminal-Look
+   Elemente: sa_abschnitt, sa_sprungleiste (Templates content_element/sa_*)
+   JS: ../js/sprungleiste.js setzt nav.is-fixiert und a.is-aktiv
+   Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
+   Geladen nach der custom.css (RetroCssListener), Herkunft: contao-inventar v1.4.2, rg-08.
+
+   HTML Abschnittstitel: div.content-sa-abschnitt > span.sa-anker + p.sa-kicker
+                         + Überschrift + p.sa-abschnitt-lead
+   HTML Sprungleiste:    div.content-sa-sprungleiste > .sa-sprung-huelle
+                         > nav.sa-sprung > ol.sa-sprung-liste > li > a
+
+   Kontraste (WCAG): Grün auf Papier 11,6:1 · Grün auf LCD-2 6,1:1
+                     Tinte-leise auf Papier 9,6:1
+   ========================================================================== */
+
+.content-sa-abschnitt,
+.content-sa-sprungleiste {
+  --sa-anker-abstand: 9rem;  /* Abstand beim Springen ohne JS (Kopf + Leiste) */
+}
+
+/* ===========================================
+ * Abschnittstitel
+ * Überzeile als Terminal-Prompt „> TEXT ─────“,
+ * darunter die Überschrift, dann die Einleitung
+ * ======================================== */
+div.content-sa-abschnitt {
+  clear: both;
+  margin-top: 3rem;
+}
+
+div.content-sa-abschnitt p.sa-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0 0 0.4rem;
+  font-family: 'VT323', monospace;
+  font-size: 1.35rem;            /* VT323 wirkt klein */
+  font-weight: normal;           /* kein Bold-Schnitt, sonst Faux-Bold */
+  line-height: 1.1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-gruen);
+  text-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.45);
+}
+
+/* Prompt-Zeichen vor der Überzeile */
+div.content-sa-abschnitt p.sa-kicker::before {
+  content: ">";
+  flex: none;
+}
+
+/* Linie bis zum rechten Rand, läuft nach rechts aus */
+div.content-sa-abschnitt p.sa-kicker::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 2rem;
+  height: 2px;
+  background: linear-gradient(to right, var(--rg-lcd-3), transparent);
+  box-shadow: none;
+}
+
+div.content-sa-abschnitt :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0 0 0.9em;
+  font-size: clamp(1.75rem, 1.2rem + 1.6vw, 2.5rem);
+  line-height: 1.2;
+  color: var(--rg-tinte);
+}
+
+div.content-sa-abschnitt :is(h1, h2, h3, h4, h5, h6):has(+ p.sa-abschnitt-lead) {
+  margin-bottom: 0.35em;
+}
+
+div.content-sa-abschnitt p.sa-abschnitt-lead {
+  max-width: 68ch;
+  margin: 0 0 1.5rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--rg-lcd-3);
+  font-size: 1.15em;
+  line-height: 1.55;
+  color: var(--rg-tinte-leise);
+}
+
+/* Zentrierte Variante (Klasse „centered“ am Element) */
+div.content-sa-abschnitt.centered p.sa-kicker::before {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 2rem;
+  height: 2px;
+  background: linear-gradient(to left, var(--rg-lcd-3), transparent);
+}
+
+div.content-sa-abschnitt.centered :is(h1, h2, h3, h4, h5, h6) {
+  text-align: center;
+}
+
+div.content-sa-abschnitt.centered p.sa-abschnitt-lead {
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 0;
+  border-left: 0;
+  text-align: center;
+}
+
+/* Sprungziel */
+.sa-anker {
+  display: block;
+  height: 0;
+  scroll-margin-top: var(--sa-anker-abstand, 9rem);
+}
+
+/* ===========================================
+ * Sprungleiste – Menüzeile im LCD-Panel-Look
+ * aktiver Eintrag wie banner-btn-lcd mit ▶-Cursor
+ * z-index 19: unter dem fixierten Kopf, über dem Inhalt
+ * ======================================== */
+.sa-sprung-huelle {
+  margin: 0 0 1.5rem;
+}
+
+nav.sa-sprung {
+  position: relative;
+  z-index: 19;
+  background: var(--rg-papier);
+  border-top: 1px solid var(--rg-lcd-3);
+  border-bottom: 2px solid var(--rg-lcd-3);
+  box-shadow: 0 0 14px rgba(var(--rg-gruen-rgb), 0.12);
+}
+
+/* Fixiert: Fläche über die volle Fensterbreite verlängern (nur seitlich,
+   sonst deckt der Schatten den Inhalt unter der Leiste ab) */
+nav.sa-sprung.is-fixiert {
+  position: fixed;
+  margin: 0;
+  border-top-color: transparent;
+  box-shadow: 0 0 0 100vmax var(--rg-papier);
+  clip-path: inset(0 -100vmax);
+}
+
+ol.sa-sprung-liste.sa-sprung-liste {
+  position: relative;
+  display: flex;
+  justify-content: safe center;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.5rem 0.5rem;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 1.25em, #000 calc(100% - 1.25em), transparent);
+          mask-image: linear-gradient(to right, transparent, #000 1.25em, #000 calc(100% - 1.25em), transparent);
+}
+
+ol.sa-sprung-liste.sa-sprung-liste::-webkit-scrollbar {
+  display: none;
+}
+
+/* Oneo-Aufzählungszeichen abschalten */
+ol.sa-sprung-liste.sa-sprung-liste > li {
+  flex: none;
+  margin: 0;
+  padding: 0;
+}
+
+ol.sa-sprung-liste.sa-sprung-liste > li::before {
+  content: none;
+  display: none;
+}
+
+.sa-sprung-liste a {
+  display: flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.2rem 0.8rem 0.25rem 0.55rem;
+  border: 2px solid transparent;
+  border-radius: 3px;
+  font-family: 'VT323', monospace;
+  font-size: 1.3rem;
+  font-weight: normal;
+  letter-spacing: 0.06em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--rg-tinte-leise);
+  transition: color .15s ease, background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+
+/* Menü-Cursor: Platz immer reserviert, damit beim Wechsel nichts springt */
+.sa-sprung-liste a::before {
+  content: "\25B6"; /* ▶ */
+  font-size: 0.7em;
+  opacity: 0;
+  transition: opacity .15s ease;
+}
+
+.sa-sprung-liste a:hover,
+.sa-sprung-liste a:focus-visible {
+  color: var(--rg-gruen);
+  border-color: var(--rg-lcd-3);
+  background: var(--rg-lcd-1);
+}
+
+.sa-sprung-liste a:focus-visible {
+  outline: 2px solid var(--rg-gruen);
+  outline-offset: 2px;
+}
+
+.sa-sprung-liste a:hover::before,
+.sa-sprung-liste a:focus-visible::before {
+  opacity: 0.5;
+}
+
+.sa-sprung-liste a.is-aktiv {
+  color: var(--rg-gruen);
+  background: var(--rg-lcd-2);
+  border-color: var(--rg-gruen);
+  box-shadow: 0 0 12px rgba(var(--rg-gruen-rgb), 0.3);
+  text-shadow: 0 0 6px rgba(var(--rg-gruen-rgb), 0.5);
+}
+
+.sa-sprung-liste a.is-aktiv::before {
+  opacity: 1;
+  animation: sa-cursor-blink 1s steps(1) infinite;
+}
+
+@keyframes sa-cursor-blink {
+  50% { opacity: 0.25; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sa-sprung-liste a,
+  .sa-sprung-liste a::before {
+    transition: none;
+  }
+  .sa-sprung-liste a.is-aktiv::before {
+    animation: none;
+  }
+}
+
+@media (max-width: 600px) {
+  div.content-sa-abschnitt {
+    margin-top: 2rem;
+  }
+  div.content-sa-abschnitt p.sa-kicker {
+    font-size: 1.2rem;
+  }
+  .sa-sprung-liste a {
+    font-size: 1.15rem;
+    padding: 0.15rem 0.6rem 0.2rem 0.4rem;
+  }
+}

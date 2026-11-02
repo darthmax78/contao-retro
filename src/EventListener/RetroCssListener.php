@@ -23,7 +23,7 @@ use Contao\PageRegular;
 class RetroCssListener
 {
     /** Reihenfolge = Reihenfolge der Regeln in der früheren custom.css */
-    private const MODULE = ['retro-table', 'last-edited', 'stub', 'banner-lcd', 'anecdote'];
+    private const MODULE = ['retro-table', 'last-edited', 'stub', 'banner-lcd', 'anecdote', 'abschnitte'];
 
     public function __invoke(PageModel $page, LayoutModel $layout, PageRegular $pageRegular): void
     {

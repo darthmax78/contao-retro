@@ -1,0 +1,21 @@
+{#
+  Abschnittstitel: Überzeile (p.sa-kicker), Überschrift, Einleitung.
+  Das Basistemplate gibt die Überschrift im Block „inner“ aus, daher steht die
+  Überzeile davor. span.sa-anker ist das Sprungziel der Sprungleiste.
+  CSS: public/css/abschnitte.css
+#}
+{% extends "@Contao/content_element/_base.html.twig" %}
+
+{% block inner %}
+    <span id="{{ anker }}" class="sa-anker" aria-hidden="true"></span>
+    {% if kicker %}
+        <p class="sa-kicker">{{ kicker }}</p>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    {% if lead %}
+        <p class="sa-abschnitt-lead">{{ lead|nl2br }}</p>
+    {% endif %}
+{% endblock %}
