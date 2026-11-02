@@ -112,7 +112,8 @@ div.content-sa-abschnitt.centered p.sa-abschnitt-lead {
 /* ===========================================
  * Sprungleiste – Menüzeile im LCD-Panel-Look
  * aktiver Eintrag wie banner-btn-lcd mit ▶-Cursor
- * z-index 19: unter dem fixierten Kopf, über dem Inhalt
+ * z-index 19 nur als Vorgabe: das JS legt die Leiste auf (Ebene des Kopfes − 1),
+ * damit Ausklappmenüs im Kopf (RockSolid Mega-Menü) darüber liegen
  * ======================================== */
 .sa-sprung-huelle {
   margin: 0 0 1.5rem;

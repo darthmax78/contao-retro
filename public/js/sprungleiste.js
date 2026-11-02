@@ -32,6 +32,7 @@
         }
         var unten = 0;
         var grenze = window.innerHeight / 3;
+        kopfElemente = [];
         for (var i = 0; i < kopfKandidaten.length; i++) {
             var el = kopfKandidaten[i];
             var position = window.getComputedStyle(el).position;
@@ -42,9 +43,62 @@
             // nur sichtbare Leisten am oberen Rand (keine Overlays, keine ausgeblendeten Köpfe)
             if (r.height > 0 && r.height < grenze && r.top <= 1 && r.bottom > 0) {
                 unten = Math.max(unten, r.bottom);
+                kopfElemente.push(el);
             }
         }
         return unten;
+    }
+
+    var kopfElemente = [];
+
+    /*
+     * Ebene des Kopfes auf oberster Ebene des Dokuments: Ausklappmenüs (RockSolid
+     * Mega-Menü) hängen im Kopf und können nie höher liegen als er. Die Leiste muss
+     * also darunter bleiben. Maßgeblich ist der äußerste Vorfahr mit eigenem z-index.
+     */
+    function kopfEbene() {
+        var ebene = null;
+        kopfElemente.forEach(function (el) {
+            var z = null;
+            for (var k = el; k && k !== document.documentElement; k = k.parentElement) {
+                var stil = window.getComputedStyle(k);
+                var wert = parseInt(stil.zIndex, 10);
+                if (!isNaN(wert) && stil.position !== 'static') {
+                    z = wert;
+                }
+            }
+            if (z !== null) {
+                ebene = ebene === null ? z : Math.max(ebene, z);
+            }
+        });
+        return ebene;
+    }
+
+    /*
+     * Leiste direkt unter den Kopf legen. Liegt der Kopf zu tief (z-index 0–2),
+     * wird stattdessen der Kopf auf 20 angehoben, damit die Leiste über dem Inhalt bleibt.
+     */
+    function ebeneSetzen(nav) {
+        var z = kopfEbene();
+        if (z === null) {
+            nav.style.zIndex = '';
+            return;
+        }
+        if (z - 1 >= 2) {
+            nav.style.zIndex = String(z - 1);
+        } else {
+            kopfElemente.forEach(function (el) {
+                var aussen = el;
+                for (var k = el; k && k !== document.body; k = k.parentElement) {
+                    var p = window.getComputedStyle(k).position;
+                    if (p === 'fixed' || p === 'sticky') {
+                        aussen = k;
+                    }
+                }
+                aussen.style.zIndex = '20';
+            });
+            nav.style.zIndex = '19';
+        }
     }
 
     var sanft = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -60,6 +114,7 @@
             return document.getElementById(decodeURIComponent(a.hash.slice(1)));
         });
         var aktiv = -2;
+        var ebeneGesetzt = false;
         var angefordert = false;
 
         function markieren(index) {
@@ -83,6 +138,10 @@
             angefordert = false;
             var oben = kopfUnterkante();
             var rahmen = huelle.getBoundingClientRect();
+            if (!ebeneGesetzt && kopfElemente.length) {
+                ebeneSetzen(nav);
+                ebeneGesetzt = true;
+            }
 
             huelle.style.minHeight = nav.offsetHeight + 'px';
 
