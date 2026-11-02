@@ -101,6 +101,25 @@
         }
     }
 
+    /*
+     * Unterkante der fixierten Leiste als --sa-leiste-unten auf <html> melden,
+     * damit klebende Inhalte (z. B. die Bildspalte neben dem Steckbrief) darunter
+     * bleiben. Ohne fixierte Leiste wird die Variable entfernt.
+     */
+    var gemeldet = null;
+    function leisteMelden(px) {
+        var wert = px === null ? null : Math.round(px) + 'px';
+        if (wert === gemeldet) {
+            return;
+        }
+        gemeldet = wert;
+        if (wert === null) {
+            document.documentElement.style.removeProperty('--sa-leiste-unten');
+        } else {
+            document.documentElement.style.setProperty('--sa-leiste-unten', wert);
+        }
+    }
+
     var sanft = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
     function einrichten(huelle) {
@@ -150,11 +169,13 @@
                 nav.style.top = oben + 'px';
                 nav.style.left = rahmen.left + 'px';
                 nav.style.width = rahmen.width + 'px';
+                leisteMelden(oben + nav.offsetHeight);
             } else {
                 nav.classList.remove('is-fixiert');
                 nav.style.top = '';
                 nav.style.left = '';
                 nav.style.width = '';
+                leisteMelden(null);
             }
 
             var grenze = oben + nav.offsetHeight + 24;

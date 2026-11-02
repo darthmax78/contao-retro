@@ -226,5 +226,8 @@
 .rs-columns:has(.steckbrief) { align-items: flex-start; }
 .rs-columns:has(.steckbrief) > .rs-column:last-child {
   position: sticky;
-  top: 2rem; /* ggf. Höhe einer fixierten Navigation addieren */
+  /* --sa-leiste-unten: Unterkante der fixierten Sprungleiste (setzt sprungleiste.js),
+     ohne Leiste 1rem → wie bisher 2rem Abstand */
+  top: calc(var(--sa-leiste-unten, 1rem) + 1rem);
+  transition: top .15s ease;
 }
