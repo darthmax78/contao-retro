@@ -10,12 +10,16 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**
- * Gibt den SVG-Filter #lcd-gruen einmal pro Frontend-Seite vor </body> aus
+ * Gibt den SVG-Filter #lcd-gruen einmal pro Frontend-Seite direkt nach <body> aus
  * (gehört zum Baustein „Banner-Filter“, CSS: public/css/banner-lcd.css).
  *
  * Chrome wendet SVG-Filter aus CSS nur an, wenn das <svg> im selben Dokument steht –
  * eine externe .svg-Datei reicht nicht. Steht schon ein Element mit id="lcd-gruen" in
  * der Seite (z. B. noch aus dem Seitenlayout), wird nichts eingefügt: keine doppelte ID.
+ *
+ * Der Filter muss vor den Elementen stehen, die ihn verwenden: Safari zeichnet Seiten aus
+ * dem Cache sonst, bevor er bekannt ist, und holt ihn erst beim nächsten Stilwechsel nach
+ * (Banner bleibt bunt, nach dem Leeren des Caches aber grün).
  *
  * Palette und Rechenweg: Projektdokument design/banner-lcd-gruen-filter.md
  * (Graustufen als flacher Kanal-Durchschnitt, 4 diskrete Stufen
@@ -63,13 +67,15 @@ class LcdFilterListener
             return;
         }
 
-        $pos = strripos($content, '</body>');
-
-        if (false === $pos) {
+        if (preg_match('/<body\b[^>]*>/i', $content, $treffer, PREG_OFFSET_CAPTURE)) {
+            $pos = $treffer[0][1] + \strlen($treffer[0][0]);
+            $response->setContent(substr_replace($content, "\n".self::SVG, $pos, 0));
+        } elseif (false !== ($pos = strripos($content, '</body>'))) {
+            $response->setContent(substr_replace($content, self::SVG."\n", $pos, 0));
+        } else {
             return;
         }
 
-        $response->setContent(substr_replace($content, self::SVG."\n", $pos, 0));
         $response->headers->remove('Content-Length');
     }
 }

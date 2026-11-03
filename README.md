@@ -28,7 +28,8 @@ des Layouts an (Oneo `main.css` → `custom.css` → Bundle). Farben kommen auss
 den `--rg-*`-Variablen, die die `custom.css` der Website im `:root` festlegt.
 
 Den SVG-Filter `#lcd-gruen` für den Banner-Filter gibt der `LcdFilterListener` auf jeder
-Frontend-Seite vor `</body>` aus – nur, wenn die Seite noch keinen hat (keine doppelte ID).
+Frontend-Seite direkt nach `<body>` aus – nur, wenn die Seite noch keinen hat (keine doppelte ID).
+Er muss vor seinen Verwendern stehen, sonst bleibt der Banner in Safari bei Seiten aus dem Cache bunt.
 
 ## Abschnittstitel und Sprungleiste
 
