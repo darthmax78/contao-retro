@@ -13,6 +13,7 @@ der eigenen Bausteine – jeweils als eigenes, abgeschlossenes Modul.
 |---|---|
 | `src/` | Bundle-Klasse, Manager-Plugin, Controller (`Darthmax\RetroBundle\`) |
 | `config/services.yaml` | Autowiring für alles unter `src/` |
+| `contao/config/config.php` | Backend-Bereich |
 | `contao/dca/`, `contao/languages/de/` | Paletten, Felder, Bezeichnungen |
 | `contao/templates/` | Twig-Templates (`content_element/<typ>.html.twig` …) |
 | `contao/templates/.twig-root` | **Pflicht** – ohne die Datei sucht Contao `ce_<typ>` statt `content_element/<typ>` |
@@ -44,13 +45,32 @@ Zwei Inhaltselemente (Herkunft `darthmax78/contao-inventar` v1.4.2, Typen und Fe
 CSS `public/css/abschnitte.css`, Skript `public/js/sprungleiste.js` (erkennt den fixierten Kopf selbst).
 Normale Überschriften im Text zählen nicht als Sprungziel.
 
+## Geräte-Datenbank
+
+Backend-Bereich **Retro-Datenbank** (seit rg-09): Konsolen, Handhelds, Homecomputer und PDAs mit festen
+Spalten statt frei definierbarer Merkmale. Die Palette richtet sich nach dem Typ.
+
+| Tabelle | Inhalt |
+|---|---|
+| `tl_retro_geraet` | Gerät mit allen Spezifikationen, Prüfstatus, Artikel-Link |
+| `tl_retro_geraet_firma` | Firmen je Gerät mit Rolle (Hersteller, Entwicklung, Vertrieb) |
+| `tl_retro_geraet_komponente` | Chips je Gerät mit Rolle und Takt |
+| `tl_retro_release` | Marktstarts und Preisänderungen je Region, Preis in Originalwährung |
+| `tl_retro_quelle` | Quellen je Gerät, optional je Steckbrief-Gruppe |
+| `tl_retro_firma`, `tl_retro_komponente` | Kataloge |
+
+Revisionen sind eigene Geräte und verweisen über `basis` auf das Basismodell (eine Ebene).
+Leere Felder erben von dort, `0` ist ein echter Wert. Zahl und Anzeigetext sind getrennt: Die Zahl dient
+Vergleichen, der Text überschreibt die Anzeige. Speicher steht in KB (1 KB = 1024 Byte), Datumsangaben als
+Jahr, Monat und Tag, damit unbekannte Teile leer bleiben können.
+
 ## Installation
 
 Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.4
+composer require darthmax78/contao-retro:^0.5
 vendor/bin/contao-console cache:clear
 ```
 
