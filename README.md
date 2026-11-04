@@ -57,12 +57,15 @@ Spalten statt frei definierbarer Merkmale. Die Palette richtet sich nach dem Typ
 | `tl_retro_geraet_komponente` | Chips je Gerät mit Rolle und Takt |
 | `tl_retro_release` | Marktstarts und Preisänderungen je Region, Preis in Originalwährung |
 | `tl_retro_quelle` | Quellen je Gerät, optional je Steckbrief-Gruppe |
-| `tl_retro_firma`, `tl_retro_komponente` | Kataloge |
+| `tl_retro_firma`, `tl_retro_komponente`, `tl_retro_zubehoer` | Kataloge |
 
 Revisionen sind eigene Geräte und verweisen über `basis` auf das Basismodell (eine Ebene).
 Leere Felder erben von dort, `0` ist ein echter Wert. Zahl und Anzeigetext sind getrennt: Die Zahl dient
 Vergleichen, der Text überschreibt die Anzeige. Speicher steht in KB (1 KB = 1024 Byte), Datumsangaben als
 Jahr, Monat und Tag, damit unbekannte Teile leer bleiben können.
+
+Original-Zubehör steht im Katalog `tl_retro_zubehoer` (seit rg-12) und wird direkt am Teil mehreren Geräten zugeordnet,
+es wird nicht vererbt. Das Inhaltselement **Zubehör** (`retro_zubehoer`) gibt die Tabelle zu einem Gerät aus.
 
 Das Inhaltselement **Steckbrief** (`retro_steckbrief`, seit rg-10) gibt ein Gerät in der Optik von
 `retro-table steckbrief` aus. `SteckbriefBauer` ist reine Logik ohne Datenbank, `GeraetLader` holt die Daten.
@@ -77,7 +80,7 @@ Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.7
+composer require darthmax78/contao-retro:^0.8
 vendor/bin/contao-console cache:clear
 ```
 

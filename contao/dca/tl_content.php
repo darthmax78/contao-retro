@@ -67,3 +67,12 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['retro_geraet'] = [
     'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
 ];
+
+// Zubehör-Tabelle aus der Geräte-Datenbank (rg-12)
+$GLOBALS['TL_DCA']['tl_content']['palettes']['retro_zubehoer'] =
+    '{type_legend},type,headline;'
+    .'{geraet_legend},retro_geraet;'
+    .'{template_legend:hide},customTpl;'
+    .'{protected_legend:hide},protected;'
+    .'{expert_legend:hide},guests,cssID;'
+    .'{invisible_legend:hide},invisible,start,stop';

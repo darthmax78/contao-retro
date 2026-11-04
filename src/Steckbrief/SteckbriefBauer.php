@@ -36,6 +36,11 @@ class SteckbriefBauer
 
     private const TYPEN = ['konsole' => 'Konsole', 'handheld' => 'Handheld', 'homecomputer' => 'Homecomputer', 'pda' => 'PDA'];
 
+    private const ZUBEHOER = [
+        'netzteil' => 'Netzteil', 'kabel' => 'Kabel', 'adapter' => 'Adapter', 'controller' => 'Controller',
+        'speicher' => 'Speicher', 'tasche' => 'Tasche', 'schutz' => 'Schutz', 'sonstiges' => 'Sonstiges',
+    ];
+
     private const ROLLEN = [
         'cpu' => 'CPU', 'zusatz_cpu' => 'Zusatzprozessor', 'coprozessor' => 'Grafik-Coprozessor',
         'grafik' => 'Grafik', 'sound' => 'Sound', 'soc' => 'SoC',
@@ -198,6 +203,42 @@ class SteckbriefBauer
         }
 
         return [\array_slice($gruppen, 0, $schnitt), \array_slice($gruppen, $schnitt)];
+    }
+
+    /**
+     * Zeilen der Zubehör-Tabelle, nach Art und Name sortiert.
+     *
+     * @param list<array<string, mixed>> $teile
+     *
+     * @return list<array{name: string, modell: string, art: string, daten: list<string>}>
+     */
+    public function zubehoer(array $teile): array
+    {
+        $reihenfolge = array_flip(array_keys(self::ZUBEHOER));
+
+        usort($teile, static fn (array $a, array $b): int => [$reihenfolge[$a['art']] ?? 99, $a['name']] <=> [$reihenfolge[$b['art']] ?? 99, $b['name']]);
+
+        return array_map(function (array $t): array {
+            $von = (int) ($t['marktstart_jahr'] ?? 0);
+            $bis = (int) ($t['produktionsende_jahr'] ?? 0);
+            $zeitraum = match (true) {
+                $von > 0 && $bis > 0 => $von.'–'.$bis,
+                $von > 0 => 'ab '.$von,
+                $bis > 0 => 'bis '.$bis,
+                default => '',
+            };
+
+            return [
+                'name' => (string) $t['name'],
+                'modell' => $this->text($t['modellnummer'] ?? ''),
+                'art' => self::ZUBEHOER[$t['art']] ?? (string) $t['art'],
+                'daten' => array_values(array_filter([
+                    $this->text($t['daten_text'] ?? ''),
+                    $zeitraum,
+                    ...explode("\n", $this->text($t['beschreibung'] ?? '')),
+                ], static fn (string $zeile): bool => '' !== trim($zeile))),
+            ];
+        }, $teile);
     }
 
     /**

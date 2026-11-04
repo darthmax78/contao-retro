@@ -48,6 +48,22 @@ class GeraetLader
     }
 
     /**
+     * Die Geräte stehen serialisiert am Zubehör, daher die Auswahl in PHP.
+     *
+     * @return list<array<string, mixed>>
+     */
+    public function zubehoer(int $geraetId): array
+    {
+        $teile = $this->db->fetchAllAssociative('SELECT * FROM tl_retro_zubehoer WHERE published = 1 ORDER BY name');
+
+        return array_values(array_filter($teile, static function (array $teil) use ($geraetId): bool {
+            $geraete = @unserialize((string) $teil['geraete'], ['allowed_classes' => false]);
+
+            return \is_array($geraete) && \in_array($geraetId, array_map('intval', $geraete), true);
+        }));
+    }
+
+    /**
      * @return array<int, string> ID => Name, nur für die Auswahl im Backend
      */
     public function auswahl(): array

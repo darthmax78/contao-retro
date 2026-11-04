@@ -1,0 +1,31 @@
+{% extends "@Contao/content_element/_base.html.twig" %}
+
+{# Die Überschrift steht in der Titelzeile, siehe retro_steckbrief.
+   Daten: Zeilen nicht mit |nl2br trennen, das maskiert gespeicherte Entities doppelt. #}
+{% block inner %}
+  {{ block('content') }}
+{% endblock %}
+
+{% block content %}
+  <div class="steckbrief-kopf">
+    <p class="steckbrief-kicker">Zubehör</p>
+    <{{ zubehoer_tag }} class="steckbrief-titel">{{ zubehoer_titel }}</{{ zubehoer_tag }}>
+  </div>
+  <div class="retro-table">
+    <table>
+      <thead>
+        <tr><th scope="col">Name</th><th scope="col">Modell</th><th scope="col">Art</th><th scope="col">Daten</th></tr>
+      </thead>
+      <tbody>
+        {% for teil in zubehoer_teile %}
+          <tr>
+            <th scope="row">{{ teil.name }}</th>
+            <td>{{ teil.modell }}</td>
+            <td>{{ teil.art }}</td>
+            <td>{% for zeile in teil.daten %}{{ zeile }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

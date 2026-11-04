@@ -13,4 +13,5 @@ $GLOBALS['BE_MOD']['retro'] = [
     ],
     'retro_firmen' => ['tables' => ['tl_retro_firma']],
     'retro_komponenten' => ['tables' => ['tl_retro_komponente']],
+    'retro_zubehoer' => ['tables' => ['tl_retro_zubehoer']],
 ];
