@@ -30,9 +30,11 @@ class SteckbriefBauer
 
     /** Felder, die immer nur für das Gerät selbst gelten */
     private const NICHT_GEERBT = [
-        'id', 'tstamp', 'name', 'alias', 'typ', 'basis', 'modellnummer', 'neu_gegenueber_basis',
+        'id', 'tstamp', 'name', 'alias', 'typ', 'basis', 'modelle', 'neu_gegenueber_basis',
         'produktionsende_jahr', 'produktionsende_monat', 'artikel', 'pruefstatus', 'geprueft_am', 'pruefnotiz', 'published',
     ];
+
+    private const TYPEN = ['konsole' => 'Konsole', 'handheld' => 'Handheld', 'homecomputer' => 'Homecomputer', 'pda' => 'PDA'];
 
     private const ROLLEN = [
         'cpu' => 'CPU', 'zusatz_cpu' => 'Zusatzprozessor', 'coprozessor' => 'Grafik-Coprozessor',
@@ -74,6 +76,7 @@ class SteckbriefBauer
                 'Erscheinungsjahr' => $this->erscheinungsjahr($daten['releases']),
                 'Preis' => $this->preis($daten['releases']),
             ],
+            'Modelle' => $this->modellZeilen($daten['geraet']['modelle'] ?? null),
             'Technik' => [
                 ...$this->komponenten($daten['komponenten']),
                 'RAM' => $this->speicher($g, 'ram'),
@@ -133,6 +136,68 @@ class SteckbriefBauer
         }
 
         return $ergebnis;
+    }
+
+    /**
+     * Titelzeile über der Tabelle.
+     *
+     * @param array{geraet: array<string, mixed>, firmen: list<array<string, mixed>>, releases: list<array<string, mixed>>} $daten
+     *
+     * @return array{kicker: string, titel: string, nummern: list<string>}
+     */
+    public function kopf(array $daten): array
+    {
+        $name = (string) $daten['geraet']['name'];
+        $firmen = array_filter($daten['firmen'], static fn (array $f): bool => 'hersteller' === $f['rolle']);
+        $hersteller = (string) (reset($firmen)['name'] ?? '');
+
+        // Heißt ein Gerät schon „Atari Lynx“, soll der Hersteller nicht doppelt erscheinen.
+        $titel = '' === $hersteller || str_starts_with($name, $hersteller) ? $name : $hersteller.' '.$name;
+
+        return [
+            'kicker' => implode(' · ', array_filter([
+                self::TYPEN[$daten['geraet']['typ']] ?? '',
+                $this->erscheinungsjahr($daten['releases']),
+            ])),
+            'titel' => $titel,
+            'nummern' => array_values(array_filter(array_map(
+                static fn (array $m): string => trim((string) ($m['nummer'] ?? '')),
+                $this->liste($daten['geraet']['modelle'] ?? null),
+            ))),
+        ];
+    }
+
+    /**
+     * Verteilt die Gruppen auf zwei Spalten, ohne eine Gruppe zu trennen und ohne die
+     * Reihenfolge zu ändern. Jede Gruppe zählt mit ihren Zeilen plus Gruppenzeile.
+     *
+     * @param list<array{titel: string, zeilen: list<array{label: string, wert: string}>}> $gruppen
+     *
+     * @return list<list<array{titel: string, zeilen: list<array{label: string, wert: string}>}>>
+     */
+    public function spalten(array $gruppen): array
+    {
+        if (\count($gruppen) < 2) {
+            return [$gruppen];
+        }
+
+        $gewichte = array_map(static fn (array $g): int => \count($g['zeilen']) + 1, $gruppen);
+        $gesamt = array_sum($gewichte);
+        $links = 0;
+        $schnitt = 1;
+        $bester = PHP_INT_MAX;
+
+        for ($i = 0; $i < \count($gruppen) - 1; ++$i) {
+            $links += $gewichte[$i];
+            $abstand = abs($gesamt - 2 * $links);
+
+            if ($abstand < $bester) {
+                $bester = $abstand;
+                $schnitt = $i + 1;
+            }
+        }
+
+        return [\array_slice($gruppen, 0, $schnitt), \array_slice($gruppen, $schnitt)];
     }
 
     /**
@@ -373,6 +438,30 @@ class SteckbriefBauer
             if ('' !== $label && '' !== $text) {
                 $zeilen[$label] = $text;
             }
+        }
+
+        return $zeilen;
+    }
+
+    /**
+     * Nummern ohne Variante und Region stehen nur in der Titelzeile.
+     *
+     * @return array<string, string>
+     */
+    private function modellZeilen(mixed $wert): array
+    {
+        $zeilen = [];
+
+        foreach ($this->liste($wert) as $modell) {
+            $nummer = trim((string) ($modell['nummer'] ?? ''));
+            $variante = trim((string) ($modell['variante'] ?? ''));
+            $region = trim((string) ($modell['region'] ?? ''));
+
+            if ('' === $nummer || ('' === $variante && '' === $region)) {
+                continue;
+            }
+
+            $zeilen[$nummer] = '' === $variante ? $region : ('' === $region ? $variante : $variante.' ('.$region.')');
         }
 
         return $zeilen;

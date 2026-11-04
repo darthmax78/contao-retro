@@ -27,7 +27,7 @@ $text = static fn (int $length = 255): array => ['type' => 'string', 'length' =>
 $anzeige = ['maxlength' => 255, 'tl_class' => 'w50'];
 $lang = ['type' => 'text', 'length' => AbstractMySQLPlatform::LENGTH_LIMIT_TEXT, 'notnull' => false];
 
-$kopf = '{titel_legend},name,alias,typ,generation,basis,modellnummer,bits;';
+$kopf = '{titel_legend},name,alias,typ,generation,basis,bits,modelle;';
 $speicher = '{speicher_legend},ram_kb,ram_text,vram_kb,vram_text,rom_kb,rom_text;';
 $bildTv = '{bild_legend},display_text,aufloesung_x,aufloesung_y,bildrate_hz,aufloesung_text,farben_anzeige,farben_palette,farben_text,sprites_text;';
 $bildGeraet = '{bild_legend},display_text,display_zoll,aufloesung_x,aufloesung_y,bildrate_hz,aufloesung_text,farben_anzeige,farben_palette,farben_text,sprites_text;';
@@ -138,7 +138,17 @@ $GLOBALS['TL_DCA']['tl_retro_geraet'] = [
             'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'belongsTo', 'load' => 'lazy'],
         ],
-        'modellnummer' => ['inputType' => 'text', 'search' => true, 'eval' => ['maxlength' => 64, 'tl_class' => 'w25'], 'sql' => $text(64)],
+        'modelle' => [
+            'inputType' => 'rowWizard',
+            'search' => true,
+            'fields' => [
+                'nummer' => ['label' => &$GLOBALS['TL_LANG']['tl_retro_geraet']['modelle_nummer'], 'inputType' => 'text'],
+                'variante' => ['label' => &$GLOBALS['TL_LANG']['tl_retro_geraet']['modelle_variante'], 'inputType' => 'text'],
+                'region' => ['label' => &$GLOBALS['TL_LANG']['tl_retro_geraet']['modelle_region'], 'inputType' => 'text'],
+            ],
+            'eval' => ['tl_class' => 'clr'],
+            'sql' => $lang,
+        ],
         'bits' => ['inputType' => 'text', 'filter' => true, 'eval' => $ganz('w25'), 'sql' => ['type' => 'smallint', 'unsigned' => true, 'notnull' => false]],
 
         // Speicher

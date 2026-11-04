@@ -1,22 +1,38 @@
 {% extends "@Contao/content_element/_base.html.twig" %}
 
-{# Eine leere Wertzelle macht die Zeile zur Gruppenzeile (retro-table.css),
+{# Die Überschrift steht in der Titelzeile, daher kein Block "inner" des Basis-Templates.
+   Eine leere Wertzelle macht die Zeile zur Gruppenzeile (retro-table.css),
    deshalb darf zwischen <td> und </td> kein Leerzeichen stehen.
    Kein |nl2br: Es maskiert vorab und zeigt gespeicherte Entities (&quot;) dann wörtlich. #}
+{% block inner %}
+  {{ block('content') }}
+{% endblock %}
+
 {% block content %}
   {% if steckbrief_entwurf %}
     <p class="steckbrief-entwurf">Entwurf: Dieses Gerät ist noch nicht veröffentlicht.</p>
   {% endif %}
-  <div class="retro-table steckbrief">
-    <table>
-      <tbody>
-        {% for gruppe in steckbrief_gruppen %}
-          <tr><th scope="rowgroup">{{ gruppe.titel }}</th><td></td></tr>
-          {% for zeile in gruppe.zeilen %}
-            <tr><th scope="row">{{ zeile.label }}</th><td>{% for teil in zeile.wert|split("\n") %}{{ teil }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td></tr>
-          {% endfor %}
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="steckbrief-kopf">
+    {% if steckbrief_kicker %}<p class="steckbrief-kicker">{{ steckbrief_kicker }}</p>{% endif %}
+    <{{ steckbrief_tag }} class="steckbrief-titel">{{ steckbrief_titel }}</{{ steckbrief_tag }}>
+    {% if steckbrief_nummern %}<p class="steckbrief-nummern">{{ steckbrief_nummern|join(' · ') }}</p>{% endif %}
+  </div>
+  <div class="steckbrief-spalten">
+    <div class="steckbrief-raster">
+      {% for spalte in steckbrief_spalten %}
+        <div class="retro-table steckbrief">
+          <table>
+            <tbody>
+              {% for gruppe in spalte %}
+                <tr><th scope="row">{{ gruppe.titel }}</th><td></td></tr>
+                {% for zeile in gruppe.zeilen %}
+                  <tr><th scope="row">{{ zeile.label }}</th><td>{% for teil in zeile.wert|split("\n") %}{{ teil }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td></tr>
+                {% endfor %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% endfor %}
+    </div>
   </div>
 {% endblock %}

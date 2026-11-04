@@ -21,7 +21,10 @@ $l['alias'] = ['Alias', 'Eindeutige Kennung, bleibt leer für automatische Erzeu
 $l['typ'] = ['Typ', 'Bestimmt, welche Felder angezeigt werden.'];
 $l['generation'] = ['Generation', 'Konsolengeneration als Zahl, sonst leer.'];
 $l['basis'] = ['Basismodell', 'Nur bei Revisionen. Leere Felder erben dann vom Basismodell.'];
-$l['modellnummer'] = ['Modellnummer', 'Offizielle Kennung, z. B. DMG-001.'];
+$l['modelle'] = ['Modelle', 'Eine Zeile je Modellnummer. Mit Variante oder Region erscheint sie auch im Steckbrief. Wird nicht vom Basismodell geerbt.'];
+$l['modelle_nummer'] = 'Nummer';
+$l['modelle_variante'] = 'Variante';
+$l['modelle_region'] = 'Region';
 $l['bits'] = ['Bit', 'Einordnung als Zahl, z. B. 8, 16 oder 32.'];
 
 $l['ram_kb'] = ['RAM (KB)', 'Zahl für Vergleiche. 1 KB = 1024 Byte, 128 Byte = 0,125.'];

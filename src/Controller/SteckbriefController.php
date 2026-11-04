@@ -9,6 +9,7 @@ use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\CoreBundle\Twig\FragmentTemplate;
+use Contao\StringUtil;
 use Darthmax\RetroBundle\Steckbrief\GeraetLader;
 use Darthmax\RetroBundle\Steckbrief\SteckbriefBauer;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,7 +62,17 @@ class SteckbriefController extends AbstractContentElementController
 
         $this->tagResponse($tags);
 
-        $template->set('steckbrief_gruppen', $this->bauer->baue($daten));
+        // Eine im Element eingetragene Überschrift ersetzt den automatischen Titel.
+        $headline = StringUtil::deserialize($model->headline, true);
+        $eigenerTitel = trim((string) ($headline['value'] ?? ''));
+        $tag = (string) ($headline['unit'] ?? '');
+        $kopf = $this->bauer->kopf($daten);
+
+        $template->set('steckbrief_kicker', $kopf['kicker']);
+        $template->set('steckbrief_titel', '' !== $eigenerTitel ? $eigenerTitel : $kopf['titel']);
+        $template->set('steckbrief_tag', \in_array($tag, ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'], true) ? $tag : 'h3');
+        $template->set('steckbrief_nummern', $kopf['nummern']);
+        $template->set('steckbrief_spalten', $this->bauer->spalten($this->bauer->baue($daten)));
         $template->set('steckbrief_entwurf', !$sichtbar);
 
         return $template->getResponse();

@@ -23,7 +23,7 @@ Gleichnamige Templates im `templates/`-Ordner der Website gewinnen gegen das Bun
 
 ## CSS der Bausteine
 
-Je Baustein eine Datei unter `public/css/` (`retro-table`, `last-edited`, `stub`, `banner-lcd`,
+Je Baustein eine Datei unter `public/css/` (`retro-table`, `steckbrief`, `last-edited`, `stub`, `banner-lcd`,
 `anecdote`, `abschnitte`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
 des Layouts an (Oneo `main.css` → `custom.css` → Bundle). Farben kommen ausschließlich aus
 den `--rg-*`-Variablen, die die `custom.css` der Website im `:root` festlegt.
@@ -66,6 +66,8 @@ Jahr, Monat und Tag, damit unbekannte Teile leer bleiben können.
 
 Das Inhaltselement **Steckbrief** (`retro_steckbrief`, seit rg-10) gibt ein Gerät in der Optik von
 `retro-table steckbrief` aus. `SteckbriefBauer` ist reine Logik ohne Datenbank, `GeraetLader` holt die Daten.
+Über der Tabelle steht eine Titelzeile aus Typ, Jahr, Hersteller, Name und Modellnummern. Die Gruppen verteilen sich
+auf zwei Spalten, sobald das Element breit genug ist (Container-Abfrage in `public/css/steckbrief.css`).
 Marktstarts erbt ein Modell nie, Firmen und Komponenten nur, wenn es selbst keine hat.
 Änderungen an Gerät, Basismodell, Firma oder Komponente machen die Cache-Tags der Seite ungültig.
 
@@ -75,7 +77,7 @@ Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.6
+composer require darthmax78/contao-retro:^0.7
 vendor/bin/contao-console cache:clear
 ```
 

@@ -1,0 +1,97 @@
+/* ==========================================================================
+   darthmax78/contao-retro – Steckbrief-Element (retro_steckbrief, rg-11)
+   Titelzeile im Stil des Abschnittstitels und Verteilung auf zwei Spalten.
+   Die Tabellen selbst kommen aus retro-table.css (Variante steckbrief).
+   Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
+
+   Zwei Spalten richten sich nach der Breite des Elements, nicht des Fensters:
+   Neben einer Bildspalte bleibt der Steckbrief einspaltig.
+   ========================================================================== */
+
+.steckbrief-kopf {
+  margin: 0 0 1rem;
+}
+
+.steckbrief-kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0 0 0.4rem;
+  font-family: 'VT323', monospace;
+  font-size: 1.35rem;            /* VT323 wirkt klein */
+  font-weight: normal;           /* kein Bold-Schnitt, sonst Faux-Bold */
+  line-height: 1.1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-gruen);
+  text-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.45);
+}
+
+.steckbrief-kicker::before {
+  content: ">";
+  flex: none;
+}
+
+.steckbrief-kicker::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 2rem;
+  height: 2px;
+  background: linear-gradient(to right, var(--rg-lcd-3), transparent);
+}
+
+.steckbrief-kopf .steckbrief-titel {
+  margin: 0;
+  font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.2rem);
+  line-height: 1.2;
+  color: var(--rg-tinte);
+}
+
+.steckbrief-nummern {
+  margin: 0.35rem 0 0;
+  font-family: 'VT323', monospace;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: var(--rg-tinte-leise);
+}
+
+.steckbrief-entwurf {
+  margin: 0 0 0.75rem;
+  color: var(--rg-amber);
+}
+
+.steckbrief-spalten {
+  container-type: inline-size;
+}
+
+.steckbrief-raster {
+  display: grid;
+  gap: 0;
+  align-items: start;
+}
+
+/* Abstand macht das Raster, die Tabelle bringt sonst 1,5rem mit */
+.steckbrief-raster :is(table.retro-table, .retro-table table) {
+  margin: 0;
+}
+
+/* Einspaltig: Die zweite Tabelle schließt ohne doppelte Linie an */
+.steckbrief-raster > .steckbrief + .steckbrief table {
+  border-top: 0;
+}
+
+@container (min-width: 760px) {
+  .steckbrief-raster {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .steckbrief-raster > .steckbrief + .steckbrief table {
+    border-top: 1px solid var(--rg-lcd-3);
+  }
+
+  .steckbrief-raster :is(table.steckbrief, .steckbrief table) tbody tr > th:first-child {
+    width: 38%;
+  }
+}
