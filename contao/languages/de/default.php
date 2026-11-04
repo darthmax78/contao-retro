@@ -19,3 +19,8 @@ $GLOBALS['TL_LANG']['CTE']['sa_sprungleiste'] = [
     'Sprungleiste',
     'Sprunglinks zu allen Abschnittstiteln dieser Seite bzw. dieses Beitrags (Beschriftung = Überzeile). Bleibt beim Scrollen unter dem Header stehen.',
 ];
+
+$GLOBALS['TL_LANG']['CTE']['retro_steckbrief'] = [
+    'Steckbrief',
+    'Technische Daten eines Geräts aus der Geräte-Datenbank.',
+];

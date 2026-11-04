@@ -64,13 +64,18 @@ Leere Felder erben von dort, `0` ist ein echter Wert. Zahl und Anzeigetext sind 
 Vergleichen, der Text überschreibt die Anzeige. Speicher steht in KB (1 KB = 1024 Byte), Datumsangaben als
 Jahr, Monat und Tag, damit unbekannte Teile leer bleiben können.
 
+Das Inhaltselement **Steckbrief** (`retro_steckbrief`, seit rg-10) gibt ein Gerät in der Optik von
+`retro-table steckbrief` aus. `SteckbriefBauer` ist reine Logik ohne Datenbank, `GeraetLader` holt die Daten.
+Marktstarts erbt ein Modell nie, Firmen und Komponenten nur, wenn es selbst keine hat.
+Änderungen an Gerät, Basismodell, Firma oder Komponente machen die Cache-Tags der Seite ungültig.
+
 ## Installation
 
 Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.5
+composer require darthmax78/contao-retro:^0.6
 vendor/bin/contao-console cache:clear
 ```
 

@@ -50,3 +50,20 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['sa_lead'] = [
     'eval' => ['tl_class' => 'clr'],
     'sql' => 'text NULL',
 ];
+
+// Steckbrief aus der Geräte-Datenbank (rg-10)
+$GLOBALS['TL_DCA']['tl_content']['palettes']['retro_steckbrief'] =
+    '{type_legend},type,headline;'
+    .'{geraet_legend},retro_geraet;'
+    .'{template_legend:hide},customTpl;'
+    .'{protected_legend:hide},protected;'
+    .'{expert_legend:hide},guests,cssID;'
+    .'{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['retro_geraet'] = [
+    'inputType' => 'select',
+    'foreignKey' => 'tl_retro_geraet.name',
+    'eval' => ['mandatory' => true, 'chosen' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
+    'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
+    'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+];
