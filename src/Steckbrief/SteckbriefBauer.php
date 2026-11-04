@@ -31,7 +31,7 @@ class SteckbriefBauer
     /** Felder, die immer nur für das Gerät selbst gelten */
     private const NICHT_GEERBT = [
         'id', 'tstamp', 'name', 'alias', 'typ', 'basis', 'modellnummer', 'neu_gegenueber_basis',
-        'artikel', 'pruefstatus', 'geprueft_am', 'pruefnotiz', 'published',
+        'produktionsende_jahr', 'produktionsende_monat', 'artikel', 'pruefstatus', 'geprueft_am', 'pruefnotiz', 'published',
     ];
 
     private const ROLLEN = [
@@ -42,6 +42,11 @@ class SteckbriefBauer
     private const MEDIEN = [
         'modul' => 'Modul', 'karte' => 'Speicherkarte', 'kassette' => 'Kassette', 'diskette' => 'Diskette',
         'cd' => 'CD', 'dvd' => 'DVD', 'umd' => 'UMD', 'bluray' => 'Blu-ray', 'festspeicher' => 'Festspeicher',
+    ];
+
+    private const MONATE = [
+        1 => 'Jänner', 2 => 'Februar', 3 => 'März', 4 => 'April', 5 => 'Mai', 6 => 'Juni',
+        7 => 'Juli', 8 => 'August', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Dezember',
     ];
 
     private const WAEHRUNGEN = [
@@ -72,7 +77,7 @@ class SteckbriefBauer
             'Technik' => [
                 ...$this->komponenten($daten['komponenten']),
                 'RAM' => $this->speicher($g, 'ram'),
-                'Video RAM' => $this->speicher($g, 'vram'),
+                'Video-RAM' => $this->speicher($g, 'vram'),
                 'ROM' => $this->speicher($g, 'rom'),
                 'Audio' => $this->audio($g),
             ],
@@ -101,11 +106,11 @@ class SteckbriefBauer
             ],
             'Markt' => [
                 'Verkaufte Einheiten' => $this->verkauft($g),
-                'Produktionsende' => $this->leerOder($g['produktionsende_jahr'] ?? null, 'strval'),
+                'Produktionsende' => $this->produktionsende($g),
             ],
             'Besonderheiten' => [
                 ...$this->weitere($g['weitere'] ?? null),
-                'Besonderheiten' => $this->text($g['besonderheiten'] ?? ''),
+                'Merkmale' => $this->text($g['besonderheiten'] ?? ''),
                 'Neu gegenüber '.($daten['basis']['name'] ?? 'dem Basismodell') => $this->text($g['neu_gegenueber_basis'] ?? ''),
             ],
         ];
@@ -341,6 +346,17 @@ class SteckbriefBauer
             $g['verkauft_stueck'] ?? null,
             fn ($s): string => (float) $s >= 1000000 ? $this->zahl((float) $s / 1000000).' Mio.' : $this->zahl($s),
         );
+    }
+
+    /**
+     * @param array<string, mixed> $g
+     */
+    private function produktionsende(array $g): string
+    {
+        $jahr = (int) ($g['produktionsende_jahr'] ?? 0);
+        $monat = self::MONATE[(int) ($g['produktionsende_monat'] ?? 0)] ?? '';
+
+        return $jahr > 0 ? trim($monat.' '.$jahr) : '';
     }
 
     /**

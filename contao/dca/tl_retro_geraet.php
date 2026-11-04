@@ -35,7 +35,7 @@ $rest = '{audio_legend},audio_kanaele,audio_text;'
     .'{medien_legend},medium,medium_max_kb,medium_text;'
     .'{anschluss_legend},mehrspieler_text,kopfhoerer_text,anschluesse_text;';
 $gehaeuse = '{gehaeuse_legend},breite_mm,hoehe_mm,tiefe_mm,abmessungen_text,gewicht_g,gewicht_text,strom_text,laufzeit_std,laufzeit_text;';
-$fuss = '{markt_legend},verkauft_stueck,verkauft_text,produktionsende_jahr;'
+$fuss = '{markt_legend},verkauft_stueck,verkauft_text,produktionsende_jahr,produktionsende_monat;'
     .'{extras_legend},besonderheiten,neu_gegenueber_basis,weitere;'
     .'{artikel_legend},artikel;'
     .'{pruefung_legend},pruefstatus,geprueft_am,pruefnotiz;'
@@ -200,7 +200,8 @@ $GLOBALS['TL_DCA']['tl_retro_geraet'] = [
         // Markt
         'verkauft_stueck' => ['inputType' => 'text', 'sorting' => true, 'eval' => $ganz('w25 clr'), 'sql' => ['type' => 'bigint', 'unsigned' => true, 'notnull' => false]],
         'verkauft_text' => ['inputType' => 'text', 'eval' => ['maxlength' => 255, 'tl_class' => 'w50'], 'sql' => $text()],
-        'produktionsende_jahr' => ['inputType' => 'text', 'eval' => $ganz('w25'), 'sql' => ['type' => 'smallint', 'unsigned' => true, 'notnull' => false]],
+        'produktionsende_jahr' => ['inputType' => 'text', 'eval' => $ganz('w25 clr'), 'sql' => ['type' => 'smallint', 'unsigned' => true, 'notnull' => false]],
+        'produktionsende_monat' => ['inputType' => 'text', 'eval' => ['rgxp' => 'natural', 'minval' => 1, 'maxval' => 12, 'nospace' => true, 'tl_class' => 'w25'], 'sql' => ['type' => 'smallint', 'unsigned' => true, 'notnull' => false]],
 
         // Besonderheiten
         'besonderheiten' => ['inputType' => 'textarea', 'search' => true, 'eval' => ['tl_class' => 'clr'], 'sql' => $lang],

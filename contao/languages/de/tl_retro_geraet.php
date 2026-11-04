@@ -47,7 +47,7 @@ $l['audio_text'] = ['Audio (Anzeige)', 'z. B. „4 Kanäle, 8-Bit-DAC pro Kanal�
 
 $l['medium'] = ['Medien', 'Alle unterstützten Datenträger.'];
 $l['medium_max_kb'] = ['Maximale Größe (KB)', 'Größte Modul- oder Datenträgerkapazität.'];
-$l['medium_text'] = ['Medium (Anzeige)', 'z. B. „Game Pak, bis 1 MB (unlizenziert bis 2 MB)“.'];
+$l['medium_text'] = ['Medium (Anzeige)', 'Überschreibt die Anzeige, z. B. für Einschränkungen oder Speicherformate.'];
 
 $l['mehrspieler_text'] = ['Mehrspieler', 'z. B. „ComLynx-Kabel“.'];
 $l['kopfhoerer_text'] = ['Kopfhörer', 'z. B. „3,5-mm-Klinke, Stereo“.'];
@@ -67,8 +67,9 @@ $l['laufzeit_std'] = ['Laufzeit (Stunden)', 'Bei Spannen der Höchstwert.'];
 $l['laufzeit_text'] = ['Laufzeit (Anzeige)', 'z. B. „4–5 Stunden“.'];
 
 $l['verkauft_stueck'] = ['Verkaufte Einheiten', 'Zahl zum Sortieren. Gilt eine Zahl für mehrere Modelle, gehört sie zum Basismodell.'];
-$l['verkauft_text'] = ['Verkauft (Anzeige)', 'z. B. „ca. 118 Mio. (inkl. Game Boy Color)“.'];
-$l['produktionsende_jahr'] = ['Produktionsende', 'Jahr.'];
+$l['verkauft_text'] = ['Verkauft (Anzeige)', 'Überschreibt die Anzeige, etwa wenn eine Zahl mehrere Modelle umfasst.'];
+$l['produktionsende_jahr'] = ['Produktionsende (Jahr)', 'Gilt nur für dieses Gerät, wird nicht vom Basismodell geerbt.'];
+$l['produktionsende_monat'] = ['Produktionsende (Monat)', 'Leer lassen, wenn unbekannt.'];
 
 $l['besonderheiten'] = ['Besonderheiten', 'Freier Text.'];
 $l['neu_gegenueber_basis'] = ['Neu gegenüber dem Basismodell', 'Nur bei Revisionen.'];
