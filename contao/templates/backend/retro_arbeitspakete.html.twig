@@ -1,0 +1,89 @@
+{% set zustaende = {
+    'geprueft': 'Signatur gültig',
+    'abgelehnt': 'Abgelehnt',
+    'probelauf-laeuft': 'Probelauf läuft …',
+    'probelauf-ok': 'Probelauf in Ordnung',
+    'probelauf-fehler': 'Probelauf fehlgeschlagen',
+    'laeuft': 'Wird eingespielt …',
+    'eingespielt': 'Eingespielt',
+    'fehler': 'Fehler',
+    'zurueck-laeuft': 'Rückweg läuft …',
+    'zurueckgenommen': 'Zurückgenommen',
+} %}
+{% set knoepfe = {
+    'probelauf': {'text': 'Probelauf', 'frage': ''},
+    'einspielen': {'text': 'Einspielen', 'frage': 'Paket jetzt auf dem Live-System einspielen?'},
+    'zurueck': {'text': 'Rückweg', 'frage': 'Paket zurücknehmen?'},
+} %}
+
+<div class="tl_listing_container retro-arbeitspakete">
+    {{ meldungen|raw }}
+
+    {% if not zwei_faktor %}
+        <p class="tl_error">Dieses Modul ist nur mit aktiver Zwei-Faktor-Anmeldung nutzbar. Bitte zuerst im eigenen Konto einschalten.</p>
+    {% elseif not eingerichtet %}
+        <p class="tl_error">Der Dienst rg-einspieler ist auf diesem Server nicht eingerichtet oder hat noch nicht geantwortet.</p>
+    {% else %}
+        <form method="post" enctype="multipart/form-data" data-turbo="false" class="tl_form">
+            <input type="hidden" name="FORM_SUBMIT" value="retro_arbeitspaket_upload">
+            <input type="hidden" name="REQUEST_TOKEN" value="{{ request_token }}">
+            <div class="tl_tbox cf">
+                <div class="widget w50">
+                    <h3><label for="retro-paket">Paket (rg-NN.tar.gz)</label></h3>
+                    <input type="file" id="retro-paket" name="paket" accept=".gz" required>
+                </div>
+                <div class="widget w50">
+                    <h3><label for="retro-signatur">Signatur (rg-NN.tar.gz.minisig)</label></h3>
+                    <input type="file" id="retro-signatur" name="signatur" accept=".minisig" required>
+                </div>
+            </div>
+            <div class="tl_submit_container">
+                <button type="submit" class="tl_submit">Hochladen und prüfen</button>
+            </div>
+        </form>
+
+        {% if pakete is empty %}
+            <p class="tl_empty">Noch keine Arbeitspakete.</p>
+        {% endif %}
+
+        {% for paket in pakete %}
+            <div class="tl_tbox retro-arbeitspaket">
+                <h3>{{ paket.paket }}{% if paket.titel|default %} – {{ paket.titel }}{% endif %}</h3>
+                <p>
+                    <strong>{{ zustaende[paket.zustand]|default(paket.zustand) }}</strong>
+                    – {{ paket.meldung|default('') }} <span class="tl_gray">({{ paket.zeit|default('') }})</span>
+                </p>
+                {% if paket.beschreibung|default %}<p>{{ paket.beschreibung }}</p>{% endif %}
+
+                {% for knopf in paket.knoepfe %}
+                    <form method="post" data-turbo="false" style="display:inline-block;margin-right:6px"{% if knoepfe[knopf].frage %} onsubmit="return confirm('{{ knoepfe[knopf].frage|e('js') }}')"{% endif %}>
+                        <input type="hidden" name="FORM_SUBMIT" value="retro_arbeitspaket_aktion">
+                        <input type="hidden" name="REQUEST_TOKEN" value="{{ request_token }}">
+                        <input type="hidden" name="paket" value="{{ paket.paket }}">
+                        <input type="hidden" name="aktion" value="{{ knopf }}">
+                        <button type="submit" class="tl_submit">{{ knoepfe[knopf].text }}</button>
+                    </form>
+                {% endfor %}
+
+                {% if paket.protokoll %}
+                    <details{% if paket.laeuft or paket.zustand in ['probelauf-ok', 'probelauf-fehler', 'fehler', 'abgelehnt'] %} open{% endif %} style="margin-top:12px">
+                        <summary>Protokoll</summary>
+                        <pre style="max-height:420px;overflow:auto;white-space:pre-wrap;margin-top:6px">{{ paket.protokoll }}</pre>
+                    </details>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {% if laeuft %}
+            <p class="tl_info">Aktualisiert sich selbst. Während Composer und Cache laufen, kann das Backend kurz ausfallen; der Lauf geht weiter.</p>
+            <script>
+                // Erst neu laden, wenn das Backend wieder antwortet, sonst bliebe eine Fehlerseite stehen.
+                setInterval(() => {
+                    fetch(location.href, {credentials: 'same-origin', cache: 'no-store'})
+                        .then((antwort) => { if (antwort.ok) location.reload(); })
+                        .catch(() => {});
+                }, 4000);
+            </script>
+        {% endif %}
+    {% endif %}
+</div>

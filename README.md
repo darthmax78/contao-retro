@@ -91,3 +91,19 @@ Neue Datenbankfelder brauchen danach `contao:migrate`.
 Code nur hier im Repository ändern, nie in `vendor/`. Auf der Website danach
 `composer update darthmax78/contao-retro` und `cache:clear`.
 Jedes Arbeitspaket bekommt eine Nummer `rg-NN` im Commit-Text.
+
+## Arbeitspakete im Backend
+
+Das Modul **Retro-Datenbank › Arbeitspakete** (nur Administratoren mit Zwei-Faktor-Anmeldung) nimmt
+`rg-NN.tar.gz` samt `rg-NN.tar.gz.minisig` an. Die Website führt dabei nichts selbst aus: `Einspieler\Spool`
+legt die Dateien und einen Auftrag unter `downloads/_einspieler/` ab, ein getrennter Dienst auf dem Server
+prüft die Signatur und führt das Paket aus einer privaten Kopie aus. Der Dienst ist nicht Teil dieses
+Bundles; ohne ihn zeigt das Modul nur einen Hinweis.
+
+Ein Paket enthält unter `rg-NN/`:
+
+| Datei | Inhalt |
+|---|---|
+| `paket.ini` | `paket=rg-NN`, `titel=…`, `beschreibung=…` |
+| `paket.sh` | wird mit `probelauf`, `einspielen` oder `zurueck` aufgerufen und läuft ohne Rückfragen |
+| `erlaubt.txt` | Datenbankänderungen, die das Paket machen darf: je Zeile `sql <Regex>` oder `migration <Regex>` |

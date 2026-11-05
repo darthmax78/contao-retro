@@ -1,5 +1,7 @@
 <?php
 
+use Darthmax\RetroBundle\Backend\ArbeitspaketeModul;
+
 // Backend-Bereich „Geräte“ (rg-09). Bezeichnungen: contao/languages/de/modules.php
 $GLOBALS['BE_MOD']['retro'] = [
     'retro_geraete' => [
@@ -14,4 +16,6 @@ $GLOBALS['BE_MOD']['retro'] = [
     'retro_firmen' => ['tables' => ['tl_retro_firma']],
     'retro_komponenten' => ['tables' => ['tl_retro_komponente']],
     'retro_zubehoer' => ['tables' => ['tl_retro_zubehoer']],
+    // rg-15: nur Administratoren mit Zwei-Faktor-Anmeldung, prüft das Modul selbst
+    'retro_arbeitspakete' => ['callback' => ArbeitspaketeModul::class],
 ];
