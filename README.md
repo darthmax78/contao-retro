@@ -99,6 +99,11 @@ auf zwei Spalten, sobald das Element breit genug ist (Container-Abfrage in `publ
 Marktstarts erbt ein Modell nie, Firmen und Komponenten nur, wenn es selbst keine hat.
 Änderungen an Gerät, Basismodell, Firma oder Komponente machen die Cache-Tags der Seite ungültig.
 
+Das Inhaltselement **Unterschiede** (`retro_unterschiede`, seit rg-22) baut die Steckbriefe eines Geräts und seines
+Basismodells und zeigt nur die Zeilen mit abweichendem Wert (`SteckbriefBauer::unterschiede()`), neuer Wert in Amber.
+Modellliste und „Neu gegenüber …“ werden nicht verglichen; der Freitext erscheint als Notiz unter der Tabelle.
+Ohne Basismodell oder ohne Unterschiede bleibt das Element im Frontend leer.
+
 ## Installation
 
 Das Repository ist öffentlich, ein Token ist nicht nötig.

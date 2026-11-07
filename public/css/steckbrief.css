@@ -95,3 +95,83 @@
     width: 38%;
   }
 }
+
+/* ===========================================
+ * Unterschiede (retro_unterschiede, rg-22)
+ * Titel wie die Steckbrief-Überzeile, Tabelle im retro-table-Look:
+ * Merkmal | altes Gerät | neues Gerät (neuer Wert in Amber).
+ * Handy: Zeilen gestapelt, Gerätename als Vorspann aus data-label.
+ * ======================================== */
+.content-retro-unterschiede {
+  clear: both;
+  margin: 2rem 0;
+}
+
+.unterschiede-titel {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0 0 0.75rem;
+  font-family: 'VT323', monospace;
+  font-size: 1.35rem;
+  font-weight: normal;
+  line-height: 1.1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-gruen);
+  text-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.45);
+}
+
+.unterschiede-titel::before {
+  content: ">";
+  flex: none;
+}
+
+.unterschiede-titel::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 2rem;
+  height: 2px;
+  background: linear-gradient(to right, var(--rg-lcd-3), transparent);
+}
+
+.retro-table.unterschiede table {
+  margin: 0;
+}
+
+.retro-table.unterschiede tbody tr > th:first-child {
+  width: 26%;
+  color: var(--rg-tinte-leise);
+  font-weight: normal;
+}
+
+.retro-table.unterschiede td.unterschiede-alt {
+  width: 37%;
+}
+
+.retro-table.unterschiede td.unterschiede-neu {
+  color: var(--rg-amber);          /* 10,4:1 auf --rg-papier, 9,7:1 auf --rg-papier-alt */
+}
+
+.unterschiede-notiz {
+  margin: 0.75rem 0 0;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--rg-tinte-leise);
+}
+
+@media (max-width: 600px) {
+  .retro-table.unterschiede tbody tr > th:first-child,
+  .retro-table.unterschiede td.unterschiede-alt {
+    width: 100%;
+  }
+
+  .retro-table.unterschiede td[data-label]::before {
+    content: attr(data-label) ": ";
+    color: var(--rg-tinte-leise);
+  }
+}
+
+.unterschiede-notiz-vorspann {
+  color: var(--rg-gruen);
+}

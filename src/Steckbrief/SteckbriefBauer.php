@@ -206,6 +206,65 @@ class SteckbriefBauer
     }
 
     /**
+     * Unterschiede zwischen zwei fertig gebauten Steckbriefen (rg-22), z. B. Revision gegen Basismodell.
+     *
+     * Verglichen wird Zeile für Zeile über Gruppe + Bezeichnung, mit genau der Formatierung des
+     * Steckbriefs. Ausgegeben werden nur Zeilen mit unterschiedlichem Wert, in der Reihenfolge des
+     * neuen Geräts; Zeilen, die nur das alte Gerät hat, folgen am Ende ihrer Gruppe. Die Modellliste
+     * und der Freitext „Neu gegenüber …“ werden nicht verglichen.
+     *
+     * @param list<array{titel: string, zeilen: list<array{label: string, wert: string}>}> $neu
+     * @param list<array{titel: string, zeilen: list<array{label: string, wert: string}>}> $alt
+     *
+     * @return list<array{gruppe: string, label: string, alt: string, neu: string}>
+     */
+    public function unterschiede(array $neu, array $alt): array
+    {
+        $index = static function (array $gruppen): array {
+            $werte = [];
+
+            foreach ($gruppen as $gruppe) {
+                if ('Modelle' === $gruppe['titel']) {
+                    continue;
+                }
+
+                foreach ($gruppe['zeilen'] as $zeile) {
+                    if (str_starts_with($zeile['label'], 'Neu gegenüber')) {
+                        continue;
+                    }
+
+                    $werte[$gruppe['titel']][$zeile['label']] = $zeile['wert'];
+                }
+            }
+
+            return $werte;
+        };
+
+        $a = $index($alt);
+        $n = $index($neu);
+        $ergebnis = [];
+
+        foreach (array_unique([...array_keys($n), ...array_keys($a)]) as $gruppe) {
+            foreach (array_unique([...array_keys($n[$gruppe] ?? []), ...array_keys($a[$gruppe] ?? [])]) as $label) {
+                $wertAlt = $a[$gruppe][$label] ?? '';
+                $wertNeu = $n[$gruppe][$label] ?? '';
+
+                if ($this->vergleichbar($wertAlt) !== $this->vergleichbar($wertNeu)) {
+                    $ergebnis[] = ['gruppe' => (string) $gruppe, 'label' => (string) $label, 'alt' => $wertAlt, 'neu' => $wertNeu];
+                }
+            }
+        }
+
+        return $ergebnis;
+    }
+
+    /** Leerraum und Zeilenumbrüche zählen beim Vergleich nicht. */
+    private function vergleichbar(string $wert): string
+    {
+        return trim((string) preg_replace('/\s+/u', ' ', $wert));
+    }
+
+    /**
      * Zeilen der Zubehör-Tabelle, nach Art und Name sortiert.
      *
      * @param list<array<string, mixed>> $teile
