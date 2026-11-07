@@ -251,3 +251,40 @@ ol.sa-sprung-liste.sa-sprung-liste > li::before {
     padding: 0.15rem 0.6rem 0.2rem 0.4rem;
   }
 }
+
+/* ===========================================
+ * Elementüberschrift im Terminal-Look (rg-21)
+ * Gleiche Optik wie die Überzeile des Abschnittstitels: „> TEXT ─────“.
+ * Galerie-Elemente automatisch, alle anderen mit der Klasse „titel-prompt“.
+ * Kein Sprungziel – die Sprungleiste sammelt nur Abschnittstitel.
+ * ======================================== */
+div.content-gallery > :is(h1, h2, h3, h4, h5, h6):first-child,
+.titel-prompt > :is(h1, h2, h3, h4, h5, h6):first-child {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0 0 1rem;
+  font-family: 'VT323', monospace;
+  font-size: 1.35rem;
+  font-weight: normal;
+  line-height: 1.1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-gruen);
+  text-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.45);
+}
+
+div.content-gallery > :is(h1, h2, h3, h4, h5, h6):first-child::before,
+.titel-prompt > :is(h1, h2, h3, h4, h5, h6):first-child::before {
+  content: ">";
+  flex: none;
+}
+
+div.content-gallery > :is(h1, h2, h3, h4, h5, h6):first-child::after,
+.titel-prompt > :is(h1, h2, h3, h4, h5, h6):first-child::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 2rem;
+  height: 2px;
+  background: linear-gradient(to right, var(--rg-lcd-3), transparent);
+}

@@ -45,6 +45,9 @@ Zwei Inhaltselemente (Herkunft `darthmax78/contao-inventar` v1.4.2, Typen und Fe
 CSS `public/css/abschnitte.css`, Skript `public/js/sprungleiste.js` (erkennt den fixierten Kopf selbst).
 Normale Überschriften im Text zählen nicht als Sprungziel.
 
+Dieselbe Optik wie die Überzeile bekommen Elementüberschriften von Galerien automatisch und alle anderen Elemente
+mit der Klasse `titel-prompt` (seit rg-21, ebenfalls in `abschnitte.css`). Sie sind kein Sprungziel.
+
 ## Zitat
 
 Inhaltselement **Zitat** (`retro_zitat`, seit rg-17): Pixel-Anführungszeichen, Original (`zitat_text`, Sprache
