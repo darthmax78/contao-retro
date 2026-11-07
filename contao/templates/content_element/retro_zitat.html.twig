@@ -1,10 +1,13 @@
 {#
-  Zitat (rg-17): Anführungszeichen, Original, Übersetzung, Nachweis.
-  figure.rz-zitat > span.rz-marke + blockquote.rz-original + div.rz-uebersetzung + figcaption.rz-nachweis
+  Zitat (rg-17), Porträt (rg-18): Anführungszeichen, Original, Übersetzung, Nachweis.
+  figure.rz-zitat > span.rz-marke + blockquote.rz-original + div.rz-uebersetzung
+    + figcaption.rz-nachweis > span.rz-portraet (picture/img) + span.rz-nachweis-text
   Absätze kommen als Liste aus dem Controller (kein |nl2br: maskiert gespeicherte Entities doppelt).
+  Das Porträt nutzt nur den Bildteil der Contao-Bildkomponente, ohne eigenes figure/figcaption.
   CSS: public/css/zitat.css
 #}
 {% extends "@Contao/content_element/_base.html.twig" %}
+{% use '@Contao/component/_picture.html.twig' %}
 
 {% block content %}
     <figure class="rz-zitat">
@@ -21,14 +24,21 @@
                 {% endfor %}
             </div>
         {% endif %}
-        {% if name or zusatz or quelle_url %}
+        {% if portraet or name or zusatz or quelle_url %}
             <figcaption class="rz-nachweis">
-                {%- if name %}<span class="rz-name">{{ name }}</span>{% endif -%}
-                {%- if zusatz %} <span class="rz-zusatz">{{ zusatz }}</span>{% endif -%}
-                {%- if quelle_url -%}
-                    {%- if name or zusatz %} <span class="rz-trenner" aria-hidden="true">·</span> {% endif -%}
-                    <a class="rz-quelle" href="{{ quelle_url }}">{{ quelle_text }}</a>
-                {%- endif -%}
+                {% if portraet %}
+                    <span class="rz-portraet">{% with {figure: portraet} %}{{ block('picture_component') }}{% endwith %}</span>
+                {% endif %}
+                {% if name or zusatz or quelle_url %}
+                    <span class="rz-nachweis-text">
+                        {%- if name %}<span class="rz-name">{{ name }}</span>{% endif -%}
+                        {%- if zusatz %} <span class="rz-zusatz">{{ zusatz }}</span>{% endif -%}
+                        {%- if quelle_url -%}
+                            {%- if name or zusatz %} <span class="rz-trenner" aria-hidden="true">·</span> {% endif -%}
+                            <a class="rz-quelle" href="{{ quelle_url }}">{{ quelle_text }}</a>
+                        {%- endif -%}
+                    </span>
+                {% endif %}
             </figcaption>
         {% endif %}
     </figure>

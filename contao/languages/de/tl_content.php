@@ -43,6 +43,11 @@ $GLOBALS['TL_LANG']['tl_content']['zitat_quelle_text'] = [
     'Linktext der Quelle',
     'z. B. „Quelle [1]“. Leer = „Quelle“.',
 ];
+$GLOBALS['TL_LANG']['tl_content']['zitat_bild_legend'] = 'Porträt';
+$GLOBALS['TL_LANG']['tl_content']['zitat_bild'] = [
+    'Porträtfoto',
+    'Optional. Erscheint mit abgerundeten Ecken über dem Namen. Ohne Bildgröße wird es quadratisch zugeschnitten (144 × 144 px, angezeigt mit 72 px).',
+];
 $GLOBALS['TL_LANG']['tl_content']['zitat_quelle_url'] = [
     'Link zur Quelle',
     'Anker im Quellenblock (z. B. „#quelle-lynx-1“), Seite oder Webadresse. Leer = kein Link.',

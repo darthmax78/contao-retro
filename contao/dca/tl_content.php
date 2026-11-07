@@ -82,6 +82,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['retro_zitat'] =
     '{type_legend},type;'
     .'{zitat_legend},zitat_text,zitat_sprache,zitat_uebersetzung;'
     .'{nachweis_legend},zitat_name,zitat_zusatz,zitat_quelle_text,zitat_quelle_url;'
+    .'{zitat_bild_legend},zitat_bild,size;'
     .'{template_legend:hide},customTpl;'
     .'{protected_legend:hide},protected;'
     .'{expert_legend:hide},guests,cssID;'
@@ -127,6 +128,14 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['zitat_quelle_text'] = [
     'inputType' => 'text',
     'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],
     'sql' => "varchar(64) NOT NULL default ''",
+];
+
+// Porträt (rg-18). Eigenes Feld statt singleSRC, weil singleSRC im Core Pflicht ist.
+$GLOBALS['TL_DCA']['tl_content']['fields']['zitat_bild'] = [
+    'exclude' => true,
+    'inputType' => 'fileTree',
+    'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'extensions' => '%contao.image.valid_extensions%', 'tl_class' => 'clr'],
+    'sql' => ['type' => 'binary', 'length' => 16, 'fixed' => true, 'notnull' => false],
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['zitat_quelle_url'] = [

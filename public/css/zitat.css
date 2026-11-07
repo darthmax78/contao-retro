@@ -1,12 +1,14 @@
 /* ==========================================================================
-   darthmax78/contao-retro – Zitat (retro_zitat, rg-17) – CRT-Look
+   darthmax78/contao-retro – Zitat (retro_zitat, rg-17, Porträt rg-18) – CRT-Look
    Template: content_element/retro_zitat.html.twig
    Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
 
    HTML: div.content-retro-zitat > figure.rz-zitat
            > span.rz-marke + blockquote.rz-original[lang] > p
            + div.rz-uebersetzung > p
-           + figcaption.rz-nachweis > .rz-name .rz-zusatz .rz-trenner a.rz-quelle
+           + figcaption.rz-nachweis
+               > span.rz-portraet > picture/img
+               + span.rz-nachweis-text > .rz-name .rz-zusatz .rz-trenner a.rz-quelle
 
    Kontraste (WCAG) auf --rg-feld #0F1B14:
      Tinte 15,5:1 · Tinte-leise 8,9:1 · Grün 10,7:1
@@ -76,11 +78,36 @@ div.content-retro-zitat .rz-uebersetzung {
 }
 
 div.content-retro-zitat figcaption.rz-nachweis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
   margin-top: 1.5rem;
   font-size: 0.85rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--rg-tinte);
+}
+
+/* Porträt: abgerundetes Quadrat mit LCD-Rahmen und leichtem Glow, Abstandsring in Feldfarbe */
+div.content-retro-zitat .rz-portraet,
+div.content-retro-zitat .rz-portraet picture {
+  display: block;
+  line-height: 0;
+}
+
+div.content-retro-zitat .rz-portraet img {
+  display: block;
+  width: 72px;
+  height: 72px;
+  max-width: none;
+  object-fit: cover;
+  border: 2px solid var(--rg-lcd-3);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 3px var(--rg-feld),
+    0 0 0 4px rgba(var(--rg-gruen-rgb), 0.35),
+    0 0 16px rgba(var(--rg-gruen-rgb), 0.3);
 }
 
 div.content-retro-zitat .rz-trenner {
