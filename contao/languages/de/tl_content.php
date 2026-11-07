@@ -2,7 +2,12 @@
 
 $GLOBALS['TL_LANG']['tl_content']['sa_kicker'] = [
     'Überzeile',
-    'Kurze Zeile über der Überschrift im Terminal-Look. Erscheint auch als Beschriftung in der Sprungleiste (leer = Überschrift).',
+    'Kurze Zeile über der Überschrift im Terminal-Look, z. B. „Lynx · 1989“. Erscheint auch in der Sprungleiste, außer dort ist ein eigener Text gesetzt.',
+];
+
+$GLOBALS['TL_LANG']['tl_content']['sa_sprungtext'] = [
+    'Text in der Sprungleiste',
+    'Optional, kurz halten, z. B. „Lynx“. Leer = Überzeile, ohne Überzeile die Überschrift.',
 ];
 
 $GLOBALS['TL_LANG']['tl_content']['sa_lead'] = [

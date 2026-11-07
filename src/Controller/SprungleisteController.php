@@ -114,7 +114,12 @@ class SprungleisteController extends AbstractContentElementController
             }
 
             if (\in_array($e['type'], self::TYPEN, true)) {
-                $label = trim(StringUtil::decodeEntities((string) ($e['sa_kicker'] ?? '')));
+                // Reihenfolge: eigener Leistentext (rg-21) → Überzeile → Überschrift
+                $label = trim(StringUtil::decodeEntities((string) ($e['sa_sprungtext'] ?? '')));
+
+                if ('' === $label) {
+                    $label = trim(StringUtil::decodeEntities((string) ($e['sa_kicker'] ?? '')));
+                }
 
                 if ('' === $label) {
                     $h = StringUtil::deserialize($e['headline'] ?? '', true);

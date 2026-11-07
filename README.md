@@ -24,7 +24,7 @@ Gleichnamige Templates im `templates/`-Ordner der Website gewinnen gegen das Bun
 ## CSS der Bausteine
 
 Je Baustein eine Datei unter `public/css/` (`retro-table`, `steckbrief`, `last-edited`, `stub`, `banner-lcd`,
-`anecdote`, `abschnitte`, `zitat`, `kacheln`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
+`anecdote`, `abschnitte`, `zitat`, `kacheln`, `bild`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
 des Layouts an (Oneo `main.css` → `custom.css` → Bundle). Farben kommen ausschließlich aus
 den `--rg-*`-Variablen, die die `custom.css` der Website im `:root` festlegt.
 
@@ -39,7 +39,7 @@ Zwei Inhaltselemente (Herkunft `darthmax78/contao-inventar` v1.4.2, Typen und Fe
 - **Abschnittstitel** (`sa_abschnitt`): Überzeile (`sa_kicker`) als Terminal-Prompt `> TEXT ───`,
   Überschrift aus dem Standardfeld, optionale Einleitung (`sa_lead`). Klasse `centered` zentriert.
 - **Sprungleiste** (`sa_sprungleiste`): Links auf alle Abschnittstitel der Seite (in News/Terminen nur
-  des eigenen Beitrags), Beschriftung = Überzeile, sonst Überschrift. Erscheint ab zwei Zielen, klebt beim
+  des eigenen Beitrags), Beschriftung = eigener Leistentext (`sa_sprungtext`, seit rg-21), sonst Überzeile, sonst Überschrift. Erscheint ab zwei Zielen, klebt beim
   Scrollen unter dem Kopf, markiert den aktuellen Abschnitt (▶-Cursor, LCD-Button-Look).
 
 CSS `public/css/abschnitte.css`, Skript `public/js/sprungleiste.js` (erkennt den fixierten Kopf selbst).
@@ -52,6 +52,12 @@ in `zitat_sprache` als `lang`-Attribut), optionale Übersetzung (`zitat_ueberset
 Zusatz und ein Quellenlink (`zitat_quelle_text`, `zitat_quelle_url`: Anker im Quellenblock, Seite oder
 Webadresse). Jede Zeile der Textfelder wird ein Absatz. CSS `public/css/zitat.css` setzt die
 `blockquote`-Vorgaben von Oneo zurück. Optionales Porträt (`zitat_bild` + Standardfeld `size`, seit rg-18).
+
+## Produktfoto
+
+Klasse `bild-produkt` für das Contao-Bild-Element (seit rg-21): Rahmen im Kachel-Look, Bild zentriert und höchstens
+440 px hoch, Bildunterschrift im Terminal-Stil. Mit `bild-lcd` zusätzlich in LCD-Grün (Filter `#lcd-gruen`),
+Originalfarben beim Überfahren. CSS `public/css/bild.css`.
 
 ## Kacheln
 
@@ -96,7 +102,7 @@ Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.12
+composer require darthmax78/contao-retro:^0.13
 vendor/bin/contao-console cache:clear
 ```
 

@@ -23,7 +23,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['stub'] =
 // Abschnittstitel + Sprungleiste (rg-08, aus contao-inventar v1.4.2 – Namen sa_* unverändert).
 // Überschrift = Standardfeld "headline"; Überzeile (sa_kicker) = Beschriftung in der Sprungleiste.
 $GLOBALS['TL_DCA']['tl_content']['palettes']['sa_abschnitt'] =
-    '{type_legend},type,headline,sa_kicker;'
+    '{type_legend},type,headline,sa_kicker,sa_sprungtext;'
     .'{text_legend},sa_lead;'
     .'{template_legend:hide},customTpl;'
     .'{protected_legend:hide},protected;'
@@ -38,6 +38,14 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['sa_sprungleiste'] =
     .'{invisible_legend:hide},invisible,start,stop';
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['sa_kicker'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],
+    'sql' => "varchar(64) NOT NULL default ''",
+];
+
+// Eigene Beschriftung in der Sprungleiste (rg-21), leer = Überzeile, sonst Überschrift
+$GLOBALS['TL_DCA']['tl_content']['fields']['sa_sprungtext'] = [
     'exclude' => true,
     'inputType' => 'text',
     'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],

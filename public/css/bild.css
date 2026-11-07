@@ -1,0 +1,92 @@
+/* ==========================================================================
+   darthmax78/contao-retro – Produktfoto (Klasse für das Contao-Bild-Element, rg-21) – CRT-Look
+   Klassen im Bild-Element (Experteneinstellungen › CSS-Klasse):
+     bild-produkt              Rahmen im Kachel-Look, Bild zentriert, Bildunterschrift im Terminal-Stil
+     bild-produkt bild-lcd     zusätzlich LCD-Grün (SVG-Filter #lcd-gruen), Originalfarben beim Überfahren
+   Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
+
+   HTML (Contao 6): div.content-image.bild-produkt > figure > (a >) picture/img + figcaption
+   Kontraste (WCAG) auf --rg-feld #0F1B14: Tinte-leise 8,9:1 · Grün 10,7:1
+   ========================================================================== */
+
+div.content-image.bild-produkt {
+  clear: both;
+  max-width: 1040px;
+  margin: 2.5rem auto;
+}
+
+div.content-image.bild-produkt figure {
+  margin: 0;
+  padding: clamp(1rem, 3vw, 2rem);
+  /* leichter Schimmer in der Mitte – wirkt vor allem bei freigestellten Fotos (PNG/WebP mit Transparenz) */
+  background:
+    radial-gradient(ellipse at center, rgba(var(--rg-gruen-rgb), 0.07), transparent 70%),
+    var(--rg-feld);
+  border: 2px solid var(--rg-lcd-3);
+  border-radius: 6px;
+  text-align: center;
+}
+
+div.content-image.bild-produkt figure > a,
+div.content-image.bild-produkt picture {
+  display: block;
+}
+
+div.content-image.bild-produkt img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 440px;     /* einheitliche Höhe für Fotos in Hoch- und Querformat */
+  margin: 0 auto;
+  object-fit: contain;
+}
+
+/* Mit Lightbox: Rahmen reagiert wie die Kacheln */
+div.content-image.bild-produkt figure:has(> a) {
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+div.content-image.bild-produkt figure:has(> a:hover),
+div.content-image.bild-produkt figure:has(> a:focus-visible) {
+  border-color: var(--rg-gruen);
+  box-shadow: 0 0 18px rgba(var(--rg-gruen-rgb), 0.3);
+}
+
+div.content-image.bild-produkt figure > a:focus-visible {
+  outline: 2px solid var(--rg-gruen);
+  outline-offset: 4px;
+}
+
+/* Bildunterschrift im Terminal-Stil, durch eine Linie vom Bild getrennt */
+div.content-image.bild-produkt figcaption {
+  margin: 1.25rem 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rg-lcd-2);
+  font-family: 'VT323', monospace;
+  font-size: 1.3rem;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  color: var(--rg-tinte-leise);
+}
+
+div.content-image.bild-produkt figcaption::before {
+  content: "> ";
+  color: var(--rg-gruen);
+}
+
+/* Variante LCD-Grün: Foto in den 4 LCD-Stufen, Originalfarben beim Überfahren oder Fokus */
+div.content-image.bild-produkt.bild-lcd img {
+  filter: brightness(1.35) url(#lcd-gruen);
+}
+
+div.content-image.bild-produkt.bild-lcd figure:hover img,
+div.content-image.bild-produkt.bild-lcd figure:focus-within img {
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  div.content-image.bild-produkt figure:has(> a) {
+    transition: none;
+  }
+}
