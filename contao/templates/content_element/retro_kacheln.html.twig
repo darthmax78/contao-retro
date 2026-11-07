@@ -1,0 +1,13 @@
+{#
+  Kacheln (rg-20): Überschrift aus dem Standardfeld (Basistemplate), darunter das Raster
+  mit den Kindelementen (retro_kachel). CSS: public/css/kacheln.css
+#}
+{% extends "@Contao/content_element/_base.html.twig" %}
+
+{% block content %}
+    <div class="rk-raster">
+        {% for fragment in nested_fragments %}
+            {{ content_element(fragment) }}
+        {% endfor %}
+    </div>
+{% endblock %}

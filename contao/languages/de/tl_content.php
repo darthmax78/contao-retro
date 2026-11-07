@@ -52,3 +52,28 @@ $GLOBALS['TL_LANG']['tl_content']['zitat_quelle_url'] = [
     'Link zur Quelle',
     'Anker im Quellenblock (z. B. „#quelle-lynx-1“), Seite oder Webadresse. Leer = kein Link.',
 ];
+
+// Kacheln (rg-20)
+$GLOBALS['TL_LANG']['tl_content']['kachel_legend'] = 'Kachel';
+$GLOBALS['TL_LANG']['tl_content']['kachel_ziel_legend'] = 'Ziel';
+$GLOBALS['TL_LANG']['tl_content']['kachel_bild_legend'] = 'Bild';
+$GLOBALS['TL_LANG']['tl_content']['kachel_marke'] = [
+    'Marke',
+    'Kurze Beschriftung oben, z. B. „Lynx (1989)“.',
+];
+$GLOBALS['TL_LANG']['tl_content']['kachel_linktext'] = [
+    'Linktext',
+    'Text unten, z. B. „Der Atari Lynx“. Der Pfeil kommt automatisch.',
+];
+$GLOBALS['TL_LANG']['tl_content']['kachel_abschnitt'] = [
+    'Abschnitt auf dieser Seite',
+    'Sprung zu einem Abschnittstitel im selben Artikel. Hat Vorrang vor „Link“.',
+];
+$GLOBALS['TL_LANG']['tl_content']['kachel_url'] = [
+    'Link',
+    'Andere Seite oder Webadresse, falls kein Abschnitt gewählt ist. Ohne Ziel ist die Kachel nicht klickbar.',
+];
+$GLOBALS['TL_LANG']['tl_content']['kachel_bild'] = [
+    'Bild',
+    'z. B. die Strichzeichnung. Ohne Bildgröße höchstens 600 × 400 px, Seitenverhältnis bleibt.',
+];

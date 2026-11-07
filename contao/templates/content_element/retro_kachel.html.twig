@@ -1,0 +1,21 @@
+{#
+  Kachel (rg-20): a.rk-kachel (bzw. div ohne Ziel) > span.rk-marke + span.rk-bild + span.rk-linktext
+  Bild: nur der Bildteil der Contao-Bildkomponente. CSS: public/css/kacheln.css
+#}
+{% extends "@Contao/content_element/_base.html.twig" %}
+{% use '@Contao/component/_picture.html.twig' %}
+
+{% block content %}
+    {% set tag = href ? 'a' : 'div' %}
+    <{{ tag }} class="rk-kachel"{% if href %} href="{{ href }}"{% endif %}>
+        {% if marke %}
+            <span class="rk-marke">{{ marke }}</span>
+        {% endif %}
+        {% if bild %}
+            <span class="rk-bild">{% with {figure: bild} %}{{ block('picture_component') }}{% endwith %}</span>
+        {% endif %}
+        {% if linktext %}
+            <span class="rk-linktext">{{ linktext }}<span class="rk-pfeil" aria-hidden="true">&#160;›</span></span>
+        {% endif %}
+    </{{ tag }}>
+{% endblock %}

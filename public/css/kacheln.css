@@ -1,0 +1,134 @@
+/* ==========================================================================
+   darthmax78/contao-retro – Kacheln (retro_kacheln + retro_kachel, rg-20) – CRT-Look
+   Templates: content_element/retro_kacheln.html.twig, retro_kachel.html.twig
+   Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
+
+   HTML: div.content-retro-kacheln > Überschrift + div.rk-raster
+           > div.content-retro-kachel > a.rk-kachel (div ohne Ziel)
+               > span.rk-marke + span.rk-bild > picture/img + span.rk-linktext > span.rk-pfeil
+
+   Raster: so viele Spalten wie mit mind. 260 px passen (2 Kacheln → 2 Spalten, Handy → 1).
+   Kontraste (WCAG) auf --rg-feld #0F1B14: Grün 10,7:1 · Tinte 15,5:1
+   ========================================================================== */
+
+div.content-retro-kacheln {
+  clear: both;
+  max-width: 1040px;
+  margin: 3rem auto;
+}
+
+div.content-retro-kacheln > :is(h1, h2, h3, h4, h5, h6) {
+  margin: 0 0 1.5rem;
+  font-family: 'VT323', monospace;
+  font-size: clamp(1.6rem, 1.2rem + 1vw, 2.1rem);
+  font-weight: normal;            /* VT323 hat keinen Bold-Schnitt */
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: var(--rg-gruen);
+  text-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.35);
+}
+
+div.content-retro-kacheln .rk-raster {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 1.5rem;
+}
+
+div.content-retro-kacheln div.content-retro-kachel {
+  margin: 0;
+}
+
+/* Kachel */
+div.content-retro-kachel .rk-kachel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 1.75rem 1.5rem;
+  background: var(--rg-feld);
+  border: 2px solid var(--rg-lcd-3);
+  border-radius: 6px;
+  color: var(--rg-tinte);
+  text-align: center;
+  text-decoration: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+div.content-retro-kachel a.rk-kachel:hover,
+div.content-retro-kachel a.rk-kachel:focus-visible {
+  border-color: var(--rg-gruen);
+  box-shadow: 0 0 18px rgba(var(--rg-gruen-rgb), 0.35);
+  color: var(--rg-tinte);
+}
+
+div.content-retro-kachel a.rk-kachel:focus-visible {
+  outline: 2px solid var(--rg-gruen);
+  outline-offset: 3px;
+}
+
+/* Marke als LCD-Pille */
+div.content-retro-kachel .rk-marke {
+  padding: 0.05em 0.8em;
+  border: 2px solid var(--rg-gruen);
+  border-radius: 999px;
+  font-family: 'VT323', monospace;
+  font-size: 1.3rem;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rg-gruen);
+}
+
+/* Bild: füllt die Mitte, Höhe begrenzt, Seitenverhältnis bleibt */
+div.content-retro-kachel .rk-bild {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 120px;
+}
+
+div.content-retro-kachel .rk-bild picture {
+  display: contents;
+}
+
+div.content-retro-kachel .rk-bild img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 200px;
+}
+
+/* Linktext */
+div.content-retro-kachel .rk-linktext {
+  font-family: 'VT323', monospace;
+  font-size: 1.65rem;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  color: var(--rg-gruen);
+  text-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.35);
+}
+
+/* inline statt inline-block, damit der Pfeil (mit geschütztem Leerzeichen) nie allein umbricht */
+div.content-retro-kachel .rk-pfeil {
+  position: relative;
+  left: 0;
+  transition: left .15s ease;
+}
+
+div.content-retro-kachel a.rk-kachel:hover .rk-pfeil,
+div.content-retro-kachel a.rk-kachel:focus-visible .rk-pfeil {
+  left: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  div.content-retro-kachel .rk-kachel,
+  div.content-retro-kachel .rk-pfeil {
+    transition: none;
+  }
+}

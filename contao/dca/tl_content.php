@@ -144,3 +144,57 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['zitat_quelle_url'] = [
     'eval' => ['rgxp' => 'url', 'decodeEntities' => true, 'maxlength' => 255, 'dcaPicker' => true, 'tl_class' => 'w50'],
     'sql' => "varchar(255) NOT NULL default ''",
 ];
+
+// Kacheln + Kachel (rg-20). Kacheln ist ein Rahmen mit Kindelementen (nur retro_kachel).
+$GLOBALS['TL_DCA']['tl_content']['palettes']['retro_kacheln'] =
+    '{type_legend},type,headline;'
+    .'{template_legend:hide},customTpl;'
+    .'{protected_legend:hide},protected;'
+    .'{expert_legend:hide},guests,cssID;'
+    .'{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['palettes']['retro_kachel'] =
+    '{type_legend},type;'
+    .'{kachel_legend},kachel_marke,kachel_linktext;'
+    .'{kachel_ziel_legend},kachel_abschnitt,kachel_url;'
+    .'{kachel_bild_legend},kachel_bild,size;'
+    .'{template_legend:hide},customTpl;'
+    .'{protected_legend:hide},protected;'
+    .'{expert_legend:hide},guests,cssID;'
+    .'{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['kachel_marke'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],
+    'sql' => "varchar(64) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['kachel_linktext'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['maxlength' => 128, 'tl_class' => 'w50'],
+    'sql' => "varchar(128) NOT NULL default ''",
+];
+
+// Optionen: KachelListener (Abschnittstitel im selben Artikel)
+$GLOBALS['TL_DCA']['tl_content']['fields']['kachel_abschnitt'] = [
+    'exclude' => true,
+    'inputType' => 'select',
+    'eval' => ['includeBlankOption' => true, 'chosen' => true, 'tl_class' => 'w50'],
+    'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['kachel_url'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['rgxp' => 'url', 'decodeEntities' => true, 'maxlength' => 255, 'dcaPicker' => true, 'tl_class' => 'w50'],
+    'sql' => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['kachel_bild'] = [
+    'exclude' => true,
+    'inputType' => 'fileTree',
+    'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'extensions' => '%contao.image.valid_extensions%', 'tl_class' => 'clr'],
+    'sql' => ['type' => 'binary', 'length' => 16, 'fixed' => true, 'notnull' => false],
+];

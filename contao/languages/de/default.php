@@ -34,3 +34,13 @@ $GLOBALS['TL_LANG']['CTE']['retro_zitat'] = [
     'Zitat',
     'Zitat im CRT-Look mit optionaler Übersetzung, Name, Zusatz und Quellenlink.',
 ];
+
+$GLOBALS['TL_LANG']['CTE']['retro_kacheln'] = [
+    'Kacheln',
+    'Rahmen mit Überschrift für mehrere Kacheln nebeneinander. Die Kacheln als Kindelemente anlegen.',
+];
+
+$GLOBALS['TL_LANG']['CTE']['retro_kachel'] = [
+    'Kachel',
+    'Klickbare Kachel mit Marke, Bild und Linktext. Nur innerhalb von „Kacheln“.',
+];
