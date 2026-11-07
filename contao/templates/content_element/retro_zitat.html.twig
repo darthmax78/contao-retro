@@ -1,0 +1,35 @@
+{#
+  Zitat (rg-17): Anführungszeichen, Original, Übersetzung, Nachweis.
+  figure.rz-zitat > span.rz-marke + blockquote.rz-original + div.rz-uebersetzung + figcaption.rz-nachweis
+  Absätze kommen als Liste aus dem Controller (kein |nl2br: maskiert gespeicherte Entities doppelt).
+  CSS: public/css/zitat.css
+#}
+{% extends "@Contao/content_element/_base.html.twig" %}
+
+{% block content %}
+    <figure class="rz-zitat">
+        <span class="rz-marke" aria-hidden="true">“</span>
+        <blockquote class="rz-original"{% if sprache %} lang="{{ sprache }}"{% endif %}>
+            {% for absatz in absaetze %}
+                <p>{{ absatz }}</p>
+            {% endfor %}
+        </blockquote>
+        {% if uebersetzung %}
+            <div class="rz-uebersetzung">
+                {% for absatz in uebersetzung %}
+                    <p>{{ absatz }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if name or zusatz or quelle_url %}
+            <figcaption class="rz-nachweis">
+                {%- if name %}<span class="rz-name">{{ name }}</span>{% endif -%}
+                {%- if zusatz %} <span class="rz-zusatz">{{ zusatz }}</span>{% endif -%}
+                {%- if quelle_url -%}
+                    {%- if name or zusatz %} <span class="rz-trenner" aria-hidden="true">·</span> {% endif -%}
+                    <a class="rz-quelle" href="{{ quelle_url }}">{{ quelle_text }}</a>
+                {%- endif -%}
+            </figcaption>
+        {% endif %}
+    </figure>
+{% endblock %}

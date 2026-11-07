@@ -1,0 +1,99 @@
+/* ==========================================================================
+   darthmax78/contao-retro – Zitat (retro_zitat, rg-17) – CRT-Look
+   Template: content_element/retro_zitat.html.twig
+   Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
+
+   HTML: div.content-retro-zitat > figure.rz-zitat
+           > span.rz-marke + blockquote.rz-original[lang] > p
+           + div.rz-uebersetzung > p
+           + figcaption.rz-nachweis > .rz-name .rz-zusatz .rz-trenner a.rz-quelle
+
+   Kontraste (WCAG) auf --rg-feld #0F1B14:
+     Tinte 15,5:1 · Tinte-leise 8,9:1 · Grün 10,7:1
+   ========================================================================== */
+
+div.content-retro-zitat {
+  clear: both;
+  margin: 3rem 0;
+}
+
+div.content-retro-zitat figure.rz-zitat {
+  margin: 0;
+  padding: 2.5rem clamp(1rem, 4vw, 3rem) 2rem;
+  background: var(--rg-feld);
+  border-block: 1px solid var(--rg-lcd-2);
+  text-align: center;
+}
+
+/* Pixel-Anführungszeichen */
+div.content-retro-zitat .rz-marke {
+  display: block;
+  height: 2.2rem;
+  font-family: 'VT323', monospace;
+  font-size: 4.5rem;
+  line-height: 1;
+  color: var(--rg-gruen);
+  text-shadow: 0 0 10px rgba(var(--rg-gruen-rgb), 0.45);
+  user-select: none;
+}
+
+/* Oneo setzt bei blockquote Rand, Kursiv und eigene Anführungszeichen – hier alles zurück */
+div.content-retro-zitat blockquote.rz-original {
+  max-width: 52rem;
+  margin: 1rem auto 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  quotes: none;
+  font-style: normal;
+  font-size: clamp(1.1rem, 1rem + 0.45vw, 1.35rem);
+  line-height: 1.55;
+  color: var(--rg-tinte);
+}
+
+div.content-retro-zitat blockquote.rz-original::before,
+div.content-retro-zitat blockquote.rz-original::after {
+  content: none;
+}
+
+div.content-retro-zitat .rz-original p,
+div.content-retro-zitat .rz-uebersetzung p {
+  margin: 0 0 0.6em;
+}
+
+div.content-retro-zitat .rz-original p:last-child,
+div.content-retro-zitat .rz-uebersetzung p:last-child {
+  margin-bottom: 0;
+}
+
+div.content-retro-zitat .rz-uebersetzung {
+  max-width: 52rem;
+  margin: 1rem auto 0;
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--rg-tinte-leise);
+}
+
+div.content-retro-zitat figcaption.rz-nachweis {
+  margin-top: 1.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-tinte);
+}
+
+div.content-retro-zitat .rz-trenner {
+  color: var(--rg-tinte-leise);
+}
+
+div.content-retro-zitat a.rz-quelle {
+  color: var(--rg-gruen);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+div.content-retro-zitat a.rz-quelle:hover,
+div.content-retro-zitat a.rz-quelle:focus-visible {
+  color: var(--rg-tinte);
+}

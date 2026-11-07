@@ -24,7 +24,7 @@ Gleichnamige Templates im `templates/`-Ordner der Website gewinnen gegen das Bun
 ## CSS der Bausteine
 
 Je Baustein eine Datei unter `public/css/` (`retro-table`, `steckbrief`, `last-edited`, `stub`, `banner-lcd`,
-`anecdote`, `abschnitte`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
+`anecdote`, `abschnitte`, `zitat`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
 des Layouts an (Oneo `main.css` → `custom.css` → Bundle). Farben kommen ausschließlich aus
 den `--rg-*`-Variablen, die die `custom.css` der Website im `:root` festlegt.
 
@@ -44,6 +44,14 @@ Zwei Inhaltselemente (Herkunft `darthmax78/contao-inventar` v1.4.2, Typen und Fe
 
 CSS `public/css/abschnitte.css`, Skript `public/js/sprungleiste.js` (erkennt den fixierten Kopf selbst).
 Normale Überschriften im Text zählen nicht als Sprungziel.
+
+## Zitat
+
+Inhaltselement **Zitat** (`retro_zitat`, seit rg-17): Pixel-Anführungszeichen, Original (`zitat_text`, Sprache
+in `zitat_sprache` als `lang`-Attribut), optionale Übersetzung (`zitat_uebersetzung`, kursiv), darunter Name,
+Zusatz und ein Quellenlink (`zitat_quelle_text`, `zitat_quelle_url`: Anker im Quellenblock, Seite oder
+Webadresse). Jede Zeile der Textfelder wird ein Absatz. CSS `public/css/zitat.css` setzt die
+`blockquote`-Vorgaben von Oneo zurück.
 
 ## Geräte-Datenbank
 
@@ -80,7 +88,7 @@ Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.8
+composer require darthmax78/contao-retro:^0.10
 vendor/bin/contao-console cache:clear
 ```
 

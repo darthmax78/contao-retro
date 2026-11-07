@@ -29,3 +29,8 @@ $GLOBALS['TL_LANG']['CTE']['retro_zubehoer'] = [
     'Zubehör',
     'Tabelle des Original-Zubehörs eines Geräts aus der Geräte-Datenbank.',
 ];
+
+$GLOBALS['TL_LANG']['CTE']['retro_zitat'] = [
+    'Zitat',
+    'Zitat im CRT-Look mit optionaler Übersetzung, Name, Zusatz und Quellenlink.',
+];

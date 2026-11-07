@@ -76,3 +76,62 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['retro_zubehoer'] =
     .'{protected_legend:hide},protected;'
     .'{expert_legend:hide},guests,cssID;'
     .'{invisible_legend:hide},invisible,start,stop';
+
+// Zitat mit Übersetzung und Nachweis (rg-17)
+$GLOBALS['TL_DCA']['tl_content']['palettes']['retro_zitat'] =
+    '{type_legend},type;'
+    .'{zitat_legend},zitat_text,zitat_sprache,zitat_uebersetzung;'
+    .'{nachweis_legend},zitat_name,zitat_zusatz,zitat_quelle_text,zitat_quelle_url;'
+    .'{template_legend:hide},customTpl;'
+    .'{protected_legend:hide},protected;'
+    .'{expert_legend:hide},guests,cssID;'
+    .'{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['zitat_text'] = [
+    'exclude' => true,
+    'inputType' => 'textarea',
+    'eval' => ['mandatory' => true, 'tl_class' => 'clr'],
+    'sql' => 'text NULL',
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['zitat_sprache'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['maxlength' => 16, 'rgxp' => 'language', 'tl_class' => 'w50 clr'],
+    'sql' => "varchar(16) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['zitat_uebersetzung'] = [
+    'exclude' => true,
+    'inputType' => 'textarea',
+    'eval' => ['tl_class' => 'clr'],
+    'sql' => 'text NULL',
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['zitat_name'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['maxlength' => 128, 'tl_class' => 'w50'],
+    'sql' => "varchar(128) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['zitat_zusatz'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['maxlength' => 128, 'tl_class' => 'w50'],
+    'sql' => "varchar(128) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['zitat_quelle_text'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],
+    'sql' => "varchar(64) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['zitat_quelle_url'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['rgxp' => 'url', 'decodeEntities' => true, 'maxlength' => 255, 'dcaPicker' => true, 'tl_class' => 'w50'],
+    'sql' => "varchar(255) NOT NULL default ''",
+];
