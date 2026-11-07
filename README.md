@@ -101,7 +101,7 @@ Marktstarts erbt ein Modell nie, Firmen und Komponenten nur, wenn es selbst kein
 
 Das Inhaltselement **Unterschiede** (`retro_unterschiede`, seit rg-22) baut die Steckbriefe eines Geräts und seines
 Basismodells und zeigt nur die Zeilen mit abweichendem Wert (`SteckbriefBauer::unterschiede()`), neuer Wert in Amber.
-Modellliste und „Neu gegenüber …“ werden nicht verglichen; der Freitext erscheint als Notiz unter der Tabelle.
+Modellliste und „Neu gegenüber …“ werden nicht verglichen; der Freitext erscheint als letzte Zeile „Außerdem neu“.
 Ohne Basismodell oder ohne Unterschiede bleibt das Element im Frontend leer.
 
 ## Installation

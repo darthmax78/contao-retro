@@ -2,6 +2,7 @@
   Unterschiede (rg-22): Titel im Terminal-Look, Tabelle Merkmal | altes Gerät | neues Gerät.
   Werte wie im Steckbrief; Zeilenumbrüche über split (kein |nl2br, maskiert Entities doppelt).
   Leerer Wert = „–“. data-label für die gestapelte Handy-Ansicht.
+  Freitext „Neu gegenüber Basismodell“ = letzte Zeile „Außerdem neu“ (seit v0.13.4).
   CSS: public/css/steckbrief.css (Abschnitt Unterschiede)
 #}
 {% extends "@Contao/content_element/_base.html.twig" %}
@@ -15,7 +16,7 @@
   {% if unterschiede_hinweis %}
     <p class="steckbrief-entwurf">{{ unterschiede_hinweis }}</p>
   {% endif %}
-  {% if unterschiede_zeilen %}
+  {% if unterschiede_zeilen or unterschiede_notiz %}
     <div class="retro-table unterschiede">
       <table>
         <thead>
@@ -29,11 +30,15 @@
               <td class="unterschiede-neu" data-label="{{ unterschiede_neu }}">{% if zeile.neu %}{% for teil in zeile.neu|split("\n") %}{{ teil }}{% if not loop.last %}<br>{% endif %}{% endfor %}{% else %}–{% endif %}</td>
             </tr>
           {% endfor %}
+          {% if unterschiede_notiz %}
+            <tr class="unterschiede-zusatz">
+              <th scope="row">Außerdem neu</th>
+              <td class="unterschiede-alt" data-label="{{ unterschiede_alt }}">–</td>
+              <td class="unterschiede-neu" data-label="{{ unterschiede_neu }}">{% for teil in unterschiede_notiz|split("\n") %}{{ teil }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td>
+            </tr>
+          {% endif %}
         </tbody>
       </table>
     </div>
-  {% endif %}
-  {% if unterschiede_notiz %}
-    <p class="unterschiede-notiz"><span class="unterschiede-notiz-vorspann">Außerdem neu:</span> {% for teil in unterschiede_notiz|split("\n") %}{{ teil }}{% if not loop.last %}<br>{% endif %}{% endfor %}</p>
   {% endif %}
 {% endblock %}

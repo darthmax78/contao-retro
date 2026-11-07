@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\Response;
  * Baut beide Steckbriefe mit dem SteckbriefBauer und zeigt nur die Zeilen mit
  * unterschiedlichem Wert – dieselben Texte wie in den Steckbriefen. Ohne Basismodell
  * oder ohne Unterschiede bleibt das Element leer (im Backend mit Hinweis).
- * Der Freitext „Neu gegenüber Basismodell“ erscheint als Notiz unter der Tabelle.
+ * Der Freitext „Neu gegenüber Basismodell“ erscheint als letzte Zeile „Außerdem neu“.
  */
 #[AsContentElement('retro_unterschiede', category: 'texts')]
 class UnterschiedeController extends AbstractContentElementController
@@ -55,7 +55,9 @@ class UnterschiedeController extends AbstractContentElementController
 
         $zeilen = $alt ? $this->bauer->unterschiede($this->bauer->baue($neu), $this->bauer->baue($alt)) : [];
 
-        if (!$zeilen && !$backend) {
+        $notiz = trim(StringUtil::decodeEntities((string) ($neu['geraet']['neu_gegenueber_basis'] ?? '')));
+
+        if (!$zeilen && '' === $notiz && !$backend) {
             return new Response();
         }
 
@@ -67,10 +69,10 @@ class UnterschiedeController extends AbstractContentElementController
         $template->set('unterschiede_alt', $altName);
         $template->set('unterschiede_neu', (string) $neu['geraet']['name']);
         $template->set('unterschiede_zeilen', $zeilen);
-        $template->set('unterschiede_notiz', trim(StringUtil::decodeEntities((string) ($neu['geraet']['neu_gegenueber_basis'] ?? ''))));
+        $template->set('unterschiede_notiz', $alt ? $notiz : '');
         $template->set('unterschiede_hinweis', match (true) {
             null === $alt => 'Dieses Gerät hat kein Basismodell – es gibt nichts zu vergleichen.',
-            !$zeilen => 'Keine Unterschiede zum Basismodell eingetragen.',
+            !$zeilen && '' === $notiz => 'Keine Unterschiede zum Basismodell eingetragen.',
             default => '',
         });
 

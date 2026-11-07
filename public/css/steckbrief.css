@@ -153,10 +153,16 @@
   color: var(--rg-amber);          /* 10,4:1 auf --rg-papier, 9,7:1 auf --rg-papier-alt */
 }
 
-.unterschiede-notiz {
-  margin: 0.75rem 0 0;
-  font-size: 0.95rem;
-  line-height: 1.55;
+/* Letzte Zeile „Außerdem neu“ (Freitext ohne Gegenstück im Basismodell) */
+.retro-table.unterschiede tr.unterschiede-zusatz > * {
+  border-top: 2px solid var(--rg-lcd-3);
+}
+
+.retro-table.unterschiede tr.unterschiede-zusatz > th:first-child {
+  color: var(--rg-gruen);
+}
+
+.retro-table.unterschiede tr.unterschiede-zusatz td.unterschiede-alt {
   color: var(--rg-tinte-leise);
 }
 
@@ -170,8 +176,16 @@
     content: attr(data-label) ": ";
     color: var(--rg-tinte-leise);
   }
-}
 
-.unterschiede-notiz-vorspann {
-  color: var(--rg-gruen);
+  .retro-table.unterschiede tr.unterschiede-zusatz > * {
+    border-top: 0;
+  }
+
+  .retro-table.unterschiede tr.unterschiede-zusatz {
+    border-top: 2px solid var(--rg-lcd-3);
+  }
+
+  .retro-table.unterschiede tr.unterschiede-zusatz td.unterschiede-alt {
+    display: none;
+  }
 }
