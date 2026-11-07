@@ -11,6 +11,7 @@ use Contao\CoreBundle\Image\Studio\Figure;
 use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\StringUtil;
+use Darthmax\RetroBundle\Link\SeitenAnker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,8 +28,10 @@ class KachelController extends AbstractContentElementController
     /** Ohne gewählte Bildgröße: höchstens 600 px breit (Anzeige bis ca. 300 px, doppelt für scharfe Bildschirme) */
     private const BILD_GROESSE = [600, 400, 'box'];
 
-    public function __construct(private readonly Studio $studio)
-    {
+    public function __construct(
+        private readonly Studio $studio,
+        private readonly SeitenAnker $anker,
+    ) {
     }
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
@@ -44,14 +47,14 @@ class KachelController extends AbstractContentElementController
     private function ziel(ContentModel $model): string
     {
         if ((int) $model->kachel_abschnitt > 0) {
-            return '#abschnitt-'.(int) $model->kachel_abschnitt;
+            return $this->anker->aufSeite('#abschnitt-'.(int) $model->kachel_abschnitt);
         }
 
         $url = self::text((string) $model->kachel_url);
 
         if (str_starts_with($url, '#') || str_starts_with($url, '/') || str_starts_with($url, '{{')
             || preg_match('~^https?://~i', $url)) {
-            return $url;
+            return $this->anker->aufSeite($url);
         }
 
         return '';

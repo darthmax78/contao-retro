@@ -11,6 +11,7 @@ use Contao\CoreBundle\Image\Studio\Figure;
 use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\StringUtil;
+use Darthmax\RetroBundle\Link\SeitenAnker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,8 +29,10 @@ class ZitatController extends AbstractContentElementController
     /** Ohne gewählte Bildgröße: quadratisch zugeschnitten, doppelte Anzeigegröße für scharfe Bildschirme */
     private const PORTRAET_GROESSE = [144, 144, 'crop'];
 
-    public function __construct(private readonly Studio $studio)
-    {
+    public function __construct(
+        private readonly Studio $studio,
+        private readonly SeitenAnker $anker,
+    ) {
     }
 
     protected function getResponse(FragmentTemplate $template, ContentModel $model, Request $request): Response
@@ -40,7 +43,7 @@ class ZitatController extends AbstractContentElementController
         $template->set('sprache', self::sprache((string) $model->zitat_sprache));
         $template->set('name', self::text((string) $model->zitat_name));
         $template->set('zusatz', self::text((string) $model->zitat_zusatz));
-        $template->set('quelle_url', self::url((string) $model->zitat_quelle_url));
+        $template->set('quelle_url', $this->anker->aufSeite(self::url((string) $model->zitat_quelle_url)));
         $template->set('quelle_text', self::text((string) $model->zitat_quelle_text) ?: 'Quelle');
 
         return $template->getResponse();
