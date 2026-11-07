@@ -1,7 +1,7 @@
 /* ==========================================================================
    darthmax78/contao-retro – Produktfoto (Klasse für das Contao-Bild-Element, rg-21) – CRT-Look
    Klassen im Bild-Element (Experteneinstellungen › CSS-Klasse):
-     bild-produkt              Rahmen im Kachel-Look, Bild zentriert, Bildunterschrift im Terminal-Stil
+     bild-produkt              Rahmen im Kachel-Look eng ums Bild, mittig, Bildunterschrift im Terminal-Stil
      bild-produkt bild-lcd     zusätzlich LCD-Grün (SVG-Filter #lcd-gruen), Originalfarben beim Überfahren
    Farben ausschließlich über die --rg-* Variablen der custom.css (rg-05).
 
@@ -15,8 +15,13 @@ div.content-image.bild-produkt {
   margin: 2.5rem auto;
 }
 
+/* Rahmen legt sich eng ums Bild (Konsolen haben verschiedene Proportionen), bleibt mittig */
 div.content-image.bild-produkt figure {
-  margin: 0;
+  box-sizing: border-box;
+  width: fit-content;
+  min-width: min(100%, 320px);   /* Hochformat: Bildunterschrift bekommt etwas Platz */
+  max-width: 100%;
+  margin: 0 auto;
   padding: clamp(1rem, 3vw, 2rem);
   /* leichter Schimmer in der Mitte – wirkt vor allem bei freigestellten Fotos (PNG/WebP mit Transparenz) */
   background:
@@ -60,6 +65,9 @@ div.content-image.bild-produkt figure > a:focus-visible {
 
 /* Bildunterschrift im Terminal-Stil, durch eine Linie vom Bild getrennt */
 div.content-image.bild-produkt figcaption {
+  /* zählt nicht zur Rahmenbreite: lange Unterschriften umbrechen, statt den Rahmen zu verbreitern */
+  width: 0;
+  min-width: 100%;
   margin: 1.25rem 0 0;
   padding-top: 0.9rem;
   border-top: 1px solid var(--rg-lcd-2);
