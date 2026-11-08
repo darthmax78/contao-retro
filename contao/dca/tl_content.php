@@ -201,6 +201,34 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['quellen_kennung'] = [
     'sql' => "varchar(32) NOT NULL default ''",
 ];
 
+// Spielegalerie (rg-25): Spiele mit „In der Galerie zeigen“ der gewählten Geräte
+$GLOBALS['TL_DCA']['tl_content']['palettes']['retro_spielegalerie'] =
+    '{type_legend},type,headline;'
+    .'{geraet_legend},retro_geraete;'
+    .'{spielegalerie_legend},spielegalerie_angaben,spielegalerie_max,size;'
+    .'{template_legend:hide},customTpl;'
+    .'{protected_legend:hide},protected;'
+    .'{expert_legend:hide},guests,cssID;'
+    .'{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['spielegalerie_angaben'] = [
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'options' => ['jahr', 'genre', 'publisher', 'entwickler'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_content']['spielegalerie_angaben_opt'],
+    'default' => ['jahr', 'genre'],
+    'eval' => ['multiple' => true, 'tl_class' => 'w50 clr'],
+    'sql' => 'blob NULL',
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['spielegalerie_max'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'default' => 12,
+    'eval' => ['rgxp' => 'natural', 'minval' => 1, 'maxval' => 48, 'nospace' => true, 'tl_class' => 'w50'],
+    'sql' => ['type' => 'smallint', 'unsigned' => true, 'default' => 12],
+];
+
 // Kacheln + Kachel (rg-20). Kacheln ist ein Rahmen mit Kindelementen (nur retro_kachel).
 $GLOBALS['TL_DCA']['tl_content']['palettes']['retro_kacheln'] =
     '{type_legend},type,headline;'

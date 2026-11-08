@@ -1,0 +1,39 @@
+{#
+  Spielegalerie (rg-25): p.sg-titel (Terminal-Prompt) + ul.sg-raster > li.sg-spiel
+    > a.sg-bild (Lightbox-Gruppe je Spiel, weitere Screenshots als versteckte Links) + p.sg-name + p.sg-meta
+  Ohne Screenshot: span.sg-leer. CSS: public/css/spiele.css
+#}
+{% extends "@Contao/content_element/_base.html.twig" %}
+{% use '@Contao/component/_picture.html.twig' %}
+
+{% block inner %}
+  {{ block('content') }}
+{% endblock %}
+
+{% block content %}
+  {% if sg_titel %}<p class="sg-titel">{{ sg_titel }}</p>{% endif %}
+  {% if sg_hinweis %}<p class="steckbrief-entwurf">{{ sg_hinweis }}</p>{% endif %}
+  {% if sg_spiele %}
+    <ul class="sg-raster">
+      {% for spiel in sg_spiele %}
+        <li class="sg-spiel{% if spiel.entwurf %} sg-entwurf{% endif %}">
+          {% if spiel.figur %}
+            {% if spiel.lightbox %}
+              <a class="sg-bild" href="{{ spiel.lightbox }}" data-lightbox="{{ spiel.gruppe }}" title="{{ spiel.name }}">
+                {% with {figure: spiel.figur} %}{{ block('picture_component') }}{% endwith %}
+                {% if spiel.anzahl > 1 %}<span class="sg-anzahl" aria-label="{{ spiel.anzahl }} Screenshots">{{ spiel.anzahl }}</span>{% endif %}
+              </a>
+              {% for href in spiel.weitere %}<a href="{{ href }}" data-lightbox="{{ spiel.gruppe }}" title="{{ spiel.name }}" hidden aria-hidden="true" tabindex="-1"></a>{% endfor %}
+            {% else %}
+              <span class="sg-bild">{% with {figure: spiel.figur} %}{{ block('picture_component') }}{% endwith %}</span>
+            {% endif %}
+          {% else %}
+            <span class="sg-bild sg-leer" aria-hidden="true">Kein Bild</span>
+          {% endif %}
+          <p class="sg-name">{{ spiel.name }}</p>
+          {% if spiel.meta %}<p class="sg-meta">{{ spiel.meta }}</p>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endblock %}

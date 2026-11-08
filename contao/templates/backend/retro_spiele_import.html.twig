@@ -1,0 +1,90 @@
+{# CSV-Import der Spiele-Datenbank (rg-25). Aufbau: SpieleImportModul #}
+<div id="tl_buttons">
+    <a href="{{ zurueck }}" class="header_back" title="Zurück zur Spieleliste" accesskey="b">Zurück</a>
+</div>
+
+<div class="tl_listing_container retro-spiele-import">
+    <h2 class="sub_headline">Spiele aus CSV importieren</h2>
+
+    {% for f in fehler %}<p class="tl_error">{{ f }}</p>{% endfor %}
+    {% for h in hinweise %}<p class="tl_info">{{ h }}</p>{% endfor %}
+
+    {% if bericht %}
+        {% if probelauf %}
+            <p class="tl_info"><strong>Probelauf{% if dateiname %} „{{ dateiname }}“{% endif %}:</strong> nichts gespeichert.
+                {{ bericht.neu }} neu, {{ bericht.aktualisiert }} aktualisiert, {{ bericht.fehler }} übersprungen{% if bericht.neue_firmen %}, {{ bericht.neue_firmen|length }} neue Firma/Firmen{% endif %}.</p>
+        {% else %}
+            <p class="tl_confirm"><strong>Import abgeschlossen{% if dateiname %} („{{ dateiname }}“){% endif %}:</strong>
+                {{ bericht.neu }} neu, {{ bericht.aktualisiert }} aktualisiert, {{ bericht.fehler }} übersprungen{% if bericht.neue_firmen %}, neue Firmen: {{ bericht.neue_firmen|join(', ') }}{% endif %}.</p>
+        {% endif %}
+
+        <table class="tl_listing showColumns">
+            <thead>
+                <tr><th class="tl_folder_tlist">Zeile</th><th class="tl_folder_tlist">Spiel</th><th class="tl_folder_tlist">Gerät</th><th class="tl_folder_tlist">Aktion</th><th class="tl_folder_tlist">Hinweise</th></tr>
+            </thead>
+            <tbody>
+                {% for z in bericht.zeilen %}
+                    <tr class="hover-row">
+                        <td class="tl_file_list">{{ z.zeile }}</td>
+                        <td class="tl_file_list">{{ z.name }}</td>
+                        <td class="tl_file_list">{{ z.geraet }}</td>
+                        <td class="tl_file_list">{% if z.aktion == 'fehler' %}<span class="tl_red">übersprungen</span>{% elseif z.aktion == 'neu' %}<span class="tl_green">neu</span>{% else %}aktualisiert{% endif %}</td>
+                        <td class="tl_file_list">{{ z.hinweise|join(' · ') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        {% if probelauf and (bericht.neu + bericht.aktualisiert) > 0 %}
+            <form method="post" data-turbo="false" class="tl_form">
+                <input type="hidden" name="FORM_SUBMIT" value="retro_spiele_import">
+                <input type="hidden" name="REQUEST_TOKEN" value="{{ request_token }}">
+                <input type="hidden" name="schritt" value="importieren">
+                <input type="hidden" name="inhalt" value="{{ inhalt }}">
+                <input type="hidden" name="dateiname" value="{{ dateiname }}">
+                <input type="hidden" name="bildordner" value="{{ optionen.bildordner }}">
+                <input type="hidden" name="veroeffentlichen" value="{{ optionen.veroeffentlichen ? '1' : '0' }}">
+                <div class="tl_submit_container">
+                    <button type="submit" class="tl_submit">Jetzt importieren ({{ bericht.neu }} neu, {{ bericht.aktualisiert }} aktualisiert)</button>
+                </div>
+            </form>
+        {% endif %}
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" data-turbo="false" class="tl_form">
+        <input type="hidden" name="FORM_SUBMIT" value="retro_spiele_import">
+        <input type="hidden" name="REQUEST_TOKEN" value="{{ request_token }}">
+        <div class="tl_tbox cf">
+            <div class="widget w50">
+                <h3><label for="retro-csv">CSV-Datei</label></h3>
+                <input type="file" id="retro-csv" name="csv" accept=".csv,.txt,text/csv">
+                <p class="tl_help tl_tip">Kopfzeile mit Spaltennamen, Trennzeichen ; , oder Tab. Pflicht: name, geraet.</p>
+            </div>
+            <div class="widget w50">
+                <h3><label for="retro-bildordner">Bildordner für Screenshots</label></h3>
+                <input type="text" id="retro-bildordner" name="bildordner" class="tl_text" value="{{ optionen.bildordner }}">
+                <p class="tl_help tl_tip">Screenshot-Angaben ohne „files/“ beziehen sich auf diesen Ordner.</p>
+            </div>
+            <div class="widget w50 cbx m12">
+                <div class="tl_checkbox_single_container">
+                    <input type="checkbox" id="retro-veroeffentlichen" name="veroeffentlichen" value="1" class="tl_checkbox"{% if optionen.veroeffentlichen %} checked{% endif %}>
+                    <label for="retro-veroeffentlichen">Neue Spiele gleich veröffentlichen</label>
+                </div>
+                <p class="tl_help tl_tip">Vorhandene Spiele behalten ihren Status, außer die CSV hat eine Spalte „veroeffentlicht“.</p>
+            </div>
+        </div>
+        <div class="tl_tbox cf">
+            <h3>Spalten</h3>
+            <p class="tl_help">
+                <strong>name</strong>, <strong>geraet</strong> (Name oder Alias aus der Geräte-Datenbank), entwickler, publisher,
+                jahr, monat, tag (oder <em>datum</em>: 1989, 09.1989, 1.9.1989, 1989-09-01), region, genre, spieler,
+                modellnummer, modul_kb, beschreibung, screenshots (Dateinamen durch | getrennt, höchstens 6, das erste ist das Galeriebild),
+                galerie (ja/nein), sortierung, quelle, veroeffentlicht (ja/nein).
+                Name + Gerät erkennen vorhandene Spiele; leere Zellen ändern nichts.
+            </p>
+        </div>
+        <div class="tl_submit_container">
+            <button type="submit" class="tl_submit">Probelauf</button>
+        </div>
+    </form>
+</div>

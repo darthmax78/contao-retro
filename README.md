@@ -24,7 +24,7 @@ Gleichnamige Templates im `templates/`-Ordner der Website gewinnen gegen das Bun
 ## CSS der Bausteine
 
 Je Baustein eine Datei unter `public/css/` (`retro-table`, `steckbrief`, `last-edited`, `stub`, `banner-lcd`,
-`anecdote`, `abschnitte`, `zitat`, `kacheln`, `bild`, `quellen`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
+`anecdote`, `abschnitte`, `zitat`, `kacheln`, `bild`, `quellen`, `spiele`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
 des Layouts an (Oneo `main.css` → `custom.css` → Bundle). Farben kommen ausschließlich aus
 den `--rg-*`-Variablen, die die `custom.css` der Website im `:root` festlegt.
 
@@ -114,13 +114,30 @@ Basismodells und zeigt nur die Zeilen mit abweichendem Wert (`SteckbriefBauer::u
 Modellliste und „Neu gegenüber …“ werden nicht verglichen; der Freitext erscheint als letzte Zeile „Außerdem neu“.
 Ohne Basismodell oder ohne Unterschiede bleibt das Element im Frontend leer.
 
+## Spiele-Datenbank
+
+Backend **Retro-Datenbank › Spiele** (`tl_retro_spiel`, seit rg-25): ein Datensatz je Spiel und Plattform, Entwickler und
+Publisher aus dem Firmen-Katalog, Genre aus fester Liste (`Spiele\Genres`), bis zu 6 Screenshots (sortierbar, das erste ist
+das Galeriebild), „In der Galerie zeigen“ + Sortierzahl.
+
+**CSV-Import** über die Schaltfläche in der Spieleliste (`SpieleImportModul`, `Spiele\SpieleCsv`, `Spiele\SpieleImport`):
+Kopfzeile Pflicht, Trennzeichen `;` `,` oder Tab, UTF-8 oder Windows-1252. Spalten `name`, `geraet` (Pflicht), `entwickler`,
+`publisher`, `jahr`/`monat`/`tag` oder `datum`, `region`, `genre`, `spieler`, `modellnummer`, `modul_kb`, `beschreibung`,
+`screenshots` (Dateien durch `|`, ohne `files/` relativ zum Bildordner), `galerie`, `sortierung`, `quelle`, `veroeffentlicht`.
+Name + Gerät erkennen vorhandene Spiele, leere Zellen ändern nichts, fehlende Firmen werden angelegt. Immer zuerst Probelauf
+mit Bericht, geschrieben wird erst mit „Jetzt importieren“ (in einer Transaktion).
+
+Inhaltselement **Spielegalerie** (`retro_spielegalerie`): Spiele der gewählten Geräte (`retro_geraete`) mit Häkchen, Raster mit
+3/2/1 Spalten, Screenshot pixelgenau skaliert (ohne Bildgröße in Originalgröße), Klick öffnet alle Screenshots des Spiels
+in der Großansicht. Darunter Name und Angaben (`spielegalerie_angaben`: Jahr, Genre, Publisher, Entwickler). CSS `public/css/spiele.css`.
+
 ## Installation
 
 Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.15
+composer require darthmax78/contao-retro:^0.16
 vendor/bin/contao-console cache:clear
 ```
 

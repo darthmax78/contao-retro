@@ -23,7 +23,24 @@ $GLOBALS['TL_LANG']['tl_content']['retro_geraet'] = [
 
 $GLOBALS['TL_LANG']['tl_content']['retro_geraete'] = [
     'Geräte',
-    'Ein oder mehrere Einträge aus der Geräte-Datenbank. Die Tabelle zeigt das Zubehör aller gewählten Geräte; bei mehreren steht dabei, wozu ein Teil passt.',
+    'Ein oder mehrere Einträge aus der Geräte-Datenbank. Zubehör: Bei mehreren Geräten steht dabei, wozu ein Teil passt. Spielegalerie: Spiele aller gewählten Geräte.',
+];
+
+// Spielegalerie (rg-25)
+$GLOBALS['TL_LANG']['tl_content']['spielegalerie_legend'] = 'Galerie';
+$GLOBALS['TL_LANG']['tl_content']['spielegalerie_angaben'] = [
+    'Angaben unter dem Namen',
+    'Am besten zwei auswählen, sie stehen in einer Zeile, getrennt durch „·“.',
+];
+$GLOBALS['TL_LANG']['tl_content']['spielegalerie_angaben_opt'] = [
+    'jahr' => 'Jahr',
+    'genre' => 'Genre',
+    'publisher' => 'Publisher',
+    'entwickler' => 'Entwickler',
+];
+$GLOBALS['TL_LANG']['tl_content']['spielegalerie_max'] = [
+    'Höchstens',
+    'Anzahl der Spiele (Vorgabe 12). 6, 9 oder 12 füllen das Raster mit 3 Spalten.',
 ];
 
 // Quellen (rg-24)
