@@ -7,3 +7,4 @@ $GLOBALS['TL_LANG']['MOD']['retro_firmen'] = ['Firmen', 'Hersteller, Entwickler 
 $GLOBALS['TL_LANG']['MOD']['retro_zubehoer'] = ['Zubehör', 'Original-Zubehör wie Netzteile, Kabel und Controller.'];
 $GLOBALS['TL_LANG']['MOD']['retro_komponenten'] = ['Komponenten', 'Katalog der Chips: CPU, Grafik, Sound, SoC.'];
 $GLOBALS['TL_LANG']['MOD']['retro_arbeitspakete'] = ['Arbeitspakete', 'Signierte Arbeitspakete hochladen und einspielen.'];
+$GLOBALS['TL_LANG']['MOD']['retro_timeline'] = ['Timeline', 'Stationen ohne eigene News und Pausen für das Element Timeline.'];

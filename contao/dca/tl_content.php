@@ -282,3 +282,73 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['kachel_bild'] = [
     'eval' => ['filesOnly' => true, 'fieldType' => 'radio', 'extensions' => '%contao.image.valid_extensions%', 'tl_class' => 'clr'],
     'sql' => ['type' => 'binary', 'length' => 16, 'fixed' => true, 'notnull' => false],
 ];
+
+// Timeline (rg-27): News mit „In der Timeline zeigen“ + Einträge aus Retro-Datenbank › Timeline
+$GLOBALS['TL_DCA']['tl_content']['palettes']['retro_timeline'] =
+    '{type_legend},type,headline,timeline_einleitung;'
+    .'{timeline_legend},timeline_archive,timeline_reihenfolge,timeline_max,timeline_pause_monate,timeline_kompakt;'
+    .'{timeline_mehr_legend:hide},timeline_mehr_url,timeline_mehr_text;'
+    .'{template_legend:hide},customTpl;'
+    .'{protected_legend:hide},protected;'
+    .'{expert_legend:hide},guests,cssID;'
+    .'{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['timeline_einleitung'] = [
+    'exclude' => true,
+    'inputType' => 'textarea',
+    'eval' => ['tl_class' => 'clr', 'rows' => 3],
+    'sql' => ['type' => 'text', 'notnull' => false],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['timeline_archive'] = [
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'foreignKey' => 'tl_news_archive.title',
+    'eval' => ['multiple' => true, 'tl_class' => 'clr'],
+    'sql' => 'blob NULL',
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['timeline_reihenfolge'] = [
+    'exclude' => true,
+    'inputType' => 'select',
+    'options' => ['asc', 'desc'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_content']['timeline_reihenfolge_opt'],
+    'eval' => ['tl_class' => 'w50'],
+    'sql' => ['type' => 'string', 'length' => 4, 'default' => 'asc'],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['timeline_max'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['rgxp' => 'natural', 'maxval' => 500, 'nospace' => true, 'tl_class' => 'w50'],
+    'sql' => ['type' => 'smallint', 'unsigned' => true, 'default' => 0],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['timeline_pause_monate'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'default' => 6,
+    'eval' => ['rgxp' => 'natural', 'maxval' => 120, 'nospace' => true, 'tl_class' => 'w50'],
+    'sql' => ['type' => 'smallint', 'unsigned' => true, 'default' => 6],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['timeline_kompakt'] = [
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'eval' => ['tl_class' => 'w50 m12'],
+    'sql' => ['type' => 'boolean', 'default' => false],
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['timeline_mehr_url'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['rgxp' => 'url', 'decodeEntities' => true, 'maxlength' => 255, 'dcaPicker' => true, 'tl_class' => 'w50'],
+    'sql' => "varchar(255) NOT NULL default ''",
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['timeline_mehr_text'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],
+    'sql' => "varchar(64) NOT NULL default ''",
+];

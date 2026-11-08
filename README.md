@@ -24,7 +24,7 @@ Gleichnamige Templates im `templates/`-Ordner der Website gewinnen gegen das Bun
 ## CSS der Bausteine
 
 Je Baustein eine Datei unter `public/css/` (`retro-table`, `steckbrief`, `last-edited`, `stub`, `banner-lcd`,
-`anecdote`, `abschnitte`, `zitat`, `kacheln`, `bild`, `quellen`, `spiele`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
+`anecdote`, `abschnitte`, `zitat`, `kacheln`, `bild`, `quellen`, `spiele`, `timeline`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
 des Layouts an (Oneo `main.css` → `custom.css` → Bundle). Farben kommen ausschließlich aus
 den `--rg-*`-Variablen, die die `custom.css` der Website im `:root` festlegt.
 
@@ -164,3 +164,23 @@ Ein Paket enthält unter `rg-NN/`:
 | `paket.ini` | `paket=rg-NN`, `titel=…`, `beschreibung=…` |
 | `paket.sh` | wird mit `probelauf`, `einspielen` oder `zurueck` aufgerufen und läuft ohne Rückfragen |
 | `erlaubt.txt` | Datenbankänderungen, die das Paket machen darf: je Zeile `sql <Regex>` oder `migration <Regex>` |
+
+## Timeline
+
+Inhaltselement **Timeline** (`retro_timeline`, seit rg-27): Stationen der Seite als Zeitleiste im CRT-Look –
+Leuchtlinie, Einträge als Pixel, Meilensteine in Amber mit Label, Jahreszahlen und Pausen („Insert coin to continue“).
+
+Quellen der Einträge:
+
+- **News** mit „In der Timeline zeigen“ (Bereich Timeline in der News, Felder `timeline_*` in `tl_news`): Art
+  (Eintrag/Meilenstein), optional Kurztitel, Kurztext und Tags. Ohne Kurzfassung gelten Überschrift und Teaser,
+  der Link führt automatisch zur News. Bewusst eigene Felder statt Contaos „Hervorheben“.
+- **Retro-Datenbank › Timeline** (`tl_retro_timeline`): Stationen ohne eigene News und Pausen mit eigenem Text;
+  optional eigene Datumsanzeige („08/2025 – 09/2026“) und Link.
+- **Automatisch**: Jahreszahlen; Pausen, wenn zwischen zwei Einträgen mindestens `timeline_pause_monate` Monate liegen
+  (eine eingetragene Pause ersetzt die automatische an ihrer Stelle).
+
+Einstellungen im Element: Nachrichtenarchive (leer = alle), Reihenfolge, Anzahl (Pausen zählen nicht), Pausen-Schwelle,
+kompakt (ohne Text, Tags, Legende) und ein Link zur ganzen Geschichte statt „Fortsetzung folgt“.
+Logik in `src/Timeline/TimelineBauer.php` (ohne Contao-Abhängigkeiten), Laden in `TimelineLader`. CSS `public/css/timeline.css`,
+schmale Darstellung per Container-Abfrage (Element unter 560 px).

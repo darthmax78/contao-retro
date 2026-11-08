@@ -59,3 +59,8 @@ $GLOBALS['TL_LANG']['CTE']['retro_kachel'] = [
     'Kachel',
     'Klickbare Kachel mit Marke, Bild und Linktext. Nur innerhalb von „Kacheln“.',
 ];
+
+$GLOBALS['TL_LANG']['CTE']['retro_timeline'] = [
+    'Timeline',
+    'Zeitleiste der Seite: News mit „In der Timeline zeigen“ und Einträge aus Retro-Datenbank › Timeline, mit Jahreszahlen und Pausen.',
+];

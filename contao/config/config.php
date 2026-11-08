@@ -22,6 +22,8 @@ $GLOBALS['BE_MOD']['retro'] = [
     'retro_firmen' => ['tables' => ['tl_retro_firma']],
     'retro_komponenten' => ['tables' => ['tl_retro_komponente']],
     'retro_zubehoer' => ['tables' => ['tl_retro_zubehoer']],
+    // rg-27: Stationen ohne eigene News und Pausen für das Element Timeline
+    'retro_timeline' => ['tables' => ['tl_retro_timeline']],
     // rg-15: nur Administratoren mit Zwei-Faktor-Anmeldung, prüft das Modul selbst
     'retro_arbeitspakete' => ['callback' => ArbeitspaketeModul::class],
 ];

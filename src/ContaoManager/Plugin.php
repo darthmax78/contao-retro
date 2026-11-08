@@ -16,7 +16,8 @@ class Plugin implements BundlePluginInterface
     {
         return [
             BundleConfig::create(DarthmaxRetroBundle::class)
-                ->setLoadAfter([ContaoCoreBundle::class]),
+                // News-Bundle zuerst: contao/dca/tl_news.php ergänzt dessen Paletten (rg-27)
+                ->setLoadAfter([ContaoCoreBundle::class, 'Contao\\NewsBundle\\ContaoNewsBundle']),
         ];
     }
 }

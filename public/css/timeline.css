@@ -1,0 +1,506 @@
+/* ==========================================================================
+   darthmax78/contao-retro – Timeline (retro_timeline, rg-27)
+   HTML: div.content-retro-timeline > p.timeline-einleitung + ul.timeline-legende
+         + ol.timeline > li.timeline-jahr | li.timeline-eintrag(.is-meilenstein) | li.timeline-pause
+         + p.timeline-mehr | p.timeline-ende
+   Eintrag: .timeline-datum | .timeline-punkt | .timeline-karte (Spalten Datum, Linie, Karte)
+   Schmal (Element unter 560 px): Linie links, Datum über der Karte.
+   Farben ausschließlich über die --rg-* Variablen der custom.css.
+   Kontraste auf --rg-feld: Tinte 15,5:1 · Tinte-leise 8,9:1 · Grün 10,7:1 · Amber 10,2:1
+   Schriften: VT323 (Datum, Titel, Label, Tags), Text erbt IBM Plex Sans (17 px wie rg-19).
+   Kein C64-Font: dessen Großbuchstaben liegen auf PETSCII-Grafikzeichen.
+   ========================================================================== */
+.content-retro-timeline {
+  --tl-datum: 8.5rem;
+  --tl-linie: 2rem;
+  --tl-abstand: 1.25rem;
+  container-type: inline-size;
+  clear: both;
+  margin: 2rem 0;
+}
+
+.timeline-einleitung {
+  max-width: 42rem;
+  margin: 0 0 1.25rem;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--rg-tinte-leise);
+}
+
+/* Legende */
+.timeline-legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0 0 1.5rem;
+  padding: 0;
+  list-style: none;
+  font-family: 'VT323', monospace;
+  font-size: 1.25rem;
+  color: var(--rg-tinte-leise);
+}
+
+.timeline-legende li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.timeline-legende-punkt {
+  width: 12px;
+  height: 12px;
+  background: var(--rg-gruen);
+  box-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.6);
+}
+
+.timeline-legende-punkt.is-meilenstein {
+  width: 14px;
+  height: 14px;
+  background: var(--rg-amber);
+  box-shadow: 0 0 10px rgba(var(--rg-amber-rgb), 0.6);
+}
+
+.timeline-legende-punkt.is-pause {
+  box-sizing: border-box;
+  background: none;
+  border: 2px dashed var(--rg-tinte-leise);
+  box-shadow: none;
+}
+
+/* Liste */
+ol.timeline {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ol.timeline > li {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--tl-datum) var(--tl-linie) minmax(0, 1fr);
+  column-gap: var(--tl-abstand);
+  margin: 0;
+  padding: 0;
+}
+
+/* durchgehende Leuchtlinie in der mittleren Spalte */
+ol.timeline > li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--tl-datum) + var(--tl-abstand) + var(--tl-linie) / 2 - 1px);
+  width: 2px;
+  background: rgba(var(--rg-gruen-rgb), 0.35);
+}
+
+ol.timeline > li.timeline-pause::before {
+  width: 0;
+  background: none;
+  border-left: 2px dashed var(--rg-lcd-3);
+}
+
+/* Jahreszahl */
+li.timeline-jahr .timeline-jahr-zahl {
+  grid-column: 3;
+  padding: 1.75rem 0 1.25rem;
+  font-family: 'VT323', monospace;
+  font-size: 3.5rem;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--rg-gruen);
+  text-shadow: 0 0 12px rgba(var(--rg-gruen-rgb), 0.55);
+}
+
+ol.timeline > li.timeline-jahr:first-child .timeline-jahr-zahl {
+  padding-top: 0.25rem;
+}
+
+/* Datum, Punkt */
+.timeline-datum {
+  grid-column: 1;
+  grid-row: 1;
+  padding-top: 1.35rem;
+  text-align: right;
+  font-family: 'VT323', monospace;
+  font-size: 1.45rem;
+  line-height: 1.1;
+  letter-spacing: 0.04em;
+  color: var(--rg-gruen);
+}
+
+.is-meilenstein .timeline-datum {
+  color: var(--rg-amber);
+}
+
+.timeline-pause .timeline-datum {
+  color: var(--rg-tinte-leise);
+}
+
+.timeline-punkt {
+  position: relative;
+  z-index: 1;
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: center;
+  width: 14px;
+  height: 14px;
+  margin-top: 1.6rem;
+  background: var(--rg-gruen);
+  box-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.6);
+}
+
+.is-meilenstein .timeline-punkt {
+  width: 18px;
+  height: 18px;
+  margin-top: calc(1.6rem - 2px);
+  background: var(--rg-amber);
+  box-shadow: 0 0 14px rgba(var(--rg-amber-rgb), 0.7);
+}
+
+.timeline-pause .timeline-punkt {
+  box-sizing: border-box;
+  margin-top: 2.1rem;
+  background: var(--rg-papier);
+  border: 2px dashed var(--rg-tinte-leise);
+  box-shadow: none;
+}
+
+/* Karte */
+.timeline-karte {
+  grid-column: 3;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0.75rem 0 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--rg-feld);
+  border: 1px solid var(--rg-lcd-2);
+  border-radius: 3px;
+}
+
+.is-meilenstein .timeline-karte {
+  background: linear-gradient(rgba(var(--rg-amber-rgb), 0.06), rgba(var(--rg-amber-rgb), 0.06)), var(--rg-feld);
+  border: 2px solid var(--rg-amber);
+  box-shadow: 0 0 18px rgba(var(--rg-amber-rgb), 0.18);
+}
+
+.timeline-pause .timeline-karte {
+  margin: 1.25rem 0 2rem;
+  padding: 0.5rem 0;
+  background: none;
+  border: 0;
+}
+
+.timeline-label {
+  align-self: flex-start;
+  padding: 1px 8px 0;
+  font-family: 'VT323', monospace;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--rg-papier);
+  background: var(--rg-amber);
+}
+
+.content-retro-timeline .timeline-titel {
+  margin: 0;
+  font-family: 'VT323', monospace;
+  font-size: 1.9rem;
+  font-weight: normal; /* VT323 hat keinen Bold-Schnitt */
+  line-height: 1.1;
+  letter-spacing: 0.03em;
+  color: var(--rg-tinte);
+  text-shadow: none;
+}
+
+.timeline-text {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--rg-tinte);
+  opacity: 0.88;
+}
+
+/* Fuß: Tags und Link */
+.timeline-fuss {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+ul.timeline-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul.timeline-tags li {
+  margin: 0;
+  padding: 0 0.5rem;
+  font-family: 'VT323', monospace;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  letter-spacing: 0.05em;
+  color: var(--rg-gruen);
+  border: 1px solid var(--rg-lcd-3);
+  border-radius: 3px;
+}
+
+.content-retro-timeline a.timeline-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-left: auto;
+  padding: 0 0.9rem;
+  font-family: 'VT323', monospace;
+  font-size: 1.3rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--rg-gruen);
+  background: var(--rg-lcd-2);
+  border: 2px solid var(--rg-gruen);
+  border-radius: 3px;
+  box-shadow: 0 0 14px rgba(var(--rg-gruen-rgb), 0.25);
+  transition: background-color .15s ease, box-shadow .15s ease;
+}
+
+.content-retro-timeline a.timeline-link:hover,
+.content-retro-timeline a.timeline-link:focus-visible {
+  background: var(--rg-lcd-3);
+  box-shadow: 0 0 20px rgba(var(--rg-gruen-rgb), 0.4);
+}
+
+.content-retro-timeline a.timeline-link:focus-visible,
+.timeline-mehr a:focus-visible {
+  outline: 2px solid var(--rg-gruen);
+  outline-offset: 3px;
+}
+
+/* Pause */
+.timeline-pause-titel {
+  margin: 0;
+  font-family: 'VT323', monospace;
+  font-size: 2.1rem;
+  line-height: 1;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--rg-tinte-leise);
+}
+
+.timeline-pause-titel::before,
+.timeline-pause-titel::after {
+  content: " — ";
+  letter-spacing: 0;
+}
+
+.timeline-pause .timeline-text {
+  color: var(--rg-tinte-leise);
+  opacity: 1;
+}
+
+.timeline-pause-coin {
+  margin: 0;
+  font-family: 'VT323', monospace;
+  font-size: 1.25rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-amber);
+}
+
+/* Ende und Link zur ganzen Geschichte */
+.timeline-ende,
+.timeline-mehr {
+  margin: 0;
+  padding: 1.25rem 0 0 calc(var(--tl-datum) + var(--tl-linie) + 2 * var(--tl-abstand));
+  font-family: 'VT323', monospace;
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rg-gruen);
+}
+
+.timeline-mehr a {
+  color: var(--rg-gruen);
+  text-decoration: none;
+  text-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.45);
+}
+
+.timeline-mehr a:hover {
+  text-decoration: underline;
+}
+
+.timeline-cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.95em;
+  margin-left: 0.3em;
+  vertical-align: -0.12em;
+  background: var(--rg-gruen);
+  box-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.6);
+  animation: timeline-blinken 1.1s steps(1) infinite;
+}
+
+@keyframes timeline-blinken {
+  50% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-cursor { animation: none; }
+}
+
+/* Kompakt: ohne Text und Tags, enger */
+ol.timeline.is-kompakt .timeline-karte {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin: 0.5rem 0 0.75rem;
+  padding: 0.5rem 0.75rem 0.5rem 1rem;
+}
+
+ol.timeline.is-kompakt .timeline-titel {
+  flex: 1 1 14rem;
+}
+
+ol.timeline.is-kompakt .timeline-fuss {
+  margin: 0;
+}
+
+ol.timeline.is-kompakt .timeline-label {
+  align-self: center;
+}
+
+ol.timeline.is-kompakt .timeline-pause .timeline-karte {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+ol.timeline.is-kompakt .timeline-titel {
+  font-size: 1.55rem;
+}
+
+ol.timeline.is-kompakt .timeline-datum {
+  padding-top: 1rem;
+}
+
+ol.timeline.is-kompakt .timeline-punkt {
+  margin-top: 1.25rem;
+}
+
+ol.timeline.is-kompakt .is-meilenstein .timeline-punkt {
+  margin-top: calc(1.25rem - 2px);
+}
+
+ol.timeline.is-kompakt li.timeline-jahr .timeline-jahr-zahl {
+  padding: 1rem 0 0.5rem;
+  font-size: 2.5rem;
+}
+
+ol.timeline.is-kompakt .timeline-pause .timeline-karte {
+  margin: 0.75rem 0 1rem;
+}
+
+ol.timeline.is-kompakt .timeline-pause-titel {
+  font-size: 1.6rem;
+}
+
+/* Nur für Screenreader („Zum Beitrag „Titel““) */
+.content-retro-timeline .invisible {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Schmal: Linie links, Datum über der Karte */
+@container (max-width: 560px) {
+  ol.timeline > li {
+    grid-template-columns: var(--tl-linie) minmax(0, 1fr);
+    column-gap: 0.75rem;
+  }
+
+  ol.timeline > li::before {
+    left: calc(var(--tl-linie) / 2 - 1px);
+  }
+
+  li.timeline-jahr .timeline-jahr-zahl {
+    grid-column: 2;
+    font-size: 2.75rem;
+  }
+
+  .timeline-datum {
+    grid-column: 2;
+    grid-row: 1;
+    padding-top: 1rem;
+    text-align: left;
+    font-size: 1.3rem;
+  }
+
+  .timeline-punkt {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    margin-top: 1.15rem;
+  }
+
+  .is-meilenstein .timeline-punkt {
+    margin-top: calc(1.15rem - 2px);
+  }
+
+  .timeline-pause .timeline-punkt {
+    margin-top: 1.15rem;
+  }
+
+  .timeline-karte {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 0.35rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .timeline-pause .timeline-karte {
+    margin-top: 0.25rem;
+  }
+
+  .content-retro-timeline .timeline-titel {
+    font-size: 1.65rem;
+  }
+
+  .content-retro-timeline a.timeline-link {
+    margin-left: 0;
+  }
+
+  .timeline-pause-titel {
+    font-size: 1.7rem;
+    letter-spacing: 0.2em;
+  }
+
+  .timeline-ende,
+  .timeline-mehr {
+    padding-left: calc(var(--tl-linie) + 0.75rem);
+  }
+
+  ol.timeline.is-kompakt .timeline-datum,
+  ol.timeline.is-kompakt .timeline-punkt {
+    padding-top: 0.75rem;
+  }
+
+  ol.timeline.is-kompakt .timeline-punkt {
+    padding-top: 0;
+    margin-top: 0.9rem;
+  }
+}

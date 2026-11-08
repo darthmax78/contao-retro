@@ -121,3 +121,43 @@ $GLOBALS['TL_LANG']['tl_content']['kachel_bild'] = [
     'Bild',
     'z. B. die Strichzeichnung. Ohne Bildgröße höchstens 600 × 400 px, Seitenverhältnis bleibt.',
 ];
+
+// Timeline (rg-27)
+$GLOBALS['TL_LANG']['tl_content']['timeline_legend'] = 'Timeline';
+$GLOBALS['TL_LANG']['tl_content']['timeline_mehr_legend'] = 'Link zur ganzen Geschichte';
+$GLOBALS['TL_LANG']['tl_content']['timeline_einleitung'] = [
+    'Einleitung',
+    'Optionaler Satz unter der Überschrift.',
+];
+$GLOBALS['TL_LANG']['tl_content']['timeline_archive'] = [
+    'Nachrichtenarchive',
+    'News aus diesen Archiven, sofern „In der Timeline zeigen“ angehakt ist. Keine Auswahl = alle Archive. Einträge aus Retro-Datenbank › Timeline erscheinen immer.',
+];
+$GLOBALS['TL_LANG']['tl_content']['timeline_reihenfolge'] = [
+    'Reihenfolge',
+    'Chronologisch für die Geschichtsseite, neueste zuerst z. B. für die News-Übersicht.',
+];
+$GLOBALS['TL_LANG']['tl_content']['timeline_reihenfolge_opt'] = [
+    'asc' => 'Chronologisch (älteste zuerst)',
+    'desc' => 'Neueste zuerst',
+];
+$GLOBALS['TL_LANG']['tl_content']['timeline_max'] = [
+    'Anzahl',
+    'Höchstens so viele Einträge (Pausen und Jahreszahlen zählen nicht). 0 = alle.',
+];
+$GLOBALS['TL_LANG']['tl_content']['timeline_pause_monate'] = [
+    'Pause ab Monaten',
+    'Liegen zwischen zwei Einträgen so viele Monate, erscheint automatisch eine Pause. 0 = keine automatischen Pausen.',
+];
+$GLOBALS['TL_LANG']['tl_content']['timeline_kompakt'] = [
+    'Kompakt',
+    'Nur Datum, Titel und Link – ohne Text, Tags und Legende.',
+];
+$GLOBALS['TL_LANG']['tl_content']['timeline_mehr_url'] = [
+    'Link',
+    'z. B. die Seite „Die Geschichte von retro-gaming.at“. Ersetzt am Ende „Fortsetzung folgt“.',
+];
+$GLOBALS['TL_LANG']['tl_content']['timeline_mehr_text'] = [
+    'Linktext',
+    'Leer = „Die ganze Geschichte“.',
+];
