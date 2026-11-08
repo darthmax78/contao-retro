@@ -21,6 +21,11 @@ $GLOBALS['TL_LANG']['tl_content']['retro_geraet'] = [
     'Eintrag aus der Geräte-Datenbank. Unveröffentlichte Geräte erscheinen nur im Backend und in der Vorschau.',
 ];
 
+$GLOBALS['TL_LANG']['tl_content']['retro_geraete'] = [
+    'Geräte',
+    'Ein oder mehrere Einträge aus der Geräte-Datenbank. Die Tabelle zeigt das Zubehör aller gewählten Geräte; bei mehreren steht dabei, wozu ein Teil passt.',
+];
+
 // Zitat (rg-17)
 $GLOBALS['TL_LANG']['tl_content']['zitat_legend'] = 'Zitat';
 $GLOBALS['TL_LANG']['tl_content']['nachweis_legend'] = 'Nachweis';

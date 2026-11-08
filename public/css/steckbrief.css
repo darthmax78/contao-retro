@@ -189,3 +189,26 @@
     display: none;
   }
 }
+
+/* ========================================
+ * Zubehör mit mehreren Geräten (rg-23): Spalte „Passt zu“
+ * ======================================== */
+.retro-table.zubehoer td.zubehoer-passt {
+  white-space: nowrap;
+  color: var(--rg-gruen);
+}
+
+@media (max-width: 600px) {
+  .retro-table.zubehoer td.zubehoer-passt {
+    white-space: normal;
+  }
+
+  .retro-table.zubehoer td:empty {
+    display: none;
+  }
+
+  .retro-table.zubehoer td.zubehoer-passt::before {
+    content: "Passt zu: ";
+    color: var(--rg-tinte-leise);
+  }
+}

@@ -27,7 +27,7 @@ $GLOBALS['TL_LANG']['CTE']['retro_steckbrief'] = [
 
 $GLOBALS['TL_LANG']['CTE']['retro_zubehoer'] = [
     'Zubehör',
-    'Tabelle des Original-Zubehörs eines Geräts aus der Geräte-Datenbank.',
+    'Tabelle des Original-Zubehörs eines oder mehrerer Geräte aus der Geräte-Datenbank.',
 ];
 
 $GLOBALS['TL_LANG']['CTE']['retro_unterschiede'] = [

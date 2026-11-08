@@ -90,7 +90,9 @@ Vergleichen, der Text überschreibt die Anzeige. Speicher steht in KB (1 KB = 10
 Jahr, Monat und Tag, damit unbekannte Teile leer bleiben können.
 
 Original-Zubehör steht im Katalog `tl_retro_zubehoer` (seit rg-12) und wird direkt am Teil mehreren Geräten zugeordnet,
-es wird nicht vererbt. Das Inhaltselement **Zubehör** (`retro_zubehoer`) gibt die Tabelle zu einem Gerät aus.
+es wird nicht vererbt. Das Inhaltselement **Zubehör** (`retro_zubehoer`) gibt die Tabelle zu einem oder mehreren Geräten aus
+(`retro_geraete`, seit rg-23): Jedes Teil steht einmal da, bei mehreren Geräten mit Spalte „Passt zu“ („beide“/„alle“
+oder die Namen). `ZubehoerGeraeteMigration` überträgt das bisherige Einzelgerät (`retro_geraet`) in die Liste.
 
 Das Inhaltselement **Steckbrief** (`retro_steckbrief`, seit rg-10) gibt ein Gerät in der Optik von
 `retro-table steckbrief` aus. `SteckbriefBauer` ist reine Logik ohne Datenbank, `GeraetLader` holt die Daten.
@@ -110,7 +112,7 @@ Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.13
+composer require darthmax78/contao-retro:^0.14
 vendor/bin/contao-console cache:clear
 ```
 

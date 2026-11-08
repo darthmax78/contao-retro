@@ -76,6 +76,15 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['retro_geraet'] = [
     'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
 ];
 
+// Mehrere Geräte (rg-23, Zubehör). Reihenfolge der Auswahl = Reihenfolge in der Tabelle.
+$GLOBALS['TL_DCA']['tl_content']['fields']['retro_geraete'] = [
+    'inputType' => 'select',
+    'foreignKey' => 'tl_retro_geraet.name',
+    'eval' => ['mandatory' => true, 'multiple' => true, 'chosen' => true, 'tl_class' => 'clr'],
+    'sql' => 'blob NULL',
+    'relation' => ['type' => 'hasMany', 'load' => 'lazy'],
+];
+
 // Unterschiede zum Basismodell aus der Geräte-Datenbank (rg-22), nutzt das Feld retro_geraet
 $GLOBALS['TL_DCA']['tl_content']['palettes']['retro_unterschiede'] =
     '{type_legend},type,headline;'
@@ -85,10 +94,10 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['retro_unterschiede'] =
     .'{expert_legend:hide},guests,cssID;'
     .'{invisible_legend:hide},invisible,start,stop';
 
-// Zubehör-Tabelle aus der Geräte-Datenbank (rg-12)
+// Zubehör-Tabelle aus der Geräte-Datenbank (rg-12), mehrere Geräte seit rg-23
 $GLOBALS['TL_DCA']['tl_content']['palettes']['retro_zubehoer'] =
     '{type_legend},type,headline;'
-    .'{geraet_legend},retro_geraet;'
+    .'{geraet_legend},retro_geraete;'
     .'{template_legend:hide},customTpl;'
     .'{protected_legend:hide},protected;'
     .'{expert_legend:hide},guests,cssID;'

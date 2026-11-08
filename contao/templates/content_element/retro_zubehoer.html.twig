@@ -1,6 +1,7 @@
 {% extends "@Contao/content_element/_base.html.twig" %}
 
 {# Die Überschrift steht in der Titelzeile, siehe retro_steckbrief.
+   Mehrere Geräte (rg-23): zusätzliche Spalte „Passt zu“ (zubehoer_mehrere).
    Daten: Zeilen nicht mit |nl2br trennen, das maskiert gespeicherte Entities doppelt. #}
 {% block inner %}
   {{ block('content') }}
@@ -11,10 +12,10 @@
     <p class="steckbrief-kicker">Zubehör</p>
     <{{ zubehoer_tag }} class="steckbrief-titel">{{ zubehoer_titel }}</{{ zubehoer_tag }}>
   </div>
-  <div class="retro-table">
+  <div class="retro-table zubehoer">
     <table>
       <thead>
-        <tr><th scope="col">Name</th><th scope="col">Modell</th><th scope="col">Art</th><th scope="col">Daten</th></tr>
+        <tr><th scope="col">Name</th><th scope="col">Modell</th><th scope="col">Art</th><th scope="col">Daten</th>{% if zubehoer_mehrere %}<th scope="col">Passt zu</th>{% endif %}</tr>
       </thead>
       <tbody>
         {% for teil in zubehoer_teile %}
@@ -23,6 +24,7 @@
             <td>{{ teil.modell }}</td>
             <td>{{ teil.art }}</td>
             <td>{% for zeile in teil.daten %}{{ zeile }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td>
+            {% if zubehoer_mehrere %}<td class="zubehoer-passt">{{ teil.passt }}</td>{% endif %}
           </tr>
         {% endfor %}
       </tbody>

@@ -258,6 +258,27 @@ class SteckbriefBauer
         return $ergebnis;
     }
 
+    /**
+     * @param array<string, mixed> $teil
+     * @param array<int, string>   $geraete
+     */
+    private function passt(array $teil, array $geraete): string
+    {
+        if (\count($geraete) < 2) {
+            return '';
+        }
+
+        $ids = @unserialize((string) ($teil['geraete'] ?? ''), ['allowed_classes' => false]);
+        $ids = \is_array($ids) ? array_map('intval', $ids) : [];
+        $namen = array_values(array_filter($geraete, static fn (int $id): bool => \in_array($id, $ids, true), ARRAY_FILTER_USE_KEY));
+
+        if (\count($namen) === \count($geraete)) {
+            return 2 === \count($geraete) ? 'beide' : 'alle';
+        }
+
+        return implode(', ', $namen);
+    }
+
     /** Leerraum und Zeilenumbrüche zählen beim Vergleich nicht. */
     private function vergleichbar(string $wert): string
     {
@@ -267,17 +288,21 @@ class SteckbriefBauer
     /**
      * Zeilen der Zubehör-Tabelle, nach Art und Name sortiert.
      *
-     * @param list<array<string, mixed>> $teile
+     * Mit $geraete (ID => Name, mehr als ein Gerät) bekommt jede Zeile unter „passt“ die Namen der
+     * gewählten Geräte, zu denen das Teil gehört – „alle“ bzw. „beide“, wenn es zu allen passt.
      *
-     * @return list<array{name: string, modell: string, art: string, daten: list<string>}>
+     * @param list<array<string, mixed>> $teile
+     * @param array<int, string>         $geraete
+     *
+     * @return list<array{name: string, modell: string, art: string, daten: list<string>, passt: string}>
      */
-    public function zubehoer(array $teile): array
+    public function zubehoer(array $teile, array $geraete = []): array
     {
         $reihenfolge = array_flip(array_keys(self::ZUBEHOER));
 
         usort($teile, static fn (array $a, array $b): int => [$reihenfolge[$a['art']] ?? 99, $a['name']] <=> [$reihenfolge[$b['art']] ?? 99, $b['name']]);
 
-        return array_map(function (array $t): array {
+        return array_map(function (array $t) use ($geraete): array {
             $von = (int) ($t['marktstart_jahr'] ?? 0);
             $bis = (int) ($t['produktionsende_jahr'] ?? 0);
             $zeitraum = match (true) {
@@ -296,6 +321,7 @@ class SteckbriefBauer
                     $zeitraum,
                     ...explode("\n", $this->text($t['beschreibung'] ?? '')),
                 ], static fn (string $zeile): bool => '' !== trim($zeile))),
+                'passt' => $this->passt($t, $geraete),
             ];
         }, $teile);
     }
