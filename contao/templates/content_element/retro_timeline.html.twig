@@ -1,56 +1,56 @@
 {#
   Timeline (rg-27): Zeitleiste im CRT-Look.
-  ol.timeline > li.timeline-jahr | li.timeline-eintrag(.is-meilenstein) | li.timeline-pause
-  Eintrag: time.timeline-datum + span.timeline-punkt + div.timeline-karte
+  ol.rt-liste > li.rt-jahr | li.rt-eintrag(.is-meilenstein) | li.rt-pause
+  Eintrag: time.rt-datum + span.rt-punkt + div.rt-karte
   CSS: public/css/timeline.css
 #}
 {% extends "@Contao/content_element/_base.html.twig" %}
 
 {% block content %}
   {% if timeline_einleitung %}
-    <p class="timeline-einleitung">{{ timeline_einleitung }}</p>
+    <p class="rt-einleitung">{{ timeline_einleitung }}</p>
   {% endif %}
 
   {% if timeline_legende %}
-    <ul class="timeline-legende" aria-label="Legende">
-      <li><span class="timeline-legende-punkt" aria-hidden="true"></span>Eintrag</li>
-      <li><span class="timeline-legende-punkt is-meilenstein" aria-hidden="true"></span>Meilenstein</li>
-      <li><span class="timeline-legende-punkt is-pause" aria-hidden="true"></span>Pause</li>
+    <ul class="rt-legende" aria-label="Legende">
+      <li><span class="rt-legende-punkt" aria-hidden="true"></span>Eintrag</li>
+      <li><span class="rt-legende-punkt is-meilenstein" aria-hidden="true"></span>Meilenstein</li>
+      <li><span class="rt-legende-punkt is-pause" aria-hidden="true"></span>Pause</li>
     </ul>
   {% endif %}
 
   {% if timeline_folge %}
-    <ol class="timeline{% if timeline_kompakt %} is-kompakt{% endif %}">
+    <ol class="rt-liste{% if timeline_kompakt %} is-kompakt{% endif %}">
       {% for e in timeline_folge %}
         {% if e.art == 'jahr' %}
-          <li class="timeline-jahr"><span class="timeline-jahr-zahl">{{ e.jahr }}</span></li>
+          <li class="rt-jahr"><span class="rt-jahr-zahl">{{ e.jahr }}</span></li>
         {% elseif e.art == 'pause' %}
-          <li class="timeline-pause">
-            <span class="timeline-datum">{{ e.datum }}</span>
-            <span class="timeline-punkt" aria-hidden="true"></span>
-            <div class="timeline-karte">
-              <p class="timeline-pause-titel">{{ e.titel ?: 'Pause' }}</p>
-              {% if e.text and not timeline_kompakt %}<p class="timeline-text">{{ e.text }}</p>{% endif %}
-              <p class="timeline-pause-coin" aria-hidden="true">Insert coin to continue</p>
+          <li class="rt-pause">
+            <span class="rt-datum">{{ e.datum }}</span>
+            <span class="rt-punkt" aria-hidden="true"></span>
+            <div class="rt-karte">
+              <p class="rt-pause-titel">{{ e.titel ?: 'Pause' }}</p>
+              {% if e.text and not timeline_kompakt %}<p class="rt-text">{{ e.text }}</p>{% endif %}
+              <p class="rt-pause-coin" aria-hidden="true">Insert coin to continue</p>
             </div>
           </li>
         {% else %}
-          <li class="timeline-eintrag{% if e.meilenstein %} is-meilenstein{% endif %}">
-            {% if e.datum_iso %}<time class="timeline-datum" datetime="{{ e.datum_iso }}">{{ e.datum }}</time>{% else %}<span class="timeline-datum">{{ e.datum }}</span>{% endif %}
-            <span class="timeline-punkt" aria-hidden="true"></span>
-            <div class="timeline-karte">
-              {% if e.meilenstein %}<span class="timeline-label">Meilenstein</span>{% endif %}
-              <h3 class="timeline-titel">{{ e.titel }}</h3>
-              {% if e.text and not timeline_kompakt %}<p class="timeline-text">{{ e.text }}</p>{% endif %}
+          <li class="rt-eintrag{% if e.meilenstein %} is-meilenstein{% endif %}">
+            {% if e.datum_iso %}<time class="rt-datum" datetime="{{ e.datum_iso }}">{{ e.datum }}</time>{% else %}<span class="rt-datum">{{ e.datum }}</span>{% endif %}
+            <span class="rt-punkt" aria-hidden="true"></span>
+            <div class="rt-karte">
+              {% if e.meilenstein %}<span class="rt-label">Meilenstein</span>{% endif %}
+              <h3 class="rt-titel">{{ e.titel }}</h3>
+              {% if e.text and not timeline_kompakt %}<p class="rt-text">{{ e.text }}</p>{% endif %}
               {% if e.tags or e.url %}
-                <div class="timeline-fuss">
+                <div class="rt-fuss">
                   {% if e.tags and not timeline_kompakt %}
-                    <ul class="timeline-tags">
+                    <ul class="rt-tags">
                       {% for tag in e.tags %}<li>{{ tag }}</li>{% endfor %}
                     </ul>
                   {% endif %}
                   {% if e.url %}
-                    <a class="timeline-link" href="{{ e.url }}"{% if e.url starts with 'http' %} rel="noopener"{% endif %}>Zum Beitrag<span aria-hidden="true">&nbsp;›</span><span class="invisible"> „{{ e.titel }}“</span></a>
+                    <a class="rt-link" href="{{ e.url }}"{% if e.url starts with 'http' %} rel="noopener"{% endif %}>Zum Beitrag<span aria-hidden="true">&nbsp;›</span><span class="invisible"> „{{ e.titel }}“</span></a>
                   {% endif %}
                 </div>
               {% endif %}
@@ -61,9 +61,9 @@
     </ol>
 
     {% if timeline_mehr_url %}
-      <p class="timeline-mehr"><a href="{{ timeline_mehr_url }}">{{ timeline_mehr_text }}<span aria-hidden="true">&nbsp;›</span></a></p>
+      <p class="rt-mehr"><a href="{{ timeline_mehr_url }}">{{ timeline_mehr_text }}<span aria-hidden="true">&nbsp;›</span></a></p>
     {% elseif not timeline_neueste_zuerst and not timeline_kompakt %}
-      <p class="timeline-ende" aria-hidden="true">Fortsetzung folgt<span class="timeline-cursor"></span></p>
+      <p class="rt-ende" aria-hidden="true">Fortsetzung folgt<span class="rt-cursor"></span></p>
     {% endif %}
   {% else %}
     <p class="steckbrief-entwurf">Noch keine Einträge: bei News „In der Timeline zeigen“ anhaken oder unter Retro-Datenbank › Timeline eintragen.</p>

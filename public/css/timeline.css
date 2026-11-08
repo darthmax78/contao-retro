@@ -1,13 +1,14 @@
 /* ==========================================================================
    darthmax78/contao-retro – Timeline (retro_timeline, rg-27)
-   HTML: div.content-retro-timeline > p.timeline-einleitung + ul.timeline-legende
-         + ol.timeline > li.timeline-jahr | li.timeline-eintrag(.is-meilenstein) | li.timeline-pause
-         + p.timeline-mehr | p.timeline-ende
-   Eintrag: .timeline-datum | .timeline-punkt | .timeline-karte (Spalten Datum, Linie, Karte)
+   HTML: div.content-retro-timeline > p.rt-einleitung + ul.rt-legende
+         + ol.rt-liste > li.rt-jahr | li.rt-eintrag(.is-meilenstein) | li.rt-pause
+         + p.rt-mehr | p.rt-ende
+   Eintrag: .rt-datum | .rt-punkt | .rt-karte (Spalten Datum, Linie, Karte)
    Schmal (Element unter 560 px): Linie links, Datum über der Karte.
    Farben ausschließlich über die --rg-* Variablen der custom.css.
    Kontraste auf --rg-feld: Tinte 15,5:1 · Tinte-leise 8,9:1 · Grün 10,7:1 · Amber 10,2:1
    Schriften: VT323 (Datum, Titel, Label, Tags), Text erbt IBM Plex Sans (17 px wie rg-19).
+   Klassenpräfix rt-: Oneo bringt eigene .timeline-Regeln mit (Mittellinie, Zentrierung).
    Kein C64-Font: dessen Großbuchstaben liegen auf PETSCII-Grafikzeichen.
    ========================================================================== */
 .content-retro-timeline {
@@ -19,7 +20,30 @@
   margin: 2rem 0;
 }
 
-.timeline-einleitung {
+/* Theme-Vorgaben neutralisieren: Oneo zentriert Text und setzt große Absatz-, Listen- und
+   Überschriften-Abstände. Klassen tragen das Präfix rt-, weil Oneo selbst .timeline-Regeln hat. */
+.content-retro-timeline,
+.content-retro-timeline ol.rt-liste {
+  text-align: left;
+}
+
+.content-retro-timeline ol.rt-liste :is(p, h3, ul, li),
+.content-retro-timeline :is(.rt-legende, .rt-legende li) {
+  margin: 0;
+  text-align: left;
+}
+
+.content-retro-timeline ol.rt-liste ul,
+.content-retro-timeline ul.rt-legende {
+  padding: 0;
+  list-style: none;
+}
+
+.content-retro-timeline ol.rt-liste li::marker {
+  content: none;
+}
+
+.content-retro-timeline p.rt-einleitung {
   max-width: 42rem;
   margin: 0 0 1.25rem;
   font-size: 17px;
@@ -28,7 +52,7 @@
 }
 
 /* Legende */
-.timeline-legende {
+.rt-legende {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 1.5rem;
@@ -40,28 +64,28 @@
   color: var(--rg-tinte-leise);
 }
 
-.timeline-legende li {
+.rt-legende li {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin: 0;
 }
 
-.timeline-legende-punkt {
+.rt-legende-punkt {
   width: 12px;
   height: 12px;
   background: var(--rg-gruen);
   box-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.6);
 }
 
-.timeline-legende-punkt.is-meilenstein {
+.rt-legende-punkt.is-meilenstein {
   width: 14px;
   height: 14px;
   background: var(--rg-amber);
   box-shadow: 0 0 10px rgba(var(--rg-amber-rgb), 0.6);
 }
 
-.timeline-legende-punkt.is-pause {
+.rt-legende-punkt.is-pause {
   box-sizing: border-box;
   background: none;
   border: 2px dashed var(--rg-tinte-leise);
@@ -69,14 +93,15 @@
 }
 
 /* Liste */
-ol.timeline {
+ol.rt-liste {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-ol.timeline > li {
+ol.rt-liste > li {
   position: relative;
+  text-align: left;
   display: grid;
   grid-template-columns: var(--tl-datum) var(--tl-linie) minmax(0, 1fr);
   column-gap: var(--tl-abstand);
@@ -85,7 +110,7 @@ ol.timeline > li {
 }
 
 /* durchgehende Leuchtlinie in der mittleren Spalte */
-ol.timeline > li::before {
+ol.rt-liste > li::before {
   content: "";
   position: absolute;
   top: 0;
@@ -95,14 +120,14 @@ ol.timeline > li::before {
   background: rgba(var(--rg-gruen-rgb), 0.35);
 }
 
-ol.timeline > li.timeline-pause::before {
+ol.rt-liste > li.rt-pause::before {
   width: 0;
   background: none;
   border-left: 2px dashed var(--rg-lcd-3);
 }
 
 /* Jahreszahl */
-li.timeline-jahr .timeline-jahr-zahl {
+li.rt-jahr .rt-jahr-zahl {
   grid-column: 3;
   padding: 1.75rem 0 1.25rem;
   font-family: 'VT323', monospace;
@@ -113,12 +138,12 @@ li.timeline-jahr .timeline-jahr-zahl {
   text-shadow: 0 0 12px rgba(var(--rg-gruen-rgb), 0.55);
 }
 
-ol.timeline > li.timeline-jahr:first-child .timeline-jahr-zahl {
+ol.rt-liste > li.rt-jahr:first-child .rt-jahr-zahl {
   padding-top: 0.25rem;
 }
 
 /* Datum, Punkt */
-.timeline-datum {
+.rt-datum {
   grid-column: 1;
   grid-row: 1;
   padding-top: 1.35rem;
@@ -130,15 +155,15 @@ ol.timeline > li.timeline-jahr:first-child .timeline-jahr-zahl {
   color: var(--rg-gruen);
 }
 
-.is-meilenstein .timeline-datum {
+.is-meilenstein .rt-datum {
   color: var(--rg-amber);
 }
 
-.timeline-pause .timeline-datum {
+.rt-pause .rt-datum {
   color: var(--rg-tinte-leise);
 }
 
-.timeline-punkt {
+.rt-punkt {
   position: relative;
   z-index: 1;
   grid-column: 2;
@@ -151,7 +176,7 @@ ol.timeline > li.timeline-jahr:first-child .timeline-jahr-zahl {
   box-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.6);
 }
 
-.is-meilenstein .timeline-punkt {
+.is-meilenstein .rt-punkt {
   width: 18px;
   height: 18px;
   margin-top: calc(1.6rem - 2px);
@@ -159,7 +184,7 @@ ol.timeline > li.timeline-jahr:first-child .timeline-jahr-zahl {
   box-shadow: 0 0 14px rgba(var(--rg-amber-rgb), 0.7);
 }
 
-.timeline-pause .timeline-punkt {
+.rt-pause .rt-punkt {
   box-sizing: border-box;
   margin-top: 2.1rem;
   background: var(--rg-papier);
@@ -168,7 +193,7 @@ ol.timeline > li.timeline-jahr:first-child .timeline-jahr-zahl {
 }
 
 /* Karte */
-.timeline-karte {
+.rt-karte {
   grid-column: 3;
   grid-row: 1;
   display: flex;
@@ -181,20 +206,20 @@ ol.timeline > li.timeline-jahr:first-child .timeline-jahr-zahl {
   border-radius: 3px;
 }
 
-.is-meilenstein .timeline-karte {
+.is-meilenstein .rt-karte {
   background: linear-gradient(rgba(var(--rg-amber-rgb), 0.06), rgba(var(--rg-amber-rgb), 0.06)), var(--rg-feld);
   border: 2px solid var(--rg-amber);
   box-shadow: 0 0 18px rgba(var(--rg-amber-rgb), 0.18);
 }
 
-.timeline-pause .timeline-karte {
+.rt-pause .rt-karte {
   margin: 1.25rem 0 2rem;
   padding: 0.5rem 0;
   background: none;
   border: 0;
 }
 
-.timeline-label {
+.rt-label {
   align-self: flex-start;
   padding: 1px 8px 0;
   font-family: 'VT323', monospace;
@@ -206,7 +231,7 @@ ol.timeline > li.timeline-jahr:first-child .timeline-jahr-zahl {
   background: var(--rg-amber);
 }
 
-.content-retro-timeline .timeline-titel {
+.content-retro-timeline .rt-titel {
   margin: 0;
   font-family: 'VT323', monospace;
   font-size: 1.9rem;
@@ -217,7 +242,7 @@ ol.timeline > li.timeline-jahr:first-child .timeline-jahr-zahl {
   text-shadow: none;
 }
 
-.timeline-text {
+.rt-text {
   margin: 0;
   font-size: 17px;
   line-height: 1.7;
@@ -226,7 +251,7 @@ ol.timeline > li.timeline-jahr:first-child .timeline-jahr-zahl {
 }
 
 /* Fuß: Tags und Link */
-.timeline-fuss {
+.rt-fuss {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -234,7 +259,7 @@ ol.timeline > li.timeline-jahr:first-child .timeline-jahr-zahl {
   margin-top: 0.25rem;
 }
 
-ul.timeline-tags {
+ul.rt-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
@@ -243,7 +268,7 @@ ul.timeline-tags {
   list-style: none;
 }
 
-ul.timeline-tags li {
+ul.rt-tags li {
   margin: 0;
   padding: 0 0.5rem;
   font-family: 'VT323', monospace;
@@ -255,7 +280,7 @@ ul.timeline-tags li {
   border-radius: 3px;
 }
 
-.content-retro-timeline a.timeline-link {
+.content-retro-timeline a.rt-link {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
@@ -274,20 +299,20 @@ ul.timeline-tags li {
   transition: background-color .15s ease, box-shadow .15s ease;
 }
 
-.content-retro-timeline a.timeline-link:hover,
-.content-retro-timeline a.timeline-link:focus-visible {
+.content-retro-timeline a.rt-link:hover,
+.content-retro-timeline a.rt-link:focus-visible {
   background: var(--rg-lcd-3);
   box-shadow: 0 0 20px rgba(var(--rg-gruen-rgb), 0.4);
 }
 
-.content-retro-timeline a.timeline-link:focus-visible,
-.timeline-mehr a:focus-visible {
+.content-retro-timeline a.rt-link:focus-visible,
+.rt-mehr a:focus-visible {
   outline: 2px solid var(--rg-gruen);
   outline-offset: 3px;
 }
 
 /* Pause */
-.timeline-pause-titel {
+.rt-pause-titel {
   margin: 0;
   font-family: 'VT323', monospace;
   font-size: 2.1rem;
@@ -297,18 +322,18 @@ ul.timeline-tags li {
   color: var(--rg-tinte-leise);
 }
 
-.timeline-pause-titel::before,
-.timeline-pause-titel::after {
+.rt-pause-titel::before,
+.rt-pause-titel::after {
   content: " — ";
   letter-spacing: 0;
 }
 
-.timeline-pause .timeline-text {
+.rt-pause .rt-text {
   color: var(--rg-tinte-leise);
   opacity: 1;
 }
 
-.timeline-pause-coin {
+.rt-pause-coin {
   margin: 0;
   font-family: 'VT323', monospace;
   font-size: 1.25rem;
@@ -318,8 +343,8 @@ ul.timeline-tags li {
 }
 
 /* Ende und Link zur ganzen Geschichte */
-.timeline-ende,
-.timeline-mehr {
+.rt-ende,
+.rt-mehr {
   margin: 0;
   padding: 1.25rem 0 0 calc(var(--tl-datum) + var(--tl-linie) + 2 * var(--tl-abstand));
   font-family: 'VT323', monospace;
@@ -329,17 +354,17 @@ ul.timeline-tags li {
   color: var(--rg-gruen);
 }
 
-.timeline-mehr a {
+.rt-mehr a {
   color: var(--rg-gruen);
   text-decoration: none;
   text-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.45);
 }
 
-.timeline-mehr a:hover {
+.rt-mehr a:hover {
   text-decoration: underline;
 }
 
-.timeline-cursor {
+.rt-cursor {
   display: inline-block;
   width: 0.5em;
   height: 0.95em;
@@ -347,19 +372,19 @@ ul.timeline-tags li {
   vertical-align: -0.12em;
   background: var(--rg-gruen);
   box-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.6);
-  animation: timeline-blinken 1.1s steps(1) infinite;
+  animation: rt-blinken 1.1s steps(1) infinite;
 }
 
-@keyframes timeline-blinken {
+@keyframes rt-blinken {
   50% { opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .timeline-cursor { animation: none; }
+  .rt-cursor { animation: none; }
 }
 
 /* Kompakt: ohne Text und Tags, enger */
-ol.timeline.is-kompakt .timeline-karte {
+ol.rt-liste.is-kompakt .rt-karte {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
@@ -368,49 +393,49 @@ ol.timeline.is-kompakt .timeline-karte {
   padding: 0.5rem 0.75rem 0.5rem 1rem;
 }
 
-ol.timeline.is-kompakt .timeline-titel {
+ol.rt-liste.is-kompakt .rt-titel {
   flex: 1 1 14rem;
 }
 
-ol.timeline.is-kompakt .timeline-fuss {
+ol.rt-liste.is-kompakt .rt-fuss {
   margin: 0;
 }
 
-ol.timeline.is-kompakt .timeline-label {
+ol.rt-liste.is-kompakt .rt-label {
   align-self: center;
 }
 
-ol.timeline.is-kompakt .timeline-pause .timeline-karte {
+ol.rt-liste.is-kompakt .rt-pause .rt-karte {
   flex-direction: column;
   align-items: flex-start;
 }
 
-ol.timeline.is-kompakt .timeline-titel {
+ol.rt-liste.is-kompakt .rt-titel {
   font-size: 1.55rem;
 }
 
-ol.timeline.is-kompakt .timeline-datum {
+ol.rt-liste.is-kompakt .rt-datum {
   padding-top: 1rem;
 }
 
-ol.timeline.is-kompakt .timeline-punkt {
+ol.rt-liste.is-kompakt .rt-punkt {
   margin-top: 1.25rem;
 }
 
-ol.timeline.is-kompakt .is-meilenstein .timeline-punkt {
+ol.rt-liste.is-kompakt .is-meilenstein .rt-punkt {
   margin-top: calc(1.25rem - 2px);
 }
 
-ol.timeline.is-kompakt li.timeline-jahr .timeline-jahr-zahl {
+ol.rt-liste.is-kompakt li.rt-jahr .rt-jahr-zahl {
   padding: 1rem 0 0.5rem;
   font-size: 2.5rem;
 }
 
-ol.timeline.is-kompakt .timeline-pause .timeline-karte {
+ol.rt-liste.is-kompakt .rt-pause .rt-karte {
   margin: 0.75rem 0 1rem;
 }
 
-ol.timeline.is-kompakt .timeline-pause-titel {
+ol.rt-liste.is-kompakt .rt-pause-titel {
   font-size: 1.6rem;
 }
 
@@ -429,21 +454,21 @@ ol.timeline.is-kompakt .timeline-pause-titel {
 
 /* Schmal: Linie links, Datum über der Karte */
 @container (max-width: 560px) {
-  ol.timeline > li {
+  ol.rt-liste > li {
     grid-template-columns: var(--tl-linie) minmax(0, 1fr);
     column-gap: 0.75rem;
   }
 
-  ol.timeline > li::before {
+  ol.rt-liste > li::before {
     left: calc(var(--tl-linie) / 2 - 1px);
   }
 
-  li.timeline-jahr .timeline-jahr-zahl {
+  li.rt-jahr .rt-jahr-zahl {
     grid-column: 2;
     font-size: 2.75rem;
   }
 
-  .timeline-datum {
+  .rt-datum {
     grid-column: 2;
     grid-row: 1;
     padding-top: 1rem;
@@ -451,55 +476,55 @@ ol.timeline.is-kompakt .timeline-pause-titel {
     font-size: 1.3rem;
   }
 
-  .timeline-punkt {
+  .rt-punkt {
     grid-column: 1;
     grid-row: 1 / span 2;
     margin-top: 1.15rem;
   }
 
-  .is-meilenstein .timeline-punkt {
+  .is-meilenstein .rt-punkt {
     margin-top: calc(1.15rem - 2px);
   }
 
-  .timeline-pause .timeline-punkt {
+  .rt-pause .rt-punkt {
     margin-top: 1.15rem;
   }
 
-  .timeline-karte {
+  .rt-karte {
     grid-column: 2;
     grid-row: 2;
     margin-top: 0.35rem;
     padding: 0.85rem 1rem;
   }
 
-  .timeline-pause .timeline-karte {
+  .rt-pause .rt-karte {
     margin-top: 0.25rem;
   }
 
-  .content-retro-timeline .timeline-titel {
+  .content-retro-timeline .rt-titel {
     font-size: 1.65rem;
   }
 
-  .content-retro-timeline a.timeline-link {
+  .content-retro-timeline a.rt-link {
     margin-left: 0;
   }
 
-  .timeline-pause-titel {
+  .rt-pause-titel {
     font-size: 1.7rem;
     letter-spacing: 0.2em;
   }
 
-  .timeline-ende,
-  .timeline-mehr {
+  .rt-ende,
+  .rt-mehr {
     padding-left: calc(var(--tl-linie) + 0.75rem);
   }
 
-  ol.timeline.is-kompakt .timeline-datum,
-  ol.timeline.is-kompakt .timeline-punkt {
+  ol.rt-liste.is-kompakt .rt-datum,
+  ol.rt-liste.is-kompakt .rt-punkt {
     padding-top: 0.75rem;
   }
 
-  ol.timeline.is-kompakt .timeline-punkt {
+  ol.rt-liste.is-kompakt .rt-punkt {
     padding-top: 0;
     margin-top: 0.9rem;
   }

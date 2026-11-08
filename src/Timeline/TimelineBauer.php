@@ -67,7 +67,18 @@ final class TimelineBauer
     public static function pausenText(int $monate): string
     {
         if ($monate >= 18) {
-            return sprintf('Rund %d Jahre lang blieb der Bildschirm dunkel.', (int) round($monate / 12));
+            // auf halbe Jahre runden: 19 Monate = anderthalb Jahre, 24 = zwei Jahre
+            $halbe = (int) round($monate / 6);
+
+            if (3 === $halbe) {
+                return 'Anderthalb Jahre lang blieb der Bildschirm dunkel.';
+            }
+
+            $jahre = intdiv($halbe, 2);
+
+            return 0 === $halbe % 2
+                ? sprintf('Rund %d Jahre lang blieb der Bildschirm dunkel.', $jahre)
+                : sprintf('Rund %d½ Jahre lang blieb der Bildschirm dunkel.', $jahre);
         }
 
         if ($monate >= 11) {
