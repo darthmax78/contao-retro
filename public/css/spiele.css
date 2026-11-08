@@ -93,6 +93,11 @@ a.sg-bild:focus-visible {
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* Nur Screenshots in nativer Auflösung (bis 480 px breit) pixelgenau vergrößern.
+   Größere Aufnahmen werden weich verkleinert – Nearest-Neighbour erzeugt dort RGB-Moiré. */
+.sg-nativ .sg-bild img {
   image-rendering: pixelated;
 }
 
@@ -123,8 +128,15 @@ a.sg-bild:focus-visible {
   color: var(--rg-tinte-leise);
 }
 
-.sg-name {
-  margin: 0.7rem 0 0;
+/* Name und Angaben: eigene Abstände gegen die Absatz-Vorgaben des Themes (höhere Spezifität) */
+ul.sg-raster > li.sg-spiel > p.sg-name,
+ul.sg-raster > li.sg-spiel > p.sg-meta {
+  padding: 0;
+  margin: 0;
+}
+
+ul.sg-raster > li.sg-spiel > p.sg-name {
+  margin-top: 0.7rem;
   font: 1.3rem/1.15 'VT323', monospace;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -132,8 +144,8 @@ a.sg-bild:focus-visible {
   text-wrap: balance;
 }
 
-.sg-meta {
-  margin: 0.2rem 0 0;
+ul.sg-raster > li.sg-spiel > p.sg-meta {
+  margin-top: 0.25rem;
   font-size: 0.88rem;
   line-height: 1.4;
   color: var(--rg-tinte-leise);

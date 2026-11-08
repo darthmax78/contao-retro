@@ -28,7 +28,13 @@ use Symfony\Component\HttpFoundation\Response;
 #[AsContentElement('retro_spielegalerie', category: 'media')]
 class SpielegalerieController extends AbstractContentElementController
 {
-    private const ANGABEN = ['jahr', 'genre', 'publisher', 'entwickler'];
+    private const ANGABEN = ['jahr', 'genre', 'publisher', 'entwickler', 'programmierer'];
+
+    /** Bis zu dieser Breite gilt ein Screenshot als native Auflösung und wird pixelgenau vergrößert. */
+    private const NATIV_MAX_BREITE = 480;
+
+    /** Größere Screenshots (Aufnahmen mit CRT-/LCD-Filter) weich auf diese Breite verkleinern (2× Anzeige). */
+    private const GROSS_BREITE = [800, 0, 'proportional'];
 
     public function __construct(
         private readonly SpieleLader $lader,
@@ -60,6 +66,7 @@ class SpielegalerieController extends AbstractContentElementController
             $gruppe = 'spiel-'.$spiel['id'];
             $bilder = array_values(array_filter(StringUtil::deserialize($spiel['screenshots'], true)));
             $figur = null;
+            $nativ = false;
             $weitere = [];
 
             foreach ($bilder as $i => $uuid) {
@@ -70,11 +77,19 @@ class SpielegalerieController extends AbstractContentElementController
                 ;
 
                 if (0 === $i) {
-                    $figur = $builder
-                        ->setSize($mitGroesse ? $model->size : null)
-                        ->setMetadata(new Metadata([Metadata::VALUE_ALT => (string) $spiel['name']]))
-                        ->buildIfResourceExists()
-                    ;
+                    $builder->setMetadata(new Metadata([
+                        Metadata::VALUE_ALT => (string) $spiel['name'],
+                        Metadata::VALUE_TITLE => $this->titel($spiel),
+                    ]));
+                    $figur = $builder->setSize($mitGroesse ? $model->size : null)->buildIfResourceExists();
+                    $breite = $figur?->getImage()->getOriginalDimensions()->getSize()->getWidth() ?? 0;
+                    $nativ = $breite > 0 && $breite <= self::NATIV_MAX_BREITE;
+
+                    // Große Aufnahmen: Nearest-Neighbour beim Verkleinern erzeugt RGB-Moiré, daher weich verkleinern
+                    if ($figur && !$nativ && !$mitGroesse) {
+                        $figur = $builder->setSize(self::GROSS_BREITE)->buildIfResourceExists();
+                    }
+
                     continue;
                 }
 
@@ -87,6 +102,7 @@ class SpielegalerieController extends AbstractContentElementController
 
             $eintraege[] = [
                 'name' => (string) $spiel['name'],
+                'titel' => $this->titel($spiel),
                 'meta' => $this->meta($spiel, $angaben),
                 'figur' => $figur,
                 'lightbox' => $figur?->hasLightbox() ? $figur->getLightbox()->getLinkHref() : '',
@@ -94,6 +110,7 @@ class SpielegalerieController extends AbstractContentElementController
                 'weitere' => $weitere,
                 'anzahl' => \count($weitere) + ($figur ? 1 : 0),
                 'entwurf' => !$spiel['published'],
+                'nativ' => $nativ ?? false,
             ];
         }
 
@@ -104,6 +121,18 @@ class SpielegalerieController extends AbstractContentElementController
         $template->set('sg_hinweis', $eintraege ? '' : ($geraete ? 'Für diese Geräte ist noch kein Spiel „In der Galerie zeigen“ markiert.' : 'Bitte mindestens ein Gerät wählen.'));
 
         return $template->getResponse();
+    }
+
+    /**
+     * Bildtitel (auch Beschriftung in der Großansicht): Name, mit Teaser „Name – Teaser“.
+     *
+     * @param array<string, mixed> $spiel
+     */
+    private function titel(array $spiel): string
+    {
+        $teaser = trim(preg_replace('/\s+/u', ' ', (string) ($spiel['teaser'] ?? '')) ?? '');
+
+        return '' === $teaser ? (string) $spiel['name'] : $spiel['name'].' – '.$teaser;
     }
 
     /**
@@ -120,6 +149,7 @@ class SpielegalerieController extends AbstractContentElementController
                 'genre' => Genres::LISTE[$spiel['genre']] ?? '',
                 'publisher' => (string) ($spiel['publisher_name'] ?? ''),
                 'entwickler' => (string) ($spiel['entwickler_name'] ?? ''),
+                'programmierer' => trim((string) ($spiel['programmierer'] ?? '')),
                 default => '',
             };
         }

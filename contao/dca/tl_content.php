@@ -214,7 +214,7 @@ $GLOBALS['TL_DCA']['tl_content']['palettes']['retro_spielegalerie'] =
 $GLOBALS['TL_DCA']['tl_content']['fields']['spielegalerie_angaben'] = [
     'exclude' => true,
     'inputType' => 'checkbox',
-    'options' => ['jahr', 'genre', 'publisher', 'entwickler'],
+    'options' => ['jahr', 'genre', 'publisher', 'entwickler', 'programmierer'],
     'reference' => &$GLOBALS['TL_LANG']['tl_content']['spielegalerie_angaben_opt'],
     'default' => ['jahr', 'genre'],
     'eval' => ['multiple' => true, 'tl_class' => 'w50 clr'],

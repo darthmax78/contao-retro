@@ -127,7 +127,7 @@ final class SpieleImport
     {
         $d = [];
 
-        foreach (['region' => 32, 'spieler' => 64, 'modellnummer' => 64, 'quelle_text' => 255] as $feld => $laenge) {
+        foreach (['region' => 32, 'spieler' => 64, 'modellnummer' => 64, 'quelle_text' => 255, 'programmierer' => 255, 'teaser' => 400] as $feld => $laenge) {
             if ('' !== ($w[$feld] ?? '')) {
                 $d[$feld] = mb_substr($w[$feld], 0, $laenge);
             }

@@ -45,11 +45,11 @@ $GLOBALS['TL_DCA']['tl_retro_spiel'] = [
     ],
     'palettes' => [
         'default' => '{spiel_legend},name,geraet,genre,spieler;'
-            .'{firmen_legend},entwickler,publisher;'
+            .'{firmen_legend},entwickler,publisher,programmierer;'
             .'{markt_legend},jahr,monat,tag,region,modellnummer,modul_kb;'
             .'{bilder_legend},screenshots;'
             .'{galerie_legend},galerie,sortierung;'
-            .'{text_legend},beschreibung,quelle_text;'
+            .'{text_legend},teaser,beschreibung,quelle_text;'
             .'{publish_legend},published',
     ],
     'fields' => [
@@ -101,6 +101,12 @@ $GLOBALS['TL_DCA']['tl_retro_spiel'] = [
             'eval' => ['chosen' => true, 'includeBlankOption' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
+        ],
+        'programmierer' => [
+            'inputType' => 'text',
+            'search' => true,
+            'eval' => ['maxlength' => 255, 'tl_class' => 'long clr'],
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => ''],
         ],
         'jahr' => [
             'inputType' => 'text',
@@ -158,6 +164,12 @@ $GLOBALS['TL_DCA']['tl_retro_spiel'] = [
             'inputType' => 'text',
             'eval' => ['rgxp' => 'natural', 'nospace' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'integer', 'unsigned' => true, 'default' => 0],
+        ],
+        'teaser' => [
+            'inputType' => 'textarea',
+            'search' => true,
+            'eval' => ['maxlength' => 400, 'rows' => 3, 'tl_class' => 'clr'],
+            'sql' => ['type' => 'text', 'notnull' => false],
         ],
         'beschreibung' => [
             'inputType' => 'textarea',

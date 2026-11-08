@@ -16,14 +16,14 @@
   {% if sg_spiele %}
     <ul class="sg-raster">
       {% for spiel in sg_spiele %}
-        <li class="sg-spiel{% if spiel.entwurf %} sg-entwurf{% endif %}">
+        <li class="sg-spiel{% if spiel.entwurf %} sg-entwurf{% endif %}{% if spiel.nativ %} sg-nativ{% endif %}">
           {% if spiel.figur %}
             {% if spiel.lightbox %}
-              <a class="sg-bild" href="{{ spiel.lightbox }}" data-lightbox="{{ spiel.gruppe }}" title="{{ spiel.name }}">
+              <a class="sg-bild" href="{{ spiel.lightbox }}" data-lightbox="{{ spiel.gruppe }}" title="{{ spiel.titel }}">
                 {% with {figure: spiel.figur} %}{{ block('picture_component') }}{% endwith %}
                 {% if spiel.anzahl > 1 %}<span class="sg-anzahl" aria-label="{{ spiel.anzahl }} Screenshots">{{ spiel.anzahl }}</span>{% endif %}
               </a>
-              {% for href in spiel.weitere %}<a href="{{ href }}" data-lightbox="{{ spiel.gruppe }}" title="{{ spiel.name }}" hidden aria-hidden="true" tabindex="-1"></a>{% endfor %}
+              {% for href in spiel.weitere %}<a href="{{ href }}" data-lightbox="{{ spiel.gruppe }}" title="{{ spiel.titel }}" hidden aria-hidden="true" tabindex="-1"></a>{% endfor %}
             {% else %}
               <span class="sg-bild">{% with {figure: spiel.figur} %}{{ block('picture_component') }}{% endwith %}</span>
             {% endif %}
