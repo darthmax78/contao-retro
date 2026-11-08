@@ -28,18 +28,29 @@ div.information.last-edited p {
 
 
 /* ===========================================
- * "Zuletzt bearbeitet"-Box: Disketten-Symbol in der Überschrift
+ * "Zuletzt bearbeitet"-Box: Diskette links über Überschrift und Text (rg-24)
+ * 48 px = 3 × Raster des 16er-Symbols, damit die Pixelkanten scharf bleiben
  * ======================================== */
-div.information.last-edited h3 {
-  display: flex;
+div.information.last-edited {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1rem;
   align-items: center;
-  gap: 0.5em;
 }
 
 div.information.last-edited .last-edited__icon {
-  flex: none;
-  width: 1em;
-  height: 1em;
-  color: inherit; /* gleiche Farbe wie die Überschrift */
-  filter: drop-shadow(0 0 3px currentColor); /* leichter Phosphor-Glow */
+  grid-row: 1 / span 2;
+  width: 48px;
+  height: 48px;
+  color: inherit; /* Farbe der Box (C64-Violett) */
+  filter: drop-shadow(0 0 4px currentColor); /* leichter Phosphor-Glow */
+}
+
+div.information.last-edited h3 {
+  grid-column: 2;
+  margin: 0 0 0.2em;
+}
+
+div.information.last-edited p {
+  grid-column: 2;
 }

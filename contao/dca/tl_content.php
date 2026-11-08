@@ -171,6 +171,36 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['zitat_quelle_url'] = [
     'sql' => "varchar(255) NOT NULL default ''",
 ];
 
+// Quellen (rg-24): Liste mit Anker je Eintrag, selbst Sprungziel (Leistentext sa_sprungtext)
+$GLOBALS['TL_DCA']['tl_content']['palettes']['retro_quellen'] =
+    '{type_legend},type,headline,sa_sprungtext;'
+    .'{quellen_legend},quellen_liste,quellen_kennung;'
+    .'{template_legend:hide},customTpl;'
+    .'{protected_legend:hide},protected;'
+    .'{expert_legend:hide},guests,cssID;'
+    .'{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['quellen_liste'] = [
+    'exclude' => true,
+    'inputType' => 'rowWizard',
+    'fields' => [
+        'herausgeber' => ['label' => &$GLOBALS['TL_LANG']['tl_content']['quellen_herausgeber'], 'inputType' => 'text'],
+        'titel' => ['label' => &$GLOBALS['TL_LANG']['tl_content']['quellen_titel'], 'inputType' => 'text'],
+        'url' => ['label' => &$GLOBALS['TL_LANG']['tl_content']['quellen_url'], 'inputType' => 'text'],
+        'bezug' => ['label' => &$GLOBALS['TL_LANG']['tl_content']['quellen_bezug'], 'inputType' => 'text'],
+        'abgerufen' => ['label' => &$GLOBALS['TL_LANG']['tl_content']['quellen_abgerufen'], 'inputType' => 'text'],
+    ],
+    'eval' => ['tl_class' => 'clr'],
+    'sql' => 'blob NULL',
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['quellen_kennung'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'eval' => ['maxlength' => 32, 'rgxp' => 'alnum', 'tl_class' => 'w50 clr'],
+    'sql' => "varchar(32) NOT NULL default ''",
+];
+
 // Kacheln + Kachel (rg-20). Kacheln ist ein Rahmen mit Kindelementen (nur retro_kachel).
 $GLOBALS['TL_DCA']['tl_content']['palettes']['retro_kacheln'] =
     '{type_legend},type,headline;'

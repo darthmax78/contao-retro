@@ -1,0 +1,94 @@
+/* ==========================================================================
+   darthmax78/contao-retro – Quellen (retro_quellen, rg-24)
+   HTML: div.content-retro-quellen > span.sa-anker + p.quellen-titel
+         + ol.quellen > li#quelle-N > span.quellen-nummer + span.quellen-text
+   Farben ausschließlich über die --rg-* Variablen der custom.css.
+   Kontraste: Tinte-leise auf Papier 9,6:1 · Grün auf Papier 11,6:1
+   ========================================================================== */
+.content-retro-quellen {
+  --sa-anker-abstand: 9rem;
+  clear: both;
+  margin: 3rem 0 2rem;
+}
+
+/* Titel wie die Überzeile der Abschnittstitel: „> QUELLEN ───“ */
+.quellen-titel {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0 0 1rem;
+  font-family: 'VT323', monospace;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-gruen);
+  text-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.45);
+}
+
+.quellen-titel::before {
+  content: ">";
+  flex: none;
+}
+
+.quellen-titel::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 2rem;
+  height: 2px;
+  background: linear-gradient(to right, var(--rg-lcd-3), transparent);
+}
+
+ol.quellen {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--rg-tinte-leise);
+}
+
+ol.quellen > li {
+  display: grid;
+  grid-template-columns: 3.2em 1fr;
+  gap: 0 0.4em;
+  margin: 0;
+  padding: 0.35rem 0.5rem;
+  border-left: 2px solid transparent;
+  scroll-margin-top: var(--sa-anker-abstand, 9rem);
+  transition: background-color .3s ease, border-color .3s ease;
+}
+
+ol.quellen > li::before {
+  content: none;
+}
+
+.quellen-nummer {
+  font-family: 'VT323', monospace;
+  font-size: 1.2em;
+  line-height: 1.35;
+  color: var(--rg-gruen);
+}
+
+.quellen-herausgeber {
+  color: var(--rg-tinte);
+}
+
+ol.quellen a {
+  color: var(--rg-gruen);
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--rg-gruen-rgb), 0.4);
+  text-underline-offset: 0.2em;
+  overflow-wrap: anywhere;
+}
+
+ol.quellen a:hover,
+ol.quellen a:focus-visible {
+  text-decoration-color: currentColor;
+}
+
+/* Angesprungene Quelle (z. B. vom Zitat) kurz hervorheben */
+ol.quellen > li:target {
+  background: var(--rg-lcd-1);
+  border-left-color: var(--rg-gruen);
+}

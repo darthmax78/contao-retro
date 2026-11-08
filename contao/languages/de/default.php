@@ -35,6 +35,11 @@ $GLOBALS['TL_LANG']['CTE']['retro_unterschiede'] = [
     'Was ein Gerät gegenüber seinem Basismodell ändert – nur die abweichenden Zeilen des Steckbriefs.',
 ];
 
+$GLOBALS['TL_LANG']['CTE']['retro_quellen'] = [
+    'Quellen',
+    'Nummerierte Quellenliste mit Anker je Eintrag (quelle-1, quelle-2 …). Erscheint als „Quellen“ in der Sprungleiste.',
+];
+
 $GLOBALS['TL_LANG']['CTE']['retro_zitat'] = [
     'Zitat',
     'Zitat im CRT-Look mit optionaler Übersetzung, Name, Zusatz und Quellenlink.',

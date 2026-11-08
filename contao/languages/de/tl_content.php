@@ -26,6 +26,22 @@ $GLOBALS['TL_LANG']['tl_content']['retro_geraete'] = [
     'Ein oder mehrere Einträge aus der Geräte-Datenbank. Die Tabelle zeigt das Zubehör aller gewählten Geräte; bei mehreren steht dabei, wozu ein Teil passt.',
 ];
 
+// Quellen (rg-24)
+$GLOBALS['TL_LANG']['tl_content']['quellen_legend'] = 'Quellen';
+$GLOBALS['TL_LANG']['tl_content']['quellen_liste'] = [
+    'Quellen',
+    'Je Zeile eine Quelle, Reihenfolge = Nummer. Herausgeber oder Titel genügt; Link mit https://, /pfad oder #anker. „Wofür“ z. B. „Modelle, Preise“, „Abgerufen“ z. B. 07.11.2026.',
+];
+$GLOBALS['TL_LANG']['tl_content']['quellen_herausgeber'] = ['Herausgeber / Website'];
+$GLOBALS['TL_LANG']['tl_content']['quellen_titel'] = ['Titel'];
+$GLOBALS['TL_LANG']['tl_content']['quellen_url'] = ['Link'];
+$GLOBALS['TL_LANG']['tl_content']['quellen_bezug'] = ['Wofür'];
+$GLOBALS['TL_LANG']['tl_content']['quellen_abgerufen'] = ['Abgerufen'];
+$GLOBALS['TL_LANG']['tl_content']['quellen_kennung'] = [
+    'Anker-Kennung',
+    'Optional. Leer: Anker quelle-1, quelle-2 … Mit „lynx“: quelle-lynx-1 … – nur nötig, wenn mehrere Quellenblöcke auf einer Seite stehen.',
+];
+
 // Zitat (rg-17)
 $GLOBALS['TL_LANG']['tl_content']['zitat_legend'] = 'Zitat';
 $GLOBALS['TL_LANG']['tl_content']['nachweis_legend'] = 'Nachweis';

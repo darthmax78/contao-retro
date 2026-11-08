@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[AsContentElement('sa_sprungleiste', category: 'links')]
 class SprungleisteController extends AbstractContentElementController
 {
-    private const TYPEN = ['sa_abschnitt'];
+    private const TYPEN = ['sa_abschnitt', 'retro_quellen'];
     private const MAX_TIEFE = 6;
 
     public function __construct(private readonly Connection $db)
@@ -124,6 +124,11 @@ class SprungleisteController extends AbstractContentElementController
                 if ('' === $label) {
                     $h = StringUtil::deserialize($e['headline'] ?? '', true);
                     $label = trim(StringUtil::decodeEntities((string) ($h['value'] ?? ($h[0] ?? ''))));
+                }
+
+                // Quellenblock (rg-24) ohne Leistentext und Überschrift: „Quellen“
+                if ('' === $label && 'retro_quellen' === $e['type']) {
+                    $label = 'Quellen';
                 }
 
                 if ('' !== $label) {

@@ -24,7 +24,7 @@ Gleichnamige Templates im `templates/`-Ordner der Website gewinnen gegen das Bun
 ## CSS der Bausteine
 
 Je Baustein eine Datei unter `public/css/` (`retro-table`, `steckbrief`, `last-edited`, `stub`, `banner-lcd`,
-`anecdote`, `abschnitte`, `zitat`, `kacheln`, `bild`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
+`anecdote`, `abschnitte`, `zitat`, `kacheln`, `bild`, `quellen`). Der `RetroCssListener` hängt sie als eigene `<link>` **nach** allen Stylesheets
 des Layouts an (Oneo `main.css` → `custom.css` → Bundle). Farben kommen ausschließlich aus
 den `--rg-*`-Variablen, die die `custom.css` der Website im `:root` festlegt.
 
@@ -61,6 +61,14 @@ Webadresse). Jede Zeile der Textfelder wird ein Absatz. CSS `public/css/zitat.cs
 Klasse `bild-produkt` für das Contao-Bild-Element (seit rg-21): Rahmen im Kachel-Look, Bild zentriert und höchstens
 440 px hoch, Bildunterschrift im Terminal-Stil. Mit `bild-lcd` zusätzlich in LCD-Grün (Filter `#lcd-gruen`),
 Originalfarben beim Überfahren. CSS `public/css/bild.css`.
+
+## Quellen
+
+Inhaltselement **Quellen** (`retro_quellen`, seit rg-24): Zeilenliste (`quellen_liste`: Herausgeber, Titel, Link, Wofür,
+Abgerufen), ausgegeben als nummerierte Liste `[1] Herausgeber: Titel – Wofür (abgerufen am …)`. Jeder Eintrag hat den
+Anker `quelle-N` (mit `quellen_kennung` „lynx“: `quelle-lynx-N`) – Ziel für den Quellenlink im Zitat; ein angesprungener
+Eintrag wird hervorgehoben. Das Element ist selbst Ziel der Sprungleiste (Leistentext `sa_sprungtext`, sonst Überschrift,
+sonst „Quellen“). Links nur mit `https://`, `/pfad`, `#anker` oder Insert-Tag. CSS `public/css/quellen.css`.
 
 ## Kacheln
 
@@ -112,7 +120,7 @@ Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.14
+composer require darthmax78/contao-retro:^0.15
 vendor/bin/contao-console cache:clear
 ```
 

@@ -1,0 +1,32 @@
+{#
+  Quellen (rg-24): Titel im Terminal-Look, nummerierte Liste mit Anker je Eintrag (quelle-N).
+  Nummer als [N] wie der Quellenlink im Zitat. span.sa-anker = Sprungziel der Sprungleiste.
+  CSS: public/css/quellen.css
+#}
+{% extends "@Contao/content_element/_base.html.twig" %}
+
+{% block inner %}
+  <span id="{{ quellen_anker }}" class="sa-anker" aria-hidden="true"></span>
+  {{ block('content') }}
+{% endblock %}
+
+{% block content %}
+  <p class="quellen-titel">{{ quellen_titel }}</p>
+  {% if quellen_eintraege %}
+    <ol class="quellen">
+      {% for q in quellen_eintraege %}
+        <li id="{{ q.anker }}">
+          <span class="quellen-nummer" aria-hidden="true">[{{ loop.index }}]</span>
+          <span class="quellen-text">
+            {%- if q.herausgeber %}<span class="quellen-herausgeber">{{ q.herausgeber }}</span>{% if q.titel %}: {% endif %}{% endif -%}
+            {%- if q.titel %}{% if q.url %}<a href="{{ q.url }}"{% if q.url starts with 'http' %} rel="noopener"{% endif %}>{{ q.titel }}</a>{% else %}{{ q.titel }}{% endif %}{% elseif q.url %} <a href="{{ q.url }}" rel="noopener">Link</a>{% endif -%}
+            {%- if q.bezug %}<span class="quellen-bezug"> – {{ q.bezug }}</span>{% endif -%}
+            {%- if q.abgerufen %}<span class="quellen-abruf"> (abgerufen am {{ q.abgerufen }})</span>{% endif -%}
+          </span>
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p class="steckbrief-entwurf">Noch keine Quellen eingetragen. Anker der Einträge: {{ quellen_praefix }}1, {{ quellen_praefix }}2 …</p>
+  {% endif %}
+{% endblock %}
