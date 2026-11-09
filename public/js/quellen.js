@@ -35,6 +35,11 @@
     aktivieren(ausHash(a.hash));
   }, true);
 
+  // Sprünge über die Sprungleiste (stoppt den Klick vor diesem Skript) melden sich per Ereignis
+  window.addEventListener('sa:gesprungen', function (ereignis) {
+    aktivieren(ereignis.detail && ereignis.detail.id);
+  });
+
   window.addEventListener('hashchange', function () {
     aktivieren(ausHash(window.location.hash));
   });

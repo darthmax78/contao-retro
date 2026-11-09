@@ -195,21 +195,49 @@
             }
         }
 
-        links.forEach(function (a, i) {
-            a.addEventListener('click', function (ereignis) {
-                var ziel = ziele[i];
-                if (!ziel) {
+        function springen(ziel, hash) {
+            var y = ziel.getBoundingClientRect().top + window.pageYOffset
+                - kopfUnterkante() - nav.offsetHeight - 16;
+            window.scrollTo({ top: Math.max(0, y), behavior: sanft ? 'smooth' : 'auto' });
+            if (window.history && window.history.replaceState) {
+                window.history.replaceState(null, '', hash);
+            }
+            // Für andere Bausteine (z. B. quellen.js: angesprungene Quelle hervorheben)
+            window.dispatchEvent(new CustomEvent('sa:gesprungen', { detail: { id: ziel.id } }));
+        }
+
+        /*
+         * Alle Sprünge innerhalb der Seite (Leiste, Quellenverweise, Zitat, Kacheln …) laufen hierüber,
+         * damit Kopf und Leiste überall gleich berücksichtigt werden (rg-31). Capture-Phase auf window:
+         * vor dem sanften Scrollen des Themes, das sonst nur einen festen Abstand kennt.
+         */
+        if (!window.saSprungKlick) {
+            window.saSprungKlick = true;
+            window.addEventListener('click', function (ereignis) {
+                if (ereignis.defaultPrevented || ereignis.button !== 0 || ereignis.metaKey || ereignis.ctrlKey || ereignis.shiftKey || ereignis.altKey) {
+                    return;
+                }
+                var a = ereignis.target.closest ? ereignis.target.closest('a[href*="#"]') : null;
+                if (!a || a.hasAttribute('data-lightbox') || a.target === '_blank'
+                    || a.pathname !== window.location.pathname || a.host !== window.location.host || a.hash.length < 2) {
+                    return;
+                }
+                var id;
+                try {
+                    id = decodeURIComponent(a.hash.slice(1));
+                } catch (e) {
+                    return;
+                }
+                var ziel = document.getElementById(id);
+                // Nur echte Sprungziele im Inhalt; „nach oben“ (#top) und Sprungmarken der Navigation bleiben beim Theme
+                if (!ziel || ziel === document.body || ziel.classList.contains('invisible')) {
                     return;
                 }
                 ereignis.preventDefault();
-                var y = ziel.getBoundingClientRect().top + window.pageYOffset
-                    - kopfUnterkante() - nav.offsetHeight - 16;
-                window.scrollTo({ top: y, behavior: sanft ? 'smooth' : 'auto' });
-                if (window.history && window.history.replaceState) {
-                    window.history.replaceState(null, '', a.hash);
-                }
-            });
-        });
+                ereignis.stopPropagation();
+                springen(ziel, a.hash);
+            }, true);
+        }
 
         window.addEventListener('scroll', anfordern, { passive: true });
         window.addEventListener('resize', function () {
