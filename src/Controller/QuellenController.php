@@ -68,6 +68,10 @@ class QuellenController extends AbstractContentElementController
         $template->set('quellen_eintraege', $eintraege);
         $template->set('quellen_praefix', $praefix);
 
+        // Hervorhebung der angesprungenen Quelle (public/js → /bundles/darthmaxretro/js), Version = Dateizeit
+        $skript = \dirname(__DIR__, 2).'/public/js/quellen.js';
+        $template->set('quellen_skript', sprintf('/bundles/darthmaxretro/js/quellen.js?v=%d', is_file($skript) ? filemtime($skript) : 0));
+
         return $template->getResponse();
     }
 

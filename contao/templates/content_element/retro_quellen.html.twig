@@ -1,7 +1,7 @@
 {#
   Quellen (rg-24): Titel im Terminal-Look, nummerierte Liste mit Anker je Eintrag (quelle-N).
   Nummer als [N] wie der Quellenlink im Zitat. span.sa-anker = Sprungziel der Sprungleiste.
-  CSS: public/css/quellen.css
+  CSS: public/css/quellen.css; quellen.js hebt die angesprungene Quelle hervor (rg-31)
 #}
 {% extends "@Contao/content_element/_base.html.twig" %}
 
@@ -26,6 +26,7 @@
         </li>
       {% endfor %}
     </ol>
+    <script src="{{ quellen_skript }}" defer></script>
   {% else %}
     <p class="steckbrief-entwurf">Noch keine Quellen eingetragen. Anker der Einträge: {{ quellen_praefix }}1, {{ quellen_praefix }}2 …</p>
   {% endif %}

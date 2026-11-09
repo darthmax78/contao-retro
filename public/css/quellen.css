@@ -87,8 +87,9 @@ ol.quellen a:focus-visible {
   text-decoration-color: currentColor;
 }
 
-/* Angesprungene Quelle (z. B. vom Zitat) kurz hervorheben */
-ol.quellen > li:target {
+/* Angesprungene Quelle hervorheben: :target beim Laden mit #quelle-N, quelle-aktiv per quellen.js (rg-31) */
+ol.quellen:not(:has(> li.quelle-aktiv)) > li:target,
+ol.quellen > li.quelle-aktiv {
   background: var(--rg-lcd-1);
   border-left-color: var(--rg-gruen);
 }
