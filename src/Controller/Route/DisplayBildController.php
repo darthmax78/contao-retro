@@ -36,10 +36,10 @@ class DisplayBildController
     )]
     public function __invoke(string $look, int $breite, string $uuid, Request $request): BinaryFileResponse
     {
-        $binaer = (string) hex2bin($uuid);
-        $pfad = $this->db->fetchOne("SELECT path FROM tl_files WHERE uuid = ? AND type = 'file'", [$binaer]);
+        // UUID als Hex über UNHEX() – rohe Binärdaten als Parameter verfälscht die utf8mb4-Verbindung (v0.20.1)
+        $pfad = $this->db->fetchOne("SELECT path FROM tl_files WHERE uuid = UNHEX(?) AND type = 'file'", [$uuid]);
 
-        if (false === $pfad || !$this->db->fetchOne('SELECT 1 FROM tl_retro_spiel WHERE INSTR(screenshots, ?) > 0 LIMIT 1', [$binaer])) {
+        if (false === $pfad || !$this->db->fetchOne('SELECT 1 FROM tl_retro_spiel WHERE INSTR(screenshots, UNHEX(?)) > 0 LIMIT 1', [$uuid])) {
             throw new NotFoundHttpException('Kein Screenshot.');
         }
 
