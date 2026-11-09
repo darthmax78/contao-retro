@@ -1,0 +1,4 @@
+# Routen des Bundles (rg-29): Display-Look der Spielegalerie
+darthmax_retro:
+    resource: ../src/Controller/Route/
+    type: attribute

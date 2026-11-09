@@ -8,14 +8,17 @@ use Contao\ContentModel;
 use Contao\CoreBundle\Controller\ContentElement\AbstractContentElementController;
 use Contao\CoreBundle\DependencyInjection\Attribute\AsContentElement;
 use Contao\CoreBundle\File\Metadata;
+use Contao\FilesModel;
 use Contao\CoreBundle\Image\Studio\Studio;
 use Contao\CoreBundle\Security\Authentication\Token\TokenChecker;
 use Contao\CoreBundle\Twig\FragmentTemplate;
 use Contao\StringUtil;
+use Darthmax\RetroBundle\Spiele\DisplayFaerber;
 use Darthmax\RetroBundle\Spiele\Genres;
 use Darthmax\RetroBundle\Spiele\SpieleLader;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * Spielegalerie (rg-25): die für die Galerie markierten Spiele der gewählten Geräte.
@@ -23,7 +26,8 @@ use Symfony\Component\HttpFoundation\Response;
  * Je Spiel das erste Bild der Screenshot-Sortierung, darunter Name und bis zu zwei Angaben
  * (Jahr, Genre, Publisher, Entwickler). Ein Klick öffnet alle Screenshots des Spiels in der
  * Großansicht (gemeinsame Lightbox-Gruppe je Spiel). Ohne Bildgröße bleibt der Screenshot
- * in Originalgröße und wird per CSS pixelgenau hochskaliert.
+ * in Originalgröße und wird per CSS pixelgenau hochskaliert. Mit Display-Look (rg-29) zeigt die
+ * Galerie umgefärbte Fassungen (DisplayFaerber), auch in der Großansicht.
  */
 #[AsContentElement('retro_spielegalerie', category: 'media')]
 class SpielegalerieController extends AbstractContentElementController
@@ -40,6 +44,8 @@ class SpielegalerieController extends AbstractContentElementController
         private readonly SpieleLader $lader,
         private readonly Studio $studio,
         private readonly TokenChecker $tokenChecker,
+        private readonly DisplayFaerber $faerber,
+        private readonly UrlGeneratorInterface $router,
     ) {
     }
 
@@ -60,6 +66,8 @@ class SpielegalerieController extends AbstractContentElementController
         $angaben = array_values(array_intersect(self::ANGABEN, StringUtil::deserialize($model->spielegalerie_angaben, true)));
         $groesse = StringUtil::deserialize($model->size, true);
         $mitGroesse = '' !== implode('', array_map('strval', $groesse));
+        $look = isset(DisplayFaerber::LOOKS[(string) $model->spielegalerie_display]) ? (string) $model->spielegalerie_display : '';
+        $basis = $request->getBasePath().'/';
         $eintraege = [];
 
         foreach ($spiele as $spiel) {
@@ -100,15 +108,43 @@ class SpielegalerieController extends AbstractContentElementController
                 }
             }
 
+            // Display-Look (rg-29): alle Screenshots umgefärbt, Galerie 600 px, Großansicht 1000 px
+            $display = null;
+
+            if ('' !== $look && $bilder) {
+                $urls = [];
+
+                foreach ($bilder as $i => $uuid) {
+                    $datei = FilesModel::findByUuid((string) $uuid);
+
+                    if (null === $datei) {
+                        continue;
+                    }
+
+                    if (0 === \count($urls) && null !== ($masse = $this->faerber->masse($datei->path, 600))) {
+                        $display = ['src' => $this->displayUrl($datei->path, (string) $datei->uuid, $look, 600, $basis), 'breite' => $masse[0], 'hoehe' => $masse[1]];
+                    }
+
+                    $urls[] = $this->displayUrl($datei->path, (string) $datei->uuid, $look, 1000, $basis);
+                }
+
+                if ($display && $urls) {
+                    $nativ = false;
+                    $weitere = \array_slice($urls, 1);
+                    $lightbox = $urls[0];
+                }
+            }
+
             $eintraege[] = [
                 'name' => (string) $spiel['name'],
+                'display' => $display,
                 'titel' => $this->titel($spiel),
                 'meta' => $this->meta($spiel, $angaben),
                 'figur' => $figur,
-                'lightbox' => $figur?->hasLightbox() ? $figur->getLightbox()->getLinkHref() : '',
+                'lightbox' => $display ? $lightbox : ($figur?->hasLightbox() ? $figur->getLightbox()->getLinkHref() : ''),
                 'gruppe' => $gruppe,
                 'weitere' => $weitere,
-                'anzahl' => \count($weitere) + ($figur ? 1 : 0),
+                'anzahl' => \count($weitere) + ($figur || $display ? 1 : 0),
                 'entwurf' => !$spiel['published'],
                 'nativ' => $nativ ?? false,
             ];
@@ -121,6 +157,16 @@ class SpielegalerieController extends AbstractContentElementController
         $template->set('sg_hinweis', $eintraege ? '' : ($geraete ? 'Für diese Geräte ist noch kein Spiel „In der Galerie zeigen“ markiert.' : 'Bitte mindestens ein Gerät wählen.'));
 
         return $template->getResponse();
+    }
+
+    /** Fertiges Bild direkt aus assets/, sonst über die Route, die es beim ersten Abruf erzeugt. */
+    private function displayUrl(string $pfad, string $uuid, string $look, int $breite, string $basis): string
+    {
+        $fertig = $this->faerber->vorhanden($pfad, $look, $breite);
+
+        return null !== $fertig
+            ? $basis.$fertig
+            : $this->router->generate('darthmax_retro_display', ['look' => $look, 'breite' => $breite, 'uuid' => bin2hex($uuid)]);
     }
 
     /**

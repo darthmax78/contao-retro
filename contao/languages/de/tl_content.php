@@ -41,6 +41,15 @@ $GLOBALS['TL_LANG']['tl_content']['spielegalerie_angaben_opt'] = [
     'grafiker' => 'Grafiker',
     'musiker' => 'Musiker',
 ];
+$GLOBALS['TL_LANG']['tl_content']['spielegalerie_display'] = [
+    'Bildschirm',
+    'Screenshots im Look dieses Displays zeigen (auch in der Großansicht). „Original“ zeigt sie, wie sie hochgeladen sind – für Farbspiele.',
+];
+$GLOBALS['TL_LANG']['tl_content']['spielegalerie_display_opt'] = [
+    'dmg' => 'Game Boy (DMG) – gelbgrün',
+    'pocket' => 'Game Boy Pocket – grau',
+    'light' => 'Game Boy Light – grün beleuchtet',
+];
 $GLOBALS['TL_LANG']['tl_content']['spielegalerie_max'] = [
     'Höchstens',
     'Anzahl der Spiele (Vorgabe 12). 6, 9 oder 12 füllen das Raster mit 3 Spalten.',

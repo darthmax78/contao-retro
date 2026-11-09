@@ -205,7 +205,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['quellen_kennung'] = [
 $GLOBALS['TL_DCA']['tl_content']['palettes']['retro_spielegalerie'] =
     '{type_legend},type,headline;'
     .'{geraet_legend},retro_geraete;'
-    .'{spielegalerie_legend},spielegalerie_angaben,spielegalerie_max,size;'
+    .'{spielegalerie_legend},spielegalerie_display,spielegalerie_angaben,spielegalerie_max,size;'
     .'{template_legend:hide},customTpl;'
     .'{protected_legend:hide},protected;'
     .'{expert_legend:hide},guests,cssID;'
@@ -219,6 +219,16 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['spielegalerie_angaben'] = [
     'default' => ['jahr', 'genre'],
     'eval' => ['multiple' => true, 'tl_class' => 'w50 clr'],
     'sql' => 'blob NULL',
+];
+
+// Display-Look (rg-29): Screenshots auf DMG, Pocket oder Light umfärben, leer = Original
+$GLOBALS['TL_DCA']['tl_content']['fields']['spielegalerie_display'] = [
+    'exclude' => true,
+    'inputType' => 'select',
+    'options' => ['dmg', 'pocket', 'light'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_content']['spielegalerie_display_opt'],
+    'eval' => ['includeBlankOption' => true, 'blankOptionLabel' => 'Original', 'tl_class' => 'w50'],
+    'sql' => "varchar(16) NOT NULL default ''",
 ];
 
 $GLOBALS['TL_DCA']['tl_content']['fields']['spielegalerie_max'] = [

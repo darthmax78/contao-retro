@@ -132,7 +132,10 @@ weist darauf hin, wenn eine Zeile eine Revision nennt.
 
 Inhaltselement **Spielegalerie** (`retro_spielegalerie`): Spiele der gewählten Geräte (`retro_geraete`, samt Basismodell) mit Häkchen, Raster mit
 3/2/1 Spalten, Screenshot pixelgenau skaliert (ohne Bildgröße in Originalgröße), Klick öffnet alle Screenshots des Spiels
-in der Großansicht. Darunter Name und Angaben (`spielegalerie_angaben`: Jahr, Genre, Publisher, Entwickler). CSS `public/css/spiele.css`.
+in der Großansicht. Mit „Bildschirm“ (`spielegalerie_display`, seit rg-29) zeigt sie Game-Boy-Screenshots im Look von
+DMG, Pocket oder Light: `Spiele\DisplayFaerber` färbt per GD um (Helligkeit auf den Bildbereich gespreizt, Verlauf dunkel→hell
+des Displays), Ergebnis als WebP unter `assets/retro-display/` (600 px Galerie, 1000 px Großansicht), erzeugt beim ersten Abruf
+über die Route `/_retro/display/{look}/{breite}/{uuid}.webp` (nur Screenshots von Spielen). Darunter Name und Angaben (`spielegalerie_angaben`: Jahr, Genre, Publisher, Entwickler). CSS `public/css/spiele.css`.
 
 ## Installation
 
@@ -140,7 +143,7 @@ Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.19
+composer require darthmax78/contao-retro:^0.20
 vendor/bin/contao-console cache:clear
 ```
 
