@@ -187,10 +187,22 @@ $GLOBALS['TL_LANG']['tl_content']['statistik_bloecke_opt'] = [
 ];
 $GLOBALS['TL_LANG']['tl_content']['statistik_status'] = [
     'Mitzählen',
-    'Welche Spiele gezählt werden (Feld „Status“ am Spiel). Vorgabe: nur offiziell erschienene. Unter den Kennzahlen steht, was gezählt wurde.',
+    'Welche Spiele gezählt bzw. gelistet werden (Feld „Status“ am Spiel). Vorgabe: nur offiziell erschienene. Statistik und Liste zeigen darunter, was gezählt wurde.',
 ];
 $GLOBALS['TL_LANG']['tl_content']['statistik_genres_max'] = [
     'Genres anzeigen',
     'Die häufigsten Genres (Vorgabe 6), der Rest steht zusammengefasst als „Weitere“ darunter.',
 ];
 $GLOBALS['TL_LANG']['tl_content']['statistik_status_opt'] = \Darthmax\RetroBundle\Spiele\Status::LISTE;
+
+// Spieleliste (rg-31)
+$GLOBALS['TL_LANG']['tl_content']['spieleliste_legend'] = 'Spieleliste';
+$GLOBALS['TL_LANG']['tl_content']['spieleliste_spalten'] = [
+    'Spalten',
+    'Der Name steht immer in der ersten Spalte. Auf dem Handy erscheint jedes Spiel als Karte mit diesen Angaben.',
+];
+$GLOBALS['TL_LANG']['tl_content']['spieleliste_spalten_opt'] = \Darthmax\RetroBundle\Controller\SpielelisteController::SPALTEN;
+$GLOBALS['TL_LANG']['tl_content']['spieleliste_suche'] = [
+    'Suchfeld anzeigen',
+    'Feld über der Tabelle, das die Liste beim Tippen filtert (Name, Firmen, Genre, Jahr).',
+];

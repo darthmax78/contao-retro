@@ -147,13 +147,20 @@ Inhaltselement **Spielestatistik** (`retro_spielestatistik`, seit rg-30, `Spiele
 Spiele pro Jahr (Segmentsäulen, Jahre lückenlos), Genres (die häufigsten `statistik_genres_max`, Vorgabe 6, Rest als
 „Weitere“ ohne Balken), häufigste Publisher. CSS `public/css/statistik.css`.
 
+Inhaltselement **Spieleliste** (`retro_spieleliste`, seit rg-31): alle Spiele der gewählten Geräte samt Basismodell als
+Tabelle im `retro-table`-Look, gefiltert nach Status wie die Spielestatistik (`statistik_status`). Spalten wählbar
+(`spieleliste_spalten`: Jahr, Genre, Entwickler, Publisher, Modul, Spieler; Name immer), Suchfeld optional
+(`spieleliste_suche`). `public/js/spieleliste.js` sortiert per Klick auf den Spaltenkopf (Zahlen numerisch, Spieler nach
+Höchstzahl, leere Werte ans Ende) und filtert beim Tippen; ohne Skript bleibt die Liste nach Name sortiert. Am Handy
+Karten mit Beschriftung, Sortierköpfe als Knopfleiste. CSS `public/css/spieleliste.css`.
+
 ## Installation
 
 Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.21
+composer require darthmax78/contao-retro:^0.22
 vendor/bin/contao-console cache:clear
 ```
 

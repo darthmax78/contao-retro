@@ -39,6 +39,10 @@ $GLOBALS['TL_LANG']['CTE']['retro_spielestatistik'] = [
     'Spielestatistik',
     'Zahlen zu den Spielen der gewählten Geräte aus der Spiele-Datenbank: Anzahl, Zeitraum, Modulgrößen, Spiele pro Jahr, Genres, Publisher.',
 ];
+$GLOBALS['TL_LANG']['CTE']['retro_spieleliste'] = [
+    'Spieleliste',
+    'Alle Spiele der gewählten Geräte aus der Spiele-Datenbank als sortierbare Tabelle, optional mit Suchfeld.',
+];
 $GLOBALS['TL_LANG']['CTE']['retro_spielegalerie'] = [
     'Spielegalerie',
     'Spiele aus der Spiele-Datenbank, die für die Galerie markiert sind – je Spiel ein Screenshot, darunter Name und Angaben.',

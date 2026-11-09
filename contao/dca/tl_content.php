@@ -277,6 +277,34 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['statistik_genres_max'] = [
     'sql' => ['type' => 'smallint', 'unsigned' => true, 'default' => 6],
 ];
 
+// Spieleliste (rg-31): alle Spiele der Geräte als sortierbare Tabelle; Zählweise wie Spielestatistik (statistik_status)
+$GLOBALS['TL_DCA']['tl_content']['palettes']['retro_spieleliste'] =
+    '{type_legend},type,headline;'
+    .'{geraet_legend},retro_geraete;'
+    .'{spieleliste_legend},spieleliste_spalten,statistik_status,spieleliste_suche;'
+    .'{template_legend:hide},customTpl;'
+    .'{protected_legend:hide},protected;'
+    .'{expert_legend:hide},guests,cssID;'
+    .'{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['spieleliste_spalten'] = [
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'options' => array_keys(\Darthmax\RetroBundle\Controller\SpielelisteController::SPALTEN),
+    'reference' => &$GLOBALS['TL_LANG']['tl_content']['spieleliste_spalten_opt'],
+    'default' => ['jahr', 'genre', 'entwickler', 'publisher', 'modul', 'spieler'],
+    'eval' => ['multiple' => true, 'tl_class' => 'w50 clr'],
+    'sql' => 'blob NULL',
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['spieleliste_suche'] = [
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'default' => true,
+    'eval' => ['tl_class' => 'w50 m12'],
+    'sql' => ['type' => 'boolean', 'default' => true],
+];
+
 // Kacheln + Kachel (rg-20). Kacheln ist ein Rahmen mit Kindelementen (nur retro_kachel).
 $GLOBALS['TL_DCA']['tl_content']['palettes']['retro_kacheln'] =
     '{type_legend},type,headline;'

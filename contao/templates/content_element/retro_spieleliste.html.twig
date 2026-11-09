@@ -1,0 +1,55 @@
+{#
+  Spieleliste (rg-31): p.sl-titel (Terminal-Prompt) + div.sl-werkzeug (Suchfeld, Zähler)
+    + div.retro-table.sl-tabelle > table (thead: button.sl-sort je Spalte; tbody: th Name + td je Spalte mit data-label/data-wert)
+    + p.sl-fuss (Anzahl, Zählweise)
+  Sortieren und Suchen: public/js/spieleliste.js (ohne Skript bleibt die Liste nach Name sortiert und vollständig).
+  CSS: public/css/spieleliste.css
+#}
+{% extends "@Contao/content_element/_base.html.twig" %}
+
+{% block inner %}
+  {{ block('content') }}
+{% endblock %}
+
+{% block content %}
+  {% if sl_titel %}<p class="sl-titel">{{ sl_titel }}</p>{% endif %}
+  {% if sl_hinweis %}<p class="steckbrief-entwurf">{{ sl_hinweis }}</p>{% endif %}
+  {% if sl_zeilen %}
+    <div class="sl-liste" data-spieleliste>
+      {% if sl_suche %}
+        <div class="sl-werkzeug" hidden>
+          <label class="sl-suche">
+            <span class="sl-suche-label">Suchen</span>
+            <input type="search" placeholder="Name, Firma, Genre oder Jahr" autocomplete="off" data-sl-suche>
+          </label>
+          <p class="sl-treffer" aria-live="polite" data-sl-treffer></p>
+        </div>
+      {% endif %}
+      <div class="retro-table sl-tabelle">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col" aria-sort="ascending"><button type="button" class="sl-sort" data-sl-spalte="0" data-sl-art="text">Name</button></th>
+              {% for schluessel, label in sl_spalten %}
+                <th scope="col" class="sl-{{ schluessel }}"><button type="button" class="sl-sort" data-sl-spalte="{{ loop.index }}" data-sl-art="{{ schluessel in ['jahr', 'modul', 'spieler'] ? 'zahl' : 'text' }}">{{ label }}</button></th>
+              {% endfor %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for z in sl_zeilen %}
+              <tr{% if z.entwurf %} class="sl-entwurf"{% endif %}>
+                <th scope="row">{{ z.name }}</th>
+                {% for schluessel, label in sl_spalten %}
+                  {% set zelle = z.zellen[schluessel] %}
+                  <td class="sl-{{ schluessel }}" data-label="{{ label }}"{% if zelle.wert %} data-wert="{{ zelle.wert }}"{% endif %}>{{ zelle.text }}</td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <p class="sl-fuss">{{ sl_anzahl }} {{ sl_anzahl == 1 ? 'Spiel' : 'Spiele' }}{% if sl_gezaehlt %} · Gezählt: {{ sl_gezaehlt }}{% endif %}</p>
+    </div>
+    <script src="{{ sl_skript }}" defer></script>
+  {% endif %}
+{% endblock %}
