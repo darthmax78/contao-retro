@@ -47,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_retro_zubehoer'] = [
             'inputType' => 'select',
             'filter' => true,
             'sorting' => true,
-            'options' => ['netzteil', 'kabel', 'adapter', 'controller', 'speicher', 'tasche', 'schutz', 'sonstiges'],
+            'options' => ['netzteil', 'batterie', 'kabel', 'adapter', 'controller', 'speicher', 'tasche', 'schutz', 'sonstiges'],
             'reference' => &$GLOBALS['TL_LANG']['tl_retro_zubehoer']['art_opt'],
             'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 16, 'default' => 'sonstiges'],

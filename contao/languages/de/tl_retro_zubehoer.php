@@ -17,7 +17,7 @@ $l['beschreibung'] = ['Beschreibung', 'Optionaler Zusatz, erscheint in der Tabel
 $l['quelle_text'] = ['Quelle', 'Interner Beleg, wird nicht ausgegeben.'];
 $l['published'] = ['Veröffentlicht', 'Nur veröffentlichtes Zubehör erscheint im Frontend.'];
 $l['art_opt'] = [
-    'netzteil' => 'Netzteil', 'kabel' => 'Kabel', 'adapter' => 'Adapter', 'controller' => 'Controller',
+    'netzteil' => 'Netzteil', 'batterie' => 'Batterie/Akku', 'kabel' => 'Kabel', 'adapter' => 'Adapter', 'controller' => 'Controller',
     'speicher' => 'Speicher', 'tasche' => 'Tasche', 'schutz' => 'Schutz', 'sonstiges' => 'Sonstiges',
 ];
 

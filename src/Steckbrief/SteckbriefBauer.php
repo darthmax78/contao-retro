@@ -37,7 +37,7 @@ class SteckbriefBauer
     private const TYPEN = ['konsole' => 'Konsole', 'handheld' => 'Handheld', 'homecomputer' => 'Homecomputer', 'pda' => 'PDA'];
 
     private const ZUBEHOER = [
-        'netzteil' => 'Netzteil', 'kabel' => 'Kabel', 'adapter' => 'Adapter', 'controller' => 'Controller',
+        'netzteil' => 'Netzteil', 'batterie' => 'Batterie/Akku', 'kabel' => 'Kabel', 'adapter' => 'Adapter', 'controller' => 'Controller',
         'speicher' => 'Speicher', 'tasche' => 'Tasche', 'schutz' => 'Schutz', 'sonstiges' => 'Sonstiges',
     ];
 
