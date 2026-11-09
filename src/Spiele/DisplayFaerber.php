@@ -97,11 +97,13 @@ final class DisplayFaerber
             imagepalettetotruecolor($bild);
         }
 
+        // imagecopyresampled statt imagescale(): Das System-libgd auf dem Server liefert bei
+        // imagescale(…, IMG_BICUBIC) false (v0.20.2); resampled glättet zuverlässig überall.
         if (imagesx($bild) > $maxBreite) {
-            $klein = imagescale($bild, $maxBreite, -1, IMG_BICUBIC);
-            imagedestroy($bild);
+            $hoeheNeu = max(1, (int) round(imagesy($bild) * $maxBreite / imagesx($bild)));
+            $klein = imagecreatetruecolor($maxBreite, $hoeheNeu);
 
-            if (false === $klein) {
+            if (false === $klein || !imagecopyresampled($klein, $bild, 0, 0, 0, 0, $maxBreite, $hoeheNeu, imagesx($bild), imagesy($bild))) {
                 return null;
             }
 
@@ -132,8 +134,6 @@ final class DisplayFaerber
         (new Filesystem())->mkdir(\dirname($ziel));
         $temp = $ziel.'.'.bin2hex(random_bytes(4)).'.tmp';
         $ok = imagewebp($bild, $temp, 90);
-        imagedestroy($bild);
-
         if (!$ok) {
             @unlink($temp);
 
