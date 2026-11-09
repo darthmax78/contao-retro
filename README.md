@@ -140,7 +140,7 @@ Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.17
+composer require darthmax78/contao-retro:^0.19
 vendor/bin/contao-console cache:clear
 ```
 
