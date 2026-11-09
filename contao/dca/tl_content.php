@@ -239,6 +239,44 @@ $GLOBALS['TL_DCA']['tl_content']['fields']['spielegalerie_max'] = [
     'sql' => ['type' => 'smallint', 'unsigned' => true, 'default' => 12],
 ];
 
+// Spielestatistik (rg-30): Kennzahlen, Jahre, Genres, Publisher aus der Spiele-Datenbank
+$GLOBALS['TL_DCA']['tl_content']['palettes']['retro_spielestatistik'] =
+    '{type_legend},type,headline;'
+    .'{geraet_legend},retro_geraete;'
+    .'{statistik_legend},statistik_bloecke,statistik_status,statistik_genres_max;'
+    .'{template_legend:hide},customTpl;'
+    .'{protected_legend:hide},protected;'
+    .'{expert_legend:hide},guests,cssID;'
+    .'{invisible_legend:hide},invisible,start,stop';
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['statistik_bloecke'] = [
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'options' => ['kennzahlen', 'jahre', 'genres', 'firmen'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_content']['statistik_bloecke_opt'],
+    'default' => ['kennzahlen', 'jahre', 'genres', 'firmen'],
+    'eval' => ['multiple' => true, 'tl_class' => 'w50 clr'],
+    'sql' => 'blob NULL',
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['statistik_status'] = [
+    'exclude' => true,
+    'inputType' => 'checkbox',
+    'options' => array_keys(\Darthmax\RetroBundle\Spiele\Status::LISTE),
+    'reference' => &$GLOBALS['TL_LANG']['tl_content']['statistik_status_opt'],
+    'default' => ['offiziell'],
+    'eval' => ['multiple' => true, 'tl_class' => 'w50'],
+    'sql' => 'blob NULL',
+];
+
+$GLOBALS['TL_DCA']['tl_content']['fields']['statistik_genres_max'] = [
+    'exclude' => true,
+    'inputType' => 'text',
+    'default' => 6,
+    'eval' => ['rgxp' => 'natural', 'minval' => 1, 'maxval' => 16, 'nospace' => true, 'tl_class' => 'w50 clr'],
+    'sql' => ['type' => 'smallint', 'unsigned' => true, 'default' => 6],
+];
+
 // Kacheln + Kachel (rg-20). Kacheln ist ein Rahmen mit Kindelementen (nur retro_kachel).
 $GLOBALS['TL_DCA']['tl_content']['palettes']['retro_kacheln'] =
     '{type_legend},type,headline;'

@@ -123,7 +123,7 @@ das Galeriebild), „In der Galerie zeigen“ + Sortierzahl.
 **CSV-Import** über die Schaltfläche in der Spieleliste (`SpieleImportModul`, `Spiele\SpieleCsv`, `Spiele\SpieleImport`):
 Kopfzeile Pflicht, Trennzeichen `;` `,` oder Tab, UTF-8 oder Windows-1252. Spalten `name`, `geraet` (Pflicht), `entwickler`,
 `publisher`, `programmierer`, `grafiker`, `musiker`, `teaser`, `jahr`/`monat`/`tag` oder `datum`, `region`, `genre`, `spieler`, `modellnummer`, `modul_kb`, `beschreibung`,
-`screenshots` (Dateien durch `|`, ohne `files/` relativ zum Bildordner), `galerie`, `sortierung`, `quelle`, `veroeffentlicht`.
+`screenshots` (Dateien durch `|`, ohne `files/` relativ zum Bildordner), `galerie`, `sortierung`, `quelle`, `veroeffentlicht`, `status` (seit rg-30: `offiziell`, `prototyp`, `homebrew`, auch englisch).
 Name + Gerät erkennen vorhandene Spiele, leere Zellen ändern nichts, fehlende Firmen werden angelegt. Immer zuerst Probelauf
 mit Bericht, geschrieben wird erst mit „Jetzt importieren“ (in einer Transaktion).
 
@@ -137,13 +137,23 @@ DMG, Pocket oder Light: `Spiele\DisplayFaerber` färbt per GD um (Helligkeit auf
 des Displays), Ergebnis als WebP unter `assets/retro-display/` (600 px Galerie, 1000 px Großansicht), erzeugt beim ersten Abruf
 über die Route `/_retro/display/{look}/{breite}/{uuid}.webp` (nur Screenshots von Spielen). Darunter Name und Angaben (`spielegalerie_angaben`: Jahr, Genre, Publisher, Entwickler). CSS `public/css/spiele.css`.
 
+**Status** (`status`, seit rg-30, `Spiele\Status`): offiziell erschienen (Vorgabe, auch für bestehende Spiele),
+unveröffentlicht/Prototyp, Homebrew/Neuerscheinung. Bestimmt, was die Spielestatistik zählt.
+
+Inhaltselement **Spielestatistik** (`retro_spielestatistik`, seit rg-30, `Spiele\SpieleStatistik`): rechnet live aus
+`tl_retro_spiel` für die gewählten Geräte samt Basismodell, nur veröffentlichte Spiele mit dem gewählten Status
+(`statistik_status`, Vorgabe offiziell); die Galerie-Markierung zählt nicht. Blöcke (`statistik_bloecke`): Kennzahlen
+(Anzahl, Zeitraum, Publisher, Ø Modulgröße, größtes Modul in Amber, darunter was gezählt wurde und wo Angaben fehlen),
+Spiele pro Jahr (Segmentsäulen, Jahre lückenlos), Genres (die häufigsten `statistik_genres_max`, Vorgabe 6, Rest als
+„Weitere“ ohne Balken), häufigste Publisher. CSS `public/css/statistik.css`.
+
 ## Installation
 
 Das Repository ist öffentlich, ein Token ist nicht nötig.
 
 ```bash
 composer config repositories.contao-retro vcs https://github.com/darthmax78/contao-retro
-composer require darthmax78/contao-retro:^0.20
+composer require darthmax78/contao-retro:^0.21
 vendor/bin/contao-console cache:clear
 ```
 

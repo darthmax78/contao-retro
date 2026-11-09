@@ -1,6 +1,7 @@
 <?php
 
 use Darthmax\RetroBundle\Spiele\Genres;
+use Darthmax\RetroBundle\Spiele\Status;
 
 $l = &$GLOBALS['TL_LANG']['tl_retro_spiel'];
 
@@ -17,6 +18,8 @@ $l['geraet'] = ['Gerät', 'Plattform aus der Geräte-Datenbank. Bei Revisionen d
 $l['genre'] = ['Genre', ''];
 $l['genre_opt'] = Genres::LISTE;
 $l['spieler'] = ['Spieler', 'z. B. „1“, „1–4 (ComLynx)“'];
+$l['status'] = ['Status', 'Was die Spielestatistik mitzählt. „Offiziell erschienen“ = zur Lebenszeit der Plattform regulär im Handel.'];
+$l['status_opt'] = Status::LISTE;
 $l['entwickler'] = ['Entwickler', 'Aus dem Firmen-Katalog.'];
 $l['publisher'] = ['Publisher', 'Aus dem Firmen-Katalog.'];
 $l['team_legend'] = 'Team';

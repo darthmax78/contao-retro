@@ -172,3 +172,25 @@ $GLOBALS['TL_LANG']['tl_content']['timeline_mehr_text'] = [
     'Linktext',
     'Leer = „Die ganze Geschichte“.',
 ];
+
+// Spielestatistik (rg-30)
+$GLOBALS['TL_LANG']['tl_content']['statistik_legend'] = 'Statistik';
+$GLOBALS['TL_LANG']['tl_content']['statistik_bloecke'] = [
+    'Blöcke',
+    'Was die Statistik zeigt. Die Reihenfolge ist fest: Kennzahlen, dann Jahre und Genres nebeneinander, darunter die Publisher.',
+];
+$GLOBALS['TL_LANG']['tl_content']['statistik_bloecke_opt'] = [
+    'kennzahlen' => 'Kennzahlen (Anzahl, Zeitraum, Publisher, Modulgrößen)',
+    'jahre' => 'Spiele pro Jahr',
+    'genres' => 'Genres',
+    'firmen' => 'Häufigste Publisher',
+];
+$GLOBALS['TL_LANG']['tl_content']['statistik_status'] = [
+    'Mitzählen',
+    'Welche Spiele gezählt werden (Feld „Status“ am Spiel). Vorgabe: nur offiziell erschienene. Unter den Kennzahlen steht, was gezählt wurde.',
+];
+$GLOBALS['TL_LANG']['tl_content']['statistik_genres_max'] = [
+    'Genres anzeigen',
+    'Die häufigsten Genres (Vorgabe 6), der Rest steht zusammengefasst als „Weitere“ darunter.',
+];
+$GLOBALS['TL_LANG']['tl_content']['statistik_status_opt'] = \Darthmax\RetroBundle\Spiele\Status::LISTE;

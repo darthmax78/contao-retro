@@ -169,6 +169,16 @@ final class SpieleImport
             }
         }
 
+        if ('' !== ($w['status'] ?? '')) {
+            $status = Status::erkennen($w['status']);
+
+            if (null === $status) {
+                $hinweise[] = sprintf('Status „%s“ unbekannt (offiziell, prototyp, homebrew) – nicht übernommen.', $w['status']);
+            } else {
+                $d['status'] = $status;
+            }
+        }
+
         foreach (['entwickler', 'publisher'] as $feld) {
             if ('' !== ($w[$feld] ?? '')) {
                 $d[$feld] = $this->firma($w[$feld], $probelauf, $hinweise);

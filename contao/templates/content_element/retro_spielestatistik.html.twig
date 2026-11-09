@@ -1,0 +1,67 @@
+{#
+  Spielestatistik (rg-30): p.st-titel (Terminal-Prompt)
+    + dl.st-kennzahlen > div.st-zahl (dt Label, dd Wert; .st-akzent = Amber) + p.st-fussnote
+    + div.st-zweier > section.st-jahre (ol.st-saeulen > li, Höhe über --st-h) + section.st-genres (ul.st-balken > li, Breite über --st-b)
+    + p.st-firmen
+  Die Zahlen stehen auch als Text in den Säulen und Balken (Screenreader, Kopieren). CSS: public/css/statistik.css
+#}
+{% extends "@Contao/content_element/_base.html.twig" %}
+
+{% block inner %}
+  {{ block('content') }}
+{% endblock %}
+
+{% block content %}
+  {% if st_titel %}<p class="st-titel">{{ st_titel }}</p>{% endif %}
+  {% if st_hinweis %}<p class="steckbrief-entwurf">{{ st_hinweis }}</p>{% endif %}
+
+  {% if st_bloecke.kennzahlen ?? false and st_kennzahlen %}
+    <dl class="st-kennzahlen">
+      {% for z in st_kennzahlen %}
+        <div class="st-zahl{% if z.akzent %} st-akzent{% endif %}"><dt>{{ z.label }}</dt><dd>{{ z.wert }}</dd></div>
+      {% endfor %}
+    </dl>
+    {% if st_fussnote %}<p class="st-fussnote">{{ st_fussnote }}</p>{% endif %}
+  {% endif %}
+
+  {% set mit_jahren = (st_bloecke.jahre ?? false) and st_jahre|length > 1 %}
+  {% set mit_genres = (st_bloecke.genres ?? false) and st_genres %}
+  {% if mit_jahren or mit_genres %}
+    <div class="st-zweier">
+      {% if mit_jahren %}
+        <section class="st-jahre">
+          <p class="st-untertitel">Pro Jahr</p>
+          <ol class="st-saeulen" style="--st-jahre: {{ st_jahre|length }}">
+            {% for j in st_jahre %}
+              <li{% if j.anzahl == 0 %} class="st-leer"{% endif %} title="{{ j.jahr }}: {{ j.anzahl }} {{ j.anzahl == 1 ? 'Spiel' : 'Spiele' }}">
+                <span class="st-wert">{{ j.anzahl }}</span>
+                <span class="st-saeule" style="--st-h: {{ j.hoehe }}%" aria-hidden="true"></span>
+                <span class="st-jahr" aria-label="{{ j.jahr }}">{{ j.kurz }}</span>
+              </li>
+            {% endfor %}
+          </ol>
+        </section>
+      {% endif %}
+      {% if mit_genres %}
+        <section class="st-genres">
+          <p class="st-untertitel">Genres</p>
+          <ul class="st-balken">
+            {% for g in st_genres %}
+              <li{% if g.rest %} class="st-rest"{% endif %}>
+                <span class="st-name">{{ g.name }}</span>
+                {% if not g.rest %}<span class="st-spur" aria-hidden="true"><span style="--st-b: {{ g.breite }}%"></span></span>{% endif %}
+                <span class="st-wert">{{ g.anzahl }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </section>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if (st_bloecke.firmen ?? false) and st_firmen %}
+    <p class="st-firmen"><span class="st-firmen-label">Häufigste Publisher</span>
+      {% for f in st_firmen %}<span class="st-firma">{{ f.name }} <b>{{ f.anzahl }}</b></span>{% endfor %}
+    </p>
+  {% endif %}
+{% endblock %}

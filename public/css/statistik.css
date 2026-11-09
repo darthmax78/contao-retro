@@ -1,0 +1,263 @@
+/* ==========================================================================
+   darthmax78/contao-retro – Spielestatistik (retro_spielestatistik, rg-30)
+   HTML: div.content-retro-spielestatistik > p.st-titel + dl.st-kennzahlen + p.st-fussnote
+         + div.st-zweier > section.st-jahre (ol.st-saeulen) + section.st-genres (ul.st-balken)
+         + p.st-firmen
+   Säulen und Balken sind Segmentanzeigen (wie ein LCD-Pegel), Höhe/Breite über --st-h / --st-b.
+   Farben ausschließlich über die --rg-* Variablen der custom.css.
+   Kontraste: Grün auf Feld 10,9:1 · Amber auf Feld 9,9:1 · Tinte-leise auf Papier 9,6:1
+   ========================================================================== */
+.content-retro-spielestatistik {
+  clear: both;
+  margin: 2.5rem 0;
+}
+
+/* Titel und Untertitel im Prompt-Stil „> TITEL ───“ wie die Spielegalerie */
+.st-titel,
+.st-untertitel {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  margin: 0 0 1.25rem;
+  font-family: 'VT323', monospace;
+  font-size: 1.35rem;
+  line-height: 1.1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-gruen);
+  text-shadow: 0 0 8px rgba(var(--rg-gruen-rgb), 0.45);
+}
+
+.st-untertitel {
+  font-size: 1.15rem;
+  margin-bottom: 0.9rem;
+}
+
+.st-titel::before,
+.st-untertitel::before {
+  content: ">";
+  flex: none;
+}
+
+.st-titel::after,
+.st-untertitel::after {
+  content: "";
+  flex: 1 1 auto;
+  min-width: 2rem;
+  height: 2px;
+  background: linear-gradient(to right, var(--rg-lcd-3), transparent);
+}
+
+/* ---------- Kennzahlen: LCD-Zähler ---------- */
+dl.st-kennzahlen {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.st-zahl {
+  padding: 0.65rem 0.9rem 0.55rem;
+  background: var(--rg-feld);
+  border: 1px solid var(--rg-lcd-3);
+  border-radius: 3px;
+}
+
+.st-zahl dt {
+  margin: 0;
+  font-family: 'VT323', monospace;
+  font-size: 0.95rem;
+  line-height: 1.1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-tinte-leise);
+}
+
+.st-zahl dd {
+  margin: 0.15rem 0 0;
+  font-family: 'VT323', monospace;
+  font-size: 2.1rem;
+  line-height: 1.05;
+  color: var(--rg-gruen);
+  text-shadow: 0 0 10px rgba(var(--rg-gruen-rgb), 0.45);
+  white-space: nowrap;
+}
+
+.st-zahl.st-akzent {
+  border-color: rgba(var(--rg-amber-rgb), 0.55);
+}
+
+.st-zahl.st-akzent dd {
+  color: var(--rg-amber);
+  text-shadow: 0 0 10px rgba(var(--rg-amber-rgb), 0.4);
+}
+
+.st-fussnote {
+  margin: 0.55rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: var(--rg-tinte-leise);
+}
+
+/* ---------- Jahre und Genres nebeneinander ---------- */
+.st-zweier {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  gap: 1.75rem 2.25rem;
+  margin-top: 2rem;
+}
+
+.st-zweier > section {
+  min-width: 0;
+}
+
+/* Säulen: Segmente aus 5 px Pegel + 2 px Lücke */
+ol.st-saeulen {
+  display: grid;
+  grid-template-columns: repeat(var(--st-jahre, 8), minmax(0, 1fr));
+  gap: 0.35rem;
+  align-items: end;
+  height: 10rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--rg-lcd-3);
+}
+
+ol.st-saeulen > li {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: stretch;
+  height: 100%;
+  min-width: 0;
+  position: relative;
+}
+
+.st-saeulen .st-wert {
+  font-family: 'VT323', monospace;
+  font-size: 0.95rem;
+  line-height: 1;
+  text-align: center;
+  color: var(--rg-tinte-leise);
+  margin-bottom: 0.2rem;
+}
+
+.st-saeule {
+  display: block;
+  height: calc(var(--st-h, 0%) * 0.82);
+  background: repeating-linear-gradient(to top, var(--rg-gruen) 0 5px, transparent 5px 7px);
+  filter: drop-shadow(0 0 4px rgba(var(--rg-gruen-rgb), 0.35));
+}
+
+/* Jahreszahlen unter der Grundlinie */
+.st-saeulen .st-jahr {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  padding-top: 0.3rem;
+  font-family: 'VT323', monospace;
+  font-size: 0.95rem;
+  line-height: 1;
+  text-align: center;
+  color: var(--rg-tinte-leise);
+}
+
+.st-jahre {
+  padding-bottom: 1.4rem;
+}
+
+/* Jahre ohne Spiel: Lücke im Verlauf, „0“ gedämpft */
+ol.st-saeulen > li.st-leer .st-wert {
+  opacity: 0.45;
+}
+
+/* Balken: Segmente aus 6 px Pegel + 2 px Lücke */
+ul.st-balken {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+ul.st-balken > li {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 9rem) minmax(0, 1fr) 2.2rem;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 0 0 0.55rem;
+}
+
+.st-balken .st-name {
+  font-size: 0.92rem;
+  line-height: 1.2;
+  color: var(--rg-tinte);
+  overflow-wrap: anywhere;
+}
+
+.st-spur {
+  display: block;
+  height: 0.8rem;
+}
+
+.st-spur > span {
+  display: block;
+  height: 100%;
+  width: var(--st-b, 0%);
+  background: repeating-linear-gradient(to right, var(--rg-gruen) 0 6px, transparent 6px 8px);
+  filter: drop-shadow(0 0 4px rgba(var(--rg-gruen-rgb), 0.35));
+}
+
+.st-balken .st-wert {
+  font-family: 'VT323', monospace;
+  font-size: 1.15rem;
+  line-height: 1;
+  text-align: right;
+  color: var(--rg-gruen);
+}
+
+/* Sammelzeile „Weitere“ ohne Balken – sie ist oft größer als das häufigste Genre und würde es optisch überholen */
+ul.st-balken > li.st-rest {
+  margin-top: 0.8rem;
+  padding-top: 0.55rem;
+  border-top: 1px dashed var(--rg-lcd-3);
+}
+ul.st-balken > li.st-rest .st-name {
+  grid-column: 1 / 3;
+  color: var(--rg-tinte-leise);
+}
+ul.st-balken > li.st-rest .st-wert { color: var(--rg-tinte-leise); }
+
+/* ---------- Publisher ---------- */
+.st-firmen {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  align-items: baseline;
+  margin: 1.5rem 0 0;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--rg-lcd-3);
+  font-size: 0.92rem;
+  color: var(--rg-tinte);
+}
+
+.st-firmen-label {
+  font-family: 'VT323', monospace;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-tinte-leise);
+}
+
+.st-firma b {
+  font-family: 'VT323', monospace;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--rg-gruen);
+}
+
+@media (max-width: 480px) {
+  .st-zahl dd { font-size: 1.8rem; }
+  ol.st-saeulen { height: 8rem; gap: 0.2rem; }
+  ul.st-balken > li { grid-template-columns: 6.5rem minmax(0, 1fr) 2rem; }
+}

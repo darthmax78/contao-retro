@@ -3,6 +3,7 @@
 use Contao\DataContainer;
 use Contao\DC_Table;
 use Darthmax\RetroBundle\Spiele\Genres;
+use Darthmax\RetroBundle\Spiele\Status;
 use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 
 /*
@@ -35,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_retro_spiel'] = [
             'panelLayout' => 'filter;sort,search,limit',
             'defaultSearchField' => 'name',
         ],
-        'label' => ['fields' => ['name', 'geraet', 'jahr', 'genre', 'galerie'], 'showColumns' => true],
+        'label' => ['fields' => ['name', 'geraet', 'jahr', 'genre', 'status', 'galerie'], 'showColumns' => true],
         'global_operations' => [
             'csv_import' => [
                 'href' => 'key=csv_import',
@@ -45,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_retro_spiel'] = [
         ],
     ],
     'palettes' => [
-        'default' => '{spiel_legend},name,geraet,genre,spieler;'
+        'default' => '{spiel_legend},name,geraet,genre,spieler,status;'
             .'{firmen_legend},entwickler,publisher;'
             .'{team_legend},programmierer,grafiker,musiker;'
             .'{markt_legend},jahr,monat,tag,region,modellnummer,modul_kb;'
@@ -87,6 +88,17 @@ $GLOBALS['TL_DCA']['tl_retro_spiel'] = [
             'inputType' => 'text',
             'eval' => ['maxlength' => 64, 'tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 64, 'default' => ''],
+        ],
+        // Status (rg-30): was die Spielestatistik mitzählt; bestehende Spiele gelten als offiziell
+        'status' => [
+            'inputType' => 'select',
+            'filter' => true,
+            'sorting' => true,
+            'options' => array_keys(Status::LISTE),
+            'reference' => &$GLOBALS['TL_LANG']['tl_retro_spiel']['status_opt'],
+            'default' => 'offiziell',
+            'eval' => ['tl_class' => 'w50'],
+            'sql' => ['type' => 'string', 'length' => 16, 'default' => 'offiziell'],
         ],
         'entwickler' => [
             'inputType' => 'select',

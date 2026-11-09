@@ -35,6 +35,10 @@ $GLOBALS['TL_LANG']['CTE']['retro_unterschiede'] = [
     'Was ein Gerät gegenüber seinem Basismodell ändert – nur die abweichenden Zeilen des Steckbriefs.',
 ];
 
+$GLOBALS['TL_LANG']['CTE']['retro_spielestatistik'] = [
+    'Spielestatistik',
+    'Zahlen zu den Spielen der gewählten Geräte aus der Spiele-Datenbank: Anzahl, Zeitraum, Modulgrößen, Spiele pro Jahr, Genres, Publisher.',
+];
 $GLOBALS['TL_LANG']['CTE']['retro_spielegalerie'] = [
     'Spielegalerie',
     'Spiele aus der Spiele-Datenbank, die für die Galerie markiert sind – je Spiel ein Screenshot, darunter Name und Angaben.',

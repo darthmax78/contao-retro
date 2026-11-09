@@ -35,6 +35,7 @@ final class SpieleCsv
         'musiker' => 'musiker', 'musik' => 'musiker', 'music' => 'musiker', 'komponist' => 'musiker', 'composer' => 'musiker', 'sound' => 'musiker',
         'programmierer' => 'programmierer', 'programmer' => 'programmierer', 'programmers' => 'programmierer', 'coder' => 'programmierer',
         'screenshots' => 'screenshots', 'screenshot' => 'screenshots', 'bilder' => 'screenshots',
+        'status' => 'status', 'art' => 'status', 'typ' => 'status', 'type' => 'status',
         'galerie' => 'galerie', 'gallery' => 'galerie',
         'sortierung' => 'sortierung', 'sort' => 'sortierung', 'reihenfolge' => 'sortierung',
         'quelle' => 'quelle_text', 'source' => 'quelle_text',
