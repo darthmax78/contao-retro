@@ -1,6 +1,7 @@
 {#
   Spielegalerie (rg-25): p.sg-titel (Terminal-Prompt) + ul.sg-raster > li.sg-spiel
-    > a.sg-bild (Lightbox-Gruppe je Spiel, weitere Screenshots als versteckte Links) + p.sg-name + p.sg-meta
+    > a.sg-bild (Lightbox-Gruppe je Spiel, weitere Screenshots als versteckte Links) + p.sg-name + p.sg-meta (Jahr · Genre)
+    + dl.sg-details (Hersteller/Entwicklung/Publisher, Programm, Grafik, Musik – beschriftet)
   Ohne Screenshot: span.sg-leer. CSS: public/css/spiele.css
 #}
 {% extends "@Contao/content_element/_base.html.twig" %}
@@ -38,6 +39,11 @@
           {% endif %}
           <p class="sg-name">{{ spiel.name }}</p>
           {% if spiel.meta %}<p class="sg-meta">{{ spiel.meta }}</p>{% endif %}
+          {% if spiel.details %}
+            <dl class="sg-details">
+              {% for d in spiel.details %}<div><dt>{{ d.label }}</dt><dd>{{ d.wert }}</dd></div>{% endfor %}
+            </dl>
+          {% endif %}
         </li>
       {% endfor %}
     </ul>

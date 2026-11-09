@@ -140,6 +140,7 @@ class SpielegalerieController extends AbstractContentElementController
                 'display' => $display,
                 'titel' => $this->titel($spiel),
                 'meta' => $this->meta($spiel, $angaben),
+                'details' => $this->details($spiel, $angaben),
                 'figur' => $figur,
                 'lightbox' => $display ? $lightbox : ($figur?->hasLightbox() ? $figur->getLightbox()->getLinkHref() : ''),
                 'gruppe' => $gruppe,
@@ -189,17 +190,51 @@ class SpielegalerieController extends AbstractContentElementController
     {
         $teile = [];
 
-        foreach ($angaben as $angabe) {
+        foreach (array_intersect($angaben, ['jahr', 'genre']) as $angabe) {
             $teile[] = match ($angabe) {
                 'jahr' => (int) $spiel['jahr'] > 0 ? (string) $spiel['jahr'] : '',
                 'genre' => Genres::LISTE[$spiel['genre']] ?? '',
-                'publisher' => (string) ($spiel['publisher_name'] ?? ''),
-                'entwickler' => (string) ($spiel['entwickler_name'] ?? ''),
-                'programmierer', 'grafiker', 'musiker' => trim((string) ($spiel[$angabe] ?? '')),
-                default => '',
             };
         }
 
         return implode(' · ', array_filter($teile, static fn (string $t): bool => '' !== $t));
+    }
+
+    /**
+     * Firmen und Team als beschriftete Zeilen (rg-29): Entwicklung und Publisher, bei gleicher
+     * Firma eine Zeile „Hersteller“; danach Programm, Grafik, Musik.
+     *
+     * @param array<string, mixed> $spiel
+     * @param list<string>         $angaben
+     *
+     * @return list<array{label: string, wert: string}>
+     */
+    private function details(array $spiel, array $angaben): array
+    {
+        $zeilen = [];
+        $entwickler = \in_array('entwickler', $angaben, true) ? trim((string) ($spiel['entwickler_name'] ?? '')) : '';
+        $publisher = \in_array('publisher', $angaben, true) ? trim((string) ($spiel['publisher_name'] ?? '')) : '';
+
+        if ('' !== $entwickler && $entwickler === $publisher) {
+            $zeilen[] = ['label' => 'Hersteller', 'wert' => $entwickler];
+        } else {
+            if ('' !== $entwickler) {
+                $zeilen[] = ['label' => 'Entwicklung', 'wert' => $entwickler];
+            }
+
+            if ('' !== $publisher) {
+                $zeilen[] = ['label' => 'Publisher', 'wert' => $publisher];
+            }
+        }
+
+        foreach (['programmierer' => 'Programm', 'grafiker' => 'Grafik', 'musiker' => 'Musik'] as $feld => $label) {
+            $wert = \in_array($feld, $angaben, true) ? trim((string) ($spiel[$feld] ?? '')) : '';
+
+            if ('' !== $wert) {
+                $zeilen[] = ['label' => $label, 'wert' => $wert];
+            }
+        }
+
+        return $zeilen;
     }
 }

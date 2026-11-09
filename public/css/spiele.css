@@ -155,3 +155,36 @@ ul.sg-raster > li.sg-spiel > p.sg-meta {
 .sg-entwurf {
   opacity: 0.55;
 }
+
+/* Firmen und Team (rg-29): beschriftete Zeilen, Beschriftung rechtsbündig links der Mitte */
+dl.sg-details {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.15rem 0.6rem;
+  width: 100%;
+  margin: 0.55rem 0 0;
+  padding: 0.5rem 0 0;
+  border-top: 1px dashed var(--rg-lcd-2);
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-align: left;
+}
+
+dl.sg-details > div {
+  display: contents;
+}
+
+dl.sg-details dt {
+  margin: 0;
+  font: 0.95rem/1.35 'VT323', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--rg-gruen);
+}
+
+dl.sg-details dd {
+  margin: 0;
+  padding: 0;
+  color: var(--rg-tinte-leise);
+}
