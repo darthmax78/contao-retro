@@ -47,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_retro_zubehoer'] = [
             'inputType' => 'select',
             'filter' => true,
             'sorting' => true,
-            'options' => \Darthmax\RetroBundle\Steckbrief\GeraetLader::ZUBEHOER_ARTEN,
+            'options' => array_keys(\Darthmax\RetroBundle\Steckbrief\GeraetLader::ZUBEHOER_ARTEN),
             'reference' => &$GLOBALS['TL_LANG']['tl_retro_zubehoer']['art_opt'],
             'eval' => ['mandatory' => true, 'tl_class' => 'w50'],
             'sql' => ['type' => 'string', 'length' => 16, 'default' => 'sonstiges'],

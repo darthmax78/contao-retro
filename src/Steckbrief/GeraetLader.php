@@ -12,10 +12,20 @@ use Doctrine\DBAL\Connection;
 class GeraetLader
 {
     /**
-     * Reihenfolge der Zubehör-Arten in der Tabelle (rg-30): Stromversorgung, Verbindung,
-     * Bedienung und Speicher, Aufbewahrung und Schutz, Rest. Unbekannte Arten kommen ans Ende.
+     * Zubehör-Arten (Schlüssel => Anzeige), alphabetisch nach Anzeige. Gilt für die Auswahl im
+     * Backend und die Beschriftung in der Zubehör-Tabelle (SteckbriefBauer::zubehoer sortiert danach).
      */
-    public const ZUBEHOER_ARTEN = ['netzteil', 'batterie', 'adapter', 'kabel', 'controller', 'speicher', 'tasche', 'schutz', 'sonstiges'];
+    public const ZUBEHOER_ARTEN = [
+        'adapter' => 'Adapter',
+        'batterie' => 'Batterie/Akku',
+        'controller' => 'Controller',
+        'kabel' => 'Kabel',
+        'netzteil' => 'Netzteil',
+        'schutz' => 'Schutz',
+        'sonstiges' => 'Sonstiges',
+        'speicher' => 'Speicher',
+        'tasche' => 'Tasche',
+    ];
 
     public function __construct(private readonly Connection $db)
     {
@@ -55,7 +65,6 @@ class GeraetLader
 
     /**
      * Die Geräte stehen serialisiert am Zubehör, daher die Auswahl in PHP.
-     * Sortiert nach Art (ZUBEHOER_ARTEN), innerhalb einer Art nach Name.
      *
      * @return list<array<string, mixed>>
      */
@@ -63,17 +72,11 @@ class GeraetLader
     {
         $teile = $this->db->fetchAllAssociative('SELECT * FROM tl_retro_zubehoer WHERE published = 1 ORDER BY name');
 
-        $teile = array_values(array_filter($teile, static function (array $teil) use ($geraetIds): bool {
+        return array_values(array_filter($teile, static function (array $teil) use ($geraetIds): bool {
             $geraete = @unserialize((string) $teil['geraete'], ['allowed_classes' => false]);
 
             return \is_array($geraete) && array_intersect($geraetIds, array_map('intval', $geraete));
         }));
-
-        $rang = array_flip(self::ZUBEHOER_ARTEN);
-        usort($teile, static fn (array $a, array $b): int => [$rang[$a['art']] ?? \PHP_INT_MAX, mb_strtolower((string) $a['name'])]
-            <=> [$rang[$b['art']] ?? \PHP_INT_MAX, mb_strtolower((string) $b['name'])]);
-
-        return $teile;
     }
 
     /**

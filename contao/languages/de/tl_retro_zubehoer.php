@@ -16,9 +16,6 @@ $l['produktionsende_jahr'] = ['Produktionsende', 'Jahr.'];
 $l['beschreibung'] = ['Beschreibung', 'Optionaler Zusatz, erscheint in der Tabelle unter den Daten.'];
 $l['quelle_text'] = ['Quelle', 'Interner Beleg, wird nicht ausgegeben.'];
 $l['published'] = ['Veröffentlicht', 'Nur veröffentlichtes Zubehör erscheint im Frontend.'];
-$l['art_opt'] = [
-    'netzteil' => 'Netzteil', 'batterie' => 'Batterie/Akku', 'kabel' => 'Kabel', 'adapter' => 'Adapter', 'controller' => 'Controller',
-    'speicher' => 'Speicher', 'tasche' => 'Tasche', 'schutz' => 'Schutz', 'sonstiges' => 'Sonstiges',
-];
+$l['art_opt'] = \Darthmax\RetroBundle\Steckbrief\GeraetLader::ZUBEHOER_ARTEN;
 
 unset($l);

@@ -36,11 +36,6 @@ class SteckbriefBauer
 
     private const TYPEN = ['konsole' => 'Konsole', 'handheld' => 'Handheld', 'homecomputer' => 'Homecomputer', 'pda' => 'PDA'];
 
-    private const ZUBEHOER = [
-        'netzteil' => 'Netzteil', 'batterie' => 'Batterie/Akku', 'kabel' => 'Kabel', 'adapter' => 'Adapter', 'controller' => 'Controller',
-        'speicher' => 'Speicher', 'tasche' => 'Tasche', 'schutz' => 'Schutz', 'sonstiges' => 'Sonstiges',
-    ];
-
     private const ROLLEN = [
         'cpu' => 'CPU', 'zusatz_cpu' => 'Zusatzprozessor', 'coprozessor' => 'Grafik-Coprozessor',
         'grafik' => 'Grafik', 'sound' => 'Sound', 'soc' => 'SoC',
@@ -298,9 +293,10 @@ class SteckbriefBauer
      */
     public function zubehoer(array $teile, array $geraete = []): array
     {
-        $reihenfolge = array_flip(array_keys(self::ZUBEHOER));
-
-        usort($teile, static fn (array $a, array $b): int => [$reihenfolge[$a['art']] ?? 99, $a['name']] <=> [$reihenfolge[$b['art']] ?? 99, $b['name']]);
+        // Alphabetisch nach Art (Anzeigetext), innerhalb einer Art nach Name (rg-30)
+        $art = static fn (array $t): string => mb_strtolower(GeraetLader::ZUBEHOER_ARTEN[$t['art']] ?? (string) $t['art']);
+        usort($teile, static fn (array $a, array $b): int => [$art($a), mb_strtolower((string) $a['name'])]
+            <=> [$art($b), mb_strtolower((string) $b['name'])]);
 
         return array_map(function (array $t) use ($geraete): array {
             $von = (int) ($t['marktstart_jahr'] ?? 0);
@@ -315,7 +311,7 @@ class SteckbriefBauer
             return [
                 'name' => (string) $t['name'],
                 'modell' => $this->text($t['modellnummer'] ?? ''),
-                'art' => self::ZUBEHOER[$t['art']] ?? (string) $t['art'],
+                'art' => GeraetLader::ZUBEHOER_ARTEN[$t['art']] ?? (string) $t['art'],
                 'daten' => array_values(array_filter([
                     $this->text($t['daten_text'] ?? ''),
                     $zeitraum,
