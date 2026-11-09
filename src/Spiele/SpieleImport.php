@@ -23,6 +23,9 @@ final class SpieleImport
     /** @var array<string, int> */
     private array $geraete = [];
 
+    /** @var array<int, string> Revision => Name des Basismodells */
+    private array $basisVon = [];
+
     /** @var array<string, int> */
     private array $firmen = [];
 
@@ -61,6 +64,10 @@ final class SpieleImport
                 } elseif (0 === $geraetId) {
                     $eintrag['hinweise'][] = sprintf('Gerät „%s“ nicht in der Geräte-Datenbank – übersprungen.', $w['geraet'] ?? '');
                 } else {
+                    if (isset($this->basisVon[$geraetId])) {
+                        $eintrag['hinweise'][] = sprintf('„%s“ ist eine Revision – Spiele besser beim Basismodell „%s“ eintragen, dann gelten sie für alle Revisionen.', $w['geraet'], $this->basisVon[$geraetId]);
+                    }
+
                     $daten = $this->daten($w, $bildordner, $probelauf, $eintrag['hinweise']);
                     $key = $geraetId.'|'.mb_strtolower($w['name']);
                     $id = $gesehen[$key] ?? (int) $this->db->fetchOne(
@@ -127,7 +134,7 @@ final class SpieleImport
     {
         $d = [];
 
-        foreach (['region' => 32, 'spieler' => 64, 'modellnummer' => 64, 'quelle_text' => 255, 'programmierer' => 255, 'teaser' => 400] as $feld => $laenge) {
+        foreach (['region' => 32, 'spieler' => 64, 'modellnummer' => 64, 'quelle_text' => 255, 'programmierer' => 255, 'grafiker' => 255, 'musiker' => 255, 'teaser' => 400] as $feld => $laenge) {
             if ('' !== ($w[$feld] ?? '')) {
                 $d[$feld] = mb_substr($w[$feld], 0, $laenge);
             }
@@ -235,7 +242,19 @@ final class SpieleImport
         $this->firmen = [];
         $this->neueFirmen = [];
 
-        foreach ($this->db->fetchAllAssociative('SELECT id, name, alias FROM tl_retro_geraet') as $g) {
+        $this->basisVon = [];
+        $namen = [];
+        $alle = $this->db->fetchAllAssociative('SELECT id, name, alias, basis FROM tl_retro_geraet');
+
+        foreach ($alle as $g) {
+            $namen[(int) $g['id']] = (string) $g['name'];
+        }
+
+        foreach ($alle as $g) {
+            if ((int) $g['basis'] > 0 && isset($namen[(int) $g['basis']])) {
+                $this->basisVon[(int) $g['id']] = $namen[(int) $g['basis']];
+            }
+
             foreach ([(string) $g['id'], (string) $g['name'], (string) $g['alias']] as $k) {
                 if ('' !== $k) {
                     $this->geraete[$this->schluessel($k)] ??= (int) $g['id'];

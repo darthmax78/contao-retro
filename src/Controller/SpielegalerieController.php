@@ -28,7 +28,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[AsContentElement('retro_spielegalerie', category: 'media')]
 class SpielegalerieController extends AbstractContentElementController
 {
-    private const ANGABEN = ['jahr', 'genre', 'publisher', 'entwickler', 'programmierer'];
+    private const ANGABEN = ['jahr', 'genre', 'publisher', 'entwickler', 'programmierer', 'grafiker', 'musiker'];
 
     /** Bis zu dieser Breite gilt ein Screenshot als native Auflösung und wird pixelgenau vergrößert. */
     private const NATIV_MAX_BREITE = 480;
@@ -149,7 +149,7 @@ class SpielegalerieController extends AbstractContentElementController
                 'genre' => Genres::LISTE[$spiel['genre']] ?? '',
                 'publisher' => (string) ($spiel['publisher_name'] ?? ''),
                 'entwickler' => (string) ($spiel['entwickler_name'] ?? ''),
-                'programmierer' => trim((string) ($spiel['programmierer'] ?? '')),
+                'programmierer', 'grafiker', 'musiker' => trim((string) ($spiel[$angabe] ?? '')),
                 default => '',
             };
         }

@@ -13,12 +13,15 @@ $l['text_legend'] = 'Beschreibung und Quelle';
 $l['publish_legend'] = 'Veröffentlichung';
 
 $l['name'] = ['Name', 'Titel des Spiels, wie er auf dem Modul steht.'];
-$l['geraet'] = ['Gerät', 'Plattform aus der Geräte-Datenbank. Für jede Plattform ein eigener Eintrag.'];
+$l['geraet'] = ['Gerät', 'Plattform aus der Geräte-Datenbank. Bei Revisionen das Basismodell wählen (z. B. Game Boy statt Game Boy Pocket) – das Spiel gilt dann für alle Revisionen.'];
 $l['genre'] = ['Genre', ''];
 $l['genre_opt'] = Genres::LISTE;
 $l['spieler'] = ['Spieler', 'z. B. „1“, „1–4 (ComLynx)“'];
 $l['entwickler'] = ['Entwickler', 'Aus dem Firmen-Katalog.'];
 $l['publisher'] = ['Publisher', 'Aus dem Firmen-Katalog.'];
+$l['team_legend'] = 'Team';
+$l['grafiker'] = ['Bekannte Grafiker', 'Optional, Namen durch Komma getrennt.'];
+$l['musiker'] = ['Bekannte Musiker', 'Optional, Namen durch Komma getrennt.'];
 $l['programmierer'] = ['Bekannte Programmierer', 'Optional, Namen durch Komma getrennt, z. B. „RJ Mical, Dave Needle“.'];
 $l['teaser'] = ['Teaser', 'Optional, ein bis zwei Sätze. Erscheint in der Großansicht der Galerie unter dem Bild.'];
 $l['jahr'] = ['Jahr', 'Erscheinungsjahr.'];

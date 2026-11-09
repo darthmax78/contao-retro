@@ -38,6 +38,8 @@ $GLOBALS['TL_LANG']['tl_content']['spielegalerie_angaben_opt'] = [
     'publisher' => 'Publisher',
     'entwickler' => 'Entwickler',
     'programmierer' => 'Programmierer',
+    'grafiker' => 'Grafiker',
+    'musiker' => 'Musiker',
 ];
 $GLOBALS['TL_LANG']['tl_content']['spielegalerie_max'] = [
     'Höchstens',

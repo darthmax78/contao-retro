@@ -9,7 +9,7 @@ use Doctrine\DBAL\Connection;
 
 /**
  * Lädt Spiele für die Spielegalerie (rg-25): veröffentlicht, „In der Galerie zeigen“,
- * Geräte aus dem Element. Reihenfolge: Sortierzahl (0 zuletzt), dann Name.
+ * Geräte aus dem Element samt ihren Basismodellen (rg-28). Reihenfolge: Sortierzahl (0 zuletzt), dann Name.
  */
 final class SpieleLader
 {
@@ -27,6 +27,14 @@ final class SpieleLader
         if (!$geraetIds) {
             return [];
         }
+
+        // Revisionen (rg-28): Spiele hängen am Basismodell – für Lynx II also auch die Spiele des Lynx
+        $basen = $this->db->fetchFirstColumn(
+            'SELECT basis FROM tl_retro_geraet WHERE id IN (?) AND basis > 0',
+            [$geraetIds],
+            [ArrayParameterType::INTEGER],
+        );
+        $geraetIds = array_values(array_unique([...$geraetIds, ...array_map('intval', $basen)]));
 
         return $this->db->fetchAllAssociative(
             'SELECT s.*, e.name AS entwickler_name, p.name AS publisher_name

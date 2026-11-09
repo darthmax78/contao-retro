@@ -7,7 +7,8 @@ use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
 
 /*
  * Spiele-Datenbank (rg-25): ein Datensatz je Spiel und Plattform – „California Games“ für den
- * Lynx ist ein eigenes Spiel mit eigenen Screenshots. Entwickler und Publisher kommen aus dem
+ * Lynx ist ein eigenes Spiel mit eigenen Screenshots. Revisionen (Lynx II, Game Boy Pocket …) bekommen
+ * keine eigenen Einträge: Das Spiel hängt am Basismodell und gilt für alle Revisionen (rg-28). Entwickler und Publisher kommen aus dem
  * Firmen-Katalog. Screenshots: höchstens 6, das erste der Sortierung steht in der Galerie.
  * „In der Galerie zeigen“ + Sortierung bestimmen, was das Element „Spielegalerie“ ausgibt.
  * Daten kommen per Hand oder per CSV-Import (Knopf „CSV-Import“ in der Liste).
@@ -45,7 +46,8 @@ $GLOBALS['TL_DCA']['tl_retro_spiel'] = [
     ],
     'palettes' => [
         'default' => '{spiel_legend},name,geraet,genre,spieler;'
-            .'{firmen_legend},entwickler,publisher,programmierer;'
+            .'{firmen_legend},entwickler,publisher;'
+            .'{team_legend},programmierer,grafiker,musiker;'
             .'{markt_legend},jahr,monat,tag,region,modellnummer,modul_kb;'
             .'{bilder_legend},screenshots;'
             .'{galerie_legend},galerie,sortierung;'
@@ -103,6 +105,18 @@ $GLOBALS['TL_DCA']['tl_retro_spiel'] = [
             'relation' => ['type' => 'hasOne', 'load' => 'lazy'],
         ],
         'programmierer' => [
+            'inputType' => 'text',
+            'search' => true,
+            'eval' => ['maxlength' => 255, 'tl_class' => 'long clr'],
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => ''],
+        ],
+        'grafiker' => [
+            'inputType' => 'text',
+            'search' => true,
+            'eval' => ['maxlength' => 255, 'tl_class' => 'long clr'],
+            'sql' => ['type' => 'string', 'length' => 255, 'default' => ''],
+        ],
+        'musiker' => [
             'inputType' => 'text',
             'search' => true,
             'eval' => ['maxlength' => 255, 'tl_class' => 'long clr'],

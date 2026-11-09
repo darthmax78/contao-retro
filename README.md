@@ -117,17 +117,20 @@ Ohne Basismodell oder ohne Unterschiede bleibt das Element im Frontend leer.
 ## Spiele-Datenbank
 
 Backend **Retro-Datenbank › Spiele** (`tl_retro_spiel`, seit rg-25): ein Datensatz je Spiel und Plattform, Entwickler und
-Publisher aus dem Firmen-Katalog, optional bekannte Programmierer und ein Teaser (seit rg-26), Genre aus fester Liste (`Spiele\Genres`), bis zu 6 Screenshots (sortierbar, das erste ist
+Publisher aus dem Firmen-Katalog, optional bekannte Programmierer, Grafiker und Musiker (rg-26/rg-28) und ein Teaser, Genre aus fester Liste (`Spiele\Genres`), bis zu 6 Screenshots (sortierbar, das erste ist
 das Galeriebild), „In der Galerie zeigen“ + Sortierzahl.
 
 **CSV-Import** über die Schaltfläche in der Spieleliste (`SpieleImportModul`, `Spiele\SpieleCsv`, `Spiele\SpieleImport`):
 Kopfzeile Pflicht, Trennzeichen `;` `,` oder Tab, UTF-8 oder Windows-1252. Spalten `name`, `geraet` (Pflicht), `entwickler`,
-`publisher`, `programmierer`, `teaser`, `jahr`/`monat`/`tag` oder `datum`, `region`, `genre`, `spieler`, `modellnummer`, `modul_kb`, `beschreibung`,
+`publisher`, `programmierer`, `grafiker`, `musiker`, `teaser`, `jahr`/`monat`/`tag` oder `datum`, `region`, `genre`, `spieler`, `modellnummer`, `modul_kb`, `beschreibung`,
 `screenshots` (Dateien durch `|`, ohne `files/` relativ zum Bildordner), `galerie`, `sortierung`, `quelle`, `veroeffentlicht`.
 Name + Gerät erkennen vorhandene Spiele, leere Zellen ändern nichts, fehlende Firmen werden angelegt. Immer zuerst Probelauf
 mit Bericht, geschrieben wird erst mit „Jetzt importieren“ (in einer Transaktion).
 
-Inhaltselement **Spielegalerie** (`retro_spielegalerie`): Spiele der gewählten Geräte (`retro_geraete`) mit Häkchen, Raster mit
+Revisionen bekommen keine eigenen Spiele: Ein Spiel hängt am Basismodell und gilt für alle Revisionen (rg-28); der Import
+weist darauf hin, wenn eine Zeile eine Revision nennt.
+
+Inhaltselement **Spielegalerie** (`retro_spielegalerie`): Spiele der gewählten Geräte (`retro_geraete`, samt Basismodell) mit Häkchen, Raster mit
 3/2/1 Spalten, Screenshot pixelgenau skaliert (ohne Bildgröße in Originalgröße), Klick öffnet alle Screenshots des Spiels
 in der Großansicht. Darunter Name und Angaben (`spielegalerie_angaben`: Jahr, Genre, Publisher, Entwickler). CSS `public/css/spiele.css`.
 

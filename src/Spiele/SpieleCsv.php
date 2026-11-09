@@ -31,6 +31,8 @@ final class SpieleCsv
         'modulkb' => 'modul_kb', 'modulgroesse' => 'modul_kb', 'modul' => 'modul_kb', 'romkb' => 'modul_kb',
         'beschreibung' => 'beschreibung', 'description' => 'beschreibung', 'notiz' => 'beschreibung',
         'teaser' => 'teaser', 'kurztext' => 'teaser',
+        'grafiker' => 'grafiker', 'grafik' => 'grafiker', 'graphics' => 'grafiker', 'artist' => 'grafiker', 'artists' => 'grafiker',
+        'musiker' => 'musiker', 'musik' => 'musiker', 'music' => 'musiker', 'komponist' => 'musiker', 'composer' => 'musiker', 'sound' => 'musiker',
         'programmierer' => 'programmierer', 'programmer' => 'programmierer', 'programmers' => 'programmierer', 'coder' => 'programmierer',
         'screenshots' => 'screenshots', 'screenshot' => 'screenshots', 'bilder' => 'screenshots',
         'galerie' => 'galerie', 'gallery' => 'galerie',
