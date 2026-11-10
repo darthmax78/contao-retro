@@ -19,13 +19,16 @@ use Symfony\Component\Filesystem\Filesystem;
  * Großansicht), einmal erzeugt und danach aus dem Cache (Schlüssel: Pfad, Änderungszeit, Look,
  * Breite, Version). Erzeugt wird erst beim Abruf über DisplayBildController, nicht beim Seitenaufbau.
  * Farben gemessen an Magnus' Aufnahmen (je 6 Spiele pro Display, 08.11.2026).
+ * Light am 10.11.2026 Richtung Türkis gedreht: Die Elektrolumineszenzfolie strahlt bei etwa
+ * 490–510 nm (blau-grün), gedämpft durch die LCD-Schicht darüber – Farbton ~162° statt ~150°,
+ * etwas entsättigt, Helligkeit der Stufen wie vorher.
  */
 final class DisplayFaerber
 {
     public const LOOKS = [
         'dmg' => [[0x18, 0x48, 0x02], [0x89, 0x97, 0x04]],
         'pocket' => [[0x12, 0x16, 0x15], [0x8C, 0x91, 0x70]],
-        'light' => [[0x01, 0x66, 0x28], [0x03, 0xE7, 0x73]],
+        'light' => [[0x05, 0x5E, 0x46], [0x26, 0xD2, 0x9E]],
     ];
 
     /** Erlaubte Breiten: Galerie (2× Kachel) und Großansicht */
@@ -153,7 +156,9 @@ final class DisplayFaerber
             return null;
         }
 
-        $schluessel = md5($quellePfad.'|'.filemtime($quelle).'|'.$look.'|'.$breite.'|'.self::VERSION);
+        // Die Palette steckt im Schlüssel: Ändert sich die Farbe eines Looks, entstehen nur dessen Bilder neu.
+        $palette = json_encode(self::LOOKS[$look]);
+        $schluessel = md5($quellePfad.'|'.filemtime($quelle).'|'.$look.'|'.$breite.'|'.self::VERSION.'|'.$palette);
 
         return self::ORDNER.'/'.$look.'/'.$breite.'/'.substr($schluessel, 0, 2).'/'.$schluessel.'.webp';
     }
