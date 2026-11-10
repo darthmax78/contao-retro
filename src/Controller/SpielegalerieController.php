@@ -71,7 +71,9 @@ class SpielegalerieController extends AbstractContentElementController
         $eintraege = [];
 
         foreach ($spiele as $spiel) {
-            $gruppe = 'spiel-'.$spiel['id'];
+            // Je Element eigene Gruppe: Zeigen mehrere Galerien dasselbe Spiel (DMG/Pocket/Light),
+            // blättert die Großansicht nur durch die Bilder dieser Galerie.
+            $gruppe = 'spiel-'.$model->id.'-'.$spiel['id'];
             $bilder = array_values(array_filter(StringUtil::deserialize($spiel['screenshots'], true)));
             $figur = null;
             $nativ = false;
