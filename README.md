@@ -207,3 +207,20 @@ Einstellungen im Element: Nachrichtenarchive (leer = alle), Reihenfolge, Anzahl 
 kompakt (ohne Text, Tags, Legende) und ein Link zur ganzen Geschichte statt „Fortsetzung folgt“.
 Logik in `src/Timeline/TimelineBauer.php` (ohne Contao-Abhängigkeiten), Laden in `TimelineLader`. CSS `public/css/timeline.css`,
 schmale Darstellung per Container-Abfrage (Element unter 560 px).
+
+## Chronik: Tagesprotokoll
+
+Seit rg-34 (aus dem Chronik-Paket, gleich wie in den anderen Projekten): Ein Contao-Cronjob
+(`src/Chronik/Cron/JournalCron.php`, „daily“) erfasst jede Nacht den Vortag – Speicherungen, neue Inhalte,
+Löschungen, Dateien, News, Fehler, „Spur“ und Commits auf GitHub (`CHRONIK_GITHUB_REPO` in `.env.local`) –
+und speichert ihn in `tl_chronik_journal`. Verpasste Tage holt er bis 60 Tage nach.
+Backend: Chronik › Tagesprotokoll (die Timeline-Einträge stehen jetzt ebenfalls unter Chronik).
+
+Konsole:
+
+- `chronik:journal erfassen` – verpasste Tage bis gestern; `--von=JJJJ-MM-TT` rückwirkend, `--neu` überschreibt
+- `chronik:journal uebersicht --von=JJJJ-MM-TT` – Tabelle aller Änderungstage
+- `chronik:journal zeigen --von=… --bis=…` – Protokolle als Markdown (Grundlage für News)
+
+Beim rückwirkenden Erfassen holt `GithubCommits::vorladen()` alle Commits des Zeitraums mit wenigen Abfragen
+(GitHub ohne Token: 60 Abfragen pro Stunde).

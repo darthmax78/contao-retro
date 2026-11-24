@@ -8,3 +8,7 @@ $GLOBALS['TL_LANG']['MOD']['retro_zubehoer'] = ['Zubehör', 'Original-Zubehör w
 $GLOBALS['TL_LANG']['MOD']['retro_komponenten'] = ['Komponenten', 'Katalog der Chips: CPU, Grafik, Sound, SoC.'];
 $GLOBALS['TL_LANG']['MOD']['retro_arbeitspakete'] = ['Arbeitspakete', 'Signierte Arbeitspakete hochladen und einspielen.'];
 $GLOBALS['TL_LANG']['MOD']['retro_timeline'] = ['Timeline', 'Stationen ohne eigene News und Pausen für das Element Timeline.'];
+
+// rg-34: Bereich Chronik
+$GLOBALS['TL_LANG']['MOD']['chronik'] = 'Chronik';
+$GLOBALS['TL_LANG']['MOD']['chronik_journal'] = ['Tagesprotokoll', 'Was sich an welchem Tag auf der Seite getan hat (automatisch, nachts).'];

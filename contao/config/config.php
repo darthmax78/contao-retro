@@ -22,8 +22,14 @@ $GLOBALS['BE_MOD']['retro'] = [
     'retro_firmen' => ['tables' => ['tl_retro_firma']],
     'retro_komponenten' => ['tables' => ['tl_retro_komponente']],
     'retro_zubehoer' => ['tables' => ['tl_retro_zubehoer']],
-    // rg-27: Stationen ohne eigene News und Pausen für das Element Timeline
-    'retro_timeline' => ['tables' => ['tl_retro_timeline']],
     // rg-15: nur Administratoren mit Zwei-Faktor-Anmeldung, prüft das Modul selbst
     'retro_arbeitspakete' => ['callback' => ArbeitspaketeModul::class],
+];
+
+// rg-34: Bereich „Chronik“ wie in den anderen Projekten (Chronik-Paket)
+// Tagesprotokoll: schreibt der Contao-Cronjob jede Nacht (src/Chronik/Cron/JournalCron.php)
+// Timeline: Stationen ohne eigene News und Pausen für das Element Timeline (rg-27)
+$GLOBALS['BE_MOD']['chronik'] = [
+    'chronik_journal' => ['tables' => ['tl_chronik_journal']],
+    'retro_timeline' => ['tables' => ['tl_retro_timeline']],
 ];
